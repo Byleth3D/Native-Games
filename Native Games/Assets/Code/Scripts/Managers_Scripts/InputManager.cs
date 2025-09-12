@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
     private GameInputs gameInputs;
 
@@ -16,6 +16,8 @@ public class InputManager : MonoBehaviour
 
     private void OnEnable()
     {
+        if (this != Instance) return;
+
         gameInputs ??= new GameInputs();
         gameInputs.Player.Enable();
         interactAction = gameInputs.Player.Interact;
@@ -25,6 +27,8 @@ public class InputManager : MonoBehaviour
 
     private void OnDisable()
     {
+        if (this != Instance) return;
+
         gameInputs.Player.Disable();
     }
 
