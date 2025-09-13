@@ -3,16 +3,16 @@ using KBCore.Refs;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class PlayerController : ValidatedMonoBehaviour
+public class VelocityPlayerController : ValidatedMonoBehaviour
 {
     [SerializeField, Scene, HideProperty]
     private CinemachineCamera cinemachineCamera;
 
     [SerializeField, Self, HideProperty]
-    private CharacterController controller;
+    private GroundChecker groundChecker;
 
     [SerializeField, Self, HideProperty]
-    private GroundChecker groundChecker;
+    private Rigidbody rigidBody;
 
     [Header("Motion")]
     [ShowInInspector] private Vector3 velocity;
@@ -30,6 +30,8 @@ public class PlayerController : ValidatedMonoBehaviour
     private float initialJumpVelocity;
     private float jumpGravity;
     private float fallGravity;
+
+    private bool canJump;
 
     [Header("Rotate")]
     [SerializeField] private float angularSpeed = 360.0f;
@@ -55,11 +57,16 @@ public class PlayerController : ValidatedMonoBehaviour
 
     private void Update()
     {
-        MoveHorizontally();
-        ApplyGravity();
         Jump();
         Rotate();
-        controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void FixedUpdate()
+    {
+        MoveHorizontally();
+        ApplyGravity();
+        ProcessJump();
+        ApplyVelocity();
     }
 
     private void MoveHorizontally()
@@ -102,11 +109,24 @@ public class PlayerController : ValidatedMonoBehaviour
         }
     }
 
+    private void ApplyVelocity()
+    {
+        rigidBody.AddForce(velocity - rigidBody.linearVelocity, ForceMode.VelocityChange);
+    }
+
     private void Jump()
     {
         if (InputManager.Instance.JumpPressed && groundChecker.IsGrounded)
         {
-            velocity.y = initialJumpVelocity;
+            canJump = true;
         }
+    }
+
+    private void ProcessJump()
+    {
+        if (!canJump) return;
+
+        velocity.y = initialJumpVelocity;
+        canJump = false;
     }
 }
