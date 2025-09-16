@@ -1,17 +1,15 @@
 using EditorAttributes;
-using KBCore.Refs;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class VelocityPlayerController : ValidatedMonoBehaviour
+public class VelocityPlayerController : MonoBehaviour
 {
-    [SerializeField, Scene, HideProperty]
+    [SerializeField]
     private CinemachineCamera cinemachineCamera;
 
-    [SerializeField, Self, HideProperty]
-    private GroundChecker groundChecker;
+    [SerializeField] GroundChecker groundChecker;
 
-    [SerializeField, Self, HideProperty]
+    [SerializeField]
     private Rigidbody rigidBody;
 
     [Header("Motion")]
@@ -42,9 +40,8 @@ public class VelocityPlayerController : ValidatedMonoBehaviour
         SetJumpSettings();
     }
 
-    protected override void OnValidate()
+    private void OnValidate()
     {
-        base.OnValidate();
         SetJumpSettings();
     }
 

@@ -1,17 +1,16 @@
 using EditorAttributes;
-using KBCore.Refs;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class PlayerController : ValidatedMonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    [SerializeField, Scene, HideProperty]
+    [SerializeField]
     private CinemachineCamera cinemachineCamera;
 
-    [SerializeField, Self, HideProperty]
+    [SerializeField]
     private CharacterController controller;
 
-    [SerializeField, Self, HideProperty]
+    [SerializeField]
     private GroundChecker groundChecker;
 
     [Header("Motion")]
@@ -40,9 +39,8 @@ public class PlayerController : ValidatedMonoBehaviour
         SetJumpSettings();
     }
 
-    protected override void OnValidate()
+    private void OnValidate()
     {
-        base.OnValidate();
         SetJumpSettings();
     }
 
