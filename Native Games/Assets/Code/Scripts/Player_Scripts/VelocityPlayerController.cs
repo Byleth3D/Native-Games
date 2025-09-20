@@ -24,7 +24,8 @@ public class VelocityPlayerController : MonoBehaviour
     [SerializeField, Range(0.1f, 100f)] private float maxJumpHeight = 2.5f;
     [SerializeField, Range(0.01f, 60f)] private float jumpPeakTime = 0.45f;
     [SerializeField, Range(0.01f, 60f)] private float jumpFallTime = 0.35f;
-
+    [SerializeField] private CountdownTimer jumpBuffer;
+    [SerializeField] private CountdownTimer coyoteTime;
     private float initialJumpVelocity;
     private float jumpGravity;
     private float fallGravity;
@@ -45,6 +46,18 @@ public class VelocityPlayerController : MonoBehaviour
         SetJumpSettings();
     }
 
+    private void OnEnable()
+    {
+        groundChecker.OnGroundEnter += OnGroundEnter;
+        groundChecker.OnGroundExit += OnGroundExit;
+    }
+
+    private void OnDisable()
+    {
+        groundChecker.OnGroundEnter -= OnGroundEnter;
+        groundChecker.OnGroundExit -= OnGroundExit;
+    }
+
     private void SetJumpSettings()
     {
         jumpGravity = -2.0f * maxJumpHeight / (jumpPeakTime * jumpPeakTime);
@@ -54,6 +67,8 @@ public class VelocityPlayerController : MonoBehaviour
 
     private void Update()
     {
+        coyoteTime.Tick(Time.deltaTime);
+        jumpBuffer.Tick(Time.deltaTime);
         Jump();
         Rotate();
     }
@@ -113,17 +128,51 @@ public class VelocityPlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (InputManager.Instance.JumpPressed && groundChecker.IsGrounded)
+        if (InputManager.Instance.JumpPressed)
+       {
+            if (groundChecker.IsGrounded)
+            {
+                canJump = true;
+             }
+            else
+            {
+                if (coyoteTime.IsRunning && rigidBody.linearVelocity.y < 0.0f)
+                {
+                    canJump = true;
+                    coyoteTime.Stop();
+                    Debug.Log("Coyote");
+                    return;
+                }
+
+                jumpBuffer.Start();
+            }
+        }
+        else
         {
-            canJump = true;
+            if (groundChecker.IsGrounded && jumpBuffer.IsRunning)
+            {
+                canJump = true;
+                jumpBuffer.Stop();
+                Debug.Log("Buffered");
+            }
         }
     }
 
     private void ProcessJump()
     {
         if (!canJump) return;
-
+        rigidBody.AddForce(Vector3.down * rigidBody.linearVelocity.y, ForceMode.VelocityChange);
         velocity.y = initialJumpVelocity;
         canJump = false;
+    }
+
+    private void OnGroundEnter()
+    {
+        coyoteTime.Stop();
+    }
+
+    private void OnGroundExit()
+    {
+        coyoteTime.Start();
     }
 }

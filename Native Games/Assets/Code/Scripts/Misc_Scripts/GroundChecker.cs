@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class GroundChecker : MonoBehaviour
 {
@@ -8,13 +9,21 @@ public class GroundChecker : MonoBehaviour
 
     [SerializeField] private Collider collider3D;
 
+    public event Action OnGroundEnter;
+    public event Action OnGroundExit;
+
     public bool IsGrounded { get; private set; }
     public bool PreviousGrounded { get; private set; }
 
     private void Update()
     {
         PreviousGrounded = IsGrounded;
+        Check();
+        Respond();
+    }
 
+    private void Check()
+    {
         Vector3 origin;
 
         if (collider3D)
@@ -31,6 +40,18 @@ public class GroundChecker : MonoBehaviour
         IsGrounded = hits.Length > 0 ? true : false;
     }
 
+    private void Respond()
+    {
+        if (!PreviousGrounded && IsGrounded)
+        {
+            OnGroundEnter?.Invoke();
+        }
+        else if (PreviousGrounded && !IsGrounded)
+        {
+            OnGroundExit?.Invoke();
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = IsGrounded ? Color.green : Color.red;
@@ -44,6 +65,7 @@ public class GroundChecker : MonoBehaviour
         {
             origin = transform.position + Vector3.up * (circleRadius - groundDistance);
         }
+
         Gizmos.DrawSphere(origin, circleRadius);
     }
 }

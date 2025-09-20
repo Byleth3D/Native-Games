@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0.1f, 100f)] private float maxJumpHeight = 2.5f;
     [SerializeField, Range(0.01f, 60f)] private float jumpPeakTime = 0.45f;
     [SerializeField, Range(0.01f, 60f)] private float jumpFallTime = 0.35f;
-
+    [SerializeField] private CountdownTimer jumpBuffer;
+    [SerializeField] private CountdownTimer coyoteTime;
     private float initialJumpVelocity;
     private float jumpGravity;
     private float fallGravity;
@@ -43,6 +44,17 @@ public class PlayerController : MonoBehaviour
     {
         SetJumpSettings();
     }
+    private void OnEnable()
+    {
+        groundChecker.OnGroundEnter += OnGroundEnter;
+        groundChecker.OnGroundExit += OnGroundExit;
+    }
+
+    private void OnDisable()
+    {
+        groundChecker.OnGroundEnter -= OnGroundEnter;
+        groundChecker.OnGroundExit -= OnGroundExit;
+    }
 
     private void SetJumpSettings()
     {
@@ -53,6 +65,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        coyoteTime.Tick(Time.deltaTime);
+        jumpBuffer.Tick(Time.deltaTime);
         MoveHorizontally();
         ApplyGravity();
         Jump();
@@ -99,12 +113,50 @@ public class PlayerController : MonoBehaviour
             velocity.y += currentGravity * Time.deltaTime;
         }
     }
-
     private void Jump()
     {
-        if (InputManager.Instance.JumpPressed && groundChecker.IsGrounded)
+        if (InputManager.Instance.JumpPressed)
         {
-            velocity.y = initialJumpVelocity;
+            if (groundChecker.IsGrounded)
+            {
+                ProcessJump();
+            }
+            else
+            {
+                if (coyoteTime.IsRunning && velocity.y < 0.0f)
+                {
+                    ProcessJump();
+                    coyoteTime.Stop();
+                    Debug.Log("Coyote");
+                    return;
+                }
+
+                jumpBuffer.Start();
+            }
         }
+        else
+        {
+            if (groundChecker.IsGrounded && jumpBuffer.IsRunning)
+            {
+                ProcessJump();
+                jumpBuffer.Stop();
+                Debug.Log("Buffered");
+            }
+        }
+    }
+
+    private void ProcessJump()
+    {
+        velocity.y = initialJumpVelocity;
+    }
+
+    private void OnGroundEnter()
+    {
+        coyoteTime.Stop();
+    }
+
+    private void OnGroundExit()
+    {
+        coyoteTime.Start();
     }
 }
