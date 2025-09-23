@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private CinemachineCamera cinemachineCamera;
-
-    [SerializeField]
-    private CharacterController controller;
-
-    [SerializeField]
-    private GroundChecker groundChecker;
+    [Header("References")]
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private CinemachineCamera cinemachineCamera;
+    [SerializeField] private GroundChecker groundChecker;
 
     [Header("Motion")]
     [ShowInInspector] private Vector3 velocity;
@@ -25,19 +21,28 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0.1f, 100f)] private float maxJumpHeight = 2.5f;
     [SerializeField, Range(0.01f, 60f)] private float jumpPeakTime = 0.45f;
     [SerializeField, Range(0.01f, 60f)] private float jumpFallTime = 0.35f;
-    [SerializeField] private CountdownTimer jumpBuffer;
-    [SerializeField] private CountdownTimer coyoteTime;
+    [SerializeField] private float coyoteDuration;
+    [SerializeField] private float jumpBufferDuration;
+
     private float initialJumpVelocity;
     private float jumpGravity;
     private float fallGravity;
+
+    private CountdownTimer coyoteTimer;
+    private CountdownTimer jumpBufferTimer;
 
     [Header("Rotate")]
     [SerializeField] private float angularSpeed = 360.0f;
     [SerializeField] private Transform model;
 
+    [Header("Interaction")]
+    private bool isPushingObject;
+
     private void Awake()
     {
         SetJumpSettings();
+        coyoteTimer = new CountdownTimer(coyoteDuration);
+        jumpBufferTimer = new CountdownTimer(jumpBufferDuration);
     }
 
     private void OnValidate()
@@ -65,19 +70,44 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        coyoteTime.Tick(Time.deltaTime);
-        jumpBuffer.Tick(Time.deltaTime);
+        coyoteTimer.Tick(Time.deltaTime);
+        jumpBufferTimer.Tick(Time.deltaTime);
         MoveHorizontally();
         ApplyGravity();
         Jump();
         Rotate();
+        Interact();
         controller.Move(velocity * Time.deltaTime);
     }
 
     private void MoveHorizontally()
     {
         Vector2 motionInput = InputManager.Instance.MotionInput;
+        Vector3 previousMoveDirection = moveDirectionRaw;
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
+
+        if (isPushingObject)
+        {
+            float absX = Mathf.Abs(moveDirectionRaw.x);
+            float previousAbsX = Mathf.Abs(previousMoveDirection.x);
+
+            float absZ = Mathf.Abs(moveDirectionRaw.z);
+            float previousAbsZ = Mathf.Abs(previousMoveDirection.z);
+
+            if (absX > 0.0f && absZ > 0.0f)
+            {
+                if (previousAbsX > 0.0f)
+                {
+                    moveDirectionRaw.z = 0.0f;
+                }
+                else if (previousAbsZ > 0.0f)
+                {
+                    moveDirectionRaw.x = 0.0f;
+                }
+            }
+
+            moveDirectionRaw.Normalize();
+        }
 
         Vector3 cameraForwardDirection = cinemachineCamera.transform.forward;
         cameraForwardDirection.y = 0.0f;
@@ -93,7 +123,7 @@ public class PlayerController : MonoBehaviour
 
     private void Rotate()
     {
-        if (relativeMoveDirection.magnitude <= 0.0f) return;
+        if (relativeMoveDirection.magnitude <= 0.0f || isPushingObject) return;
 
         Quaternion currentModelRotation = model.localRotation;
         Quaternion targetRotation = Quaternion.LookRotation(relativeMoveDirection);
@@ -123,23 +153,23 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if (coyoteTime.IsRunning && velocity.y < 0.0f)
+                if (coyoteTimer.IsRunning && velocity.y < 0.0f)
                 {
                     ProcessJump();
-                    coyoteTime.Stop();
+                    coyoteTimer.Stop();
                     Debug.Log("Coyote");
                     return;
                 }
 
-                jumpBuffer.Start();
+                jumpBufferTimer.Start();
             }
         }
         else
         {
-            if (groundChecker.IsGrounded && jumpBuffer.IsRunning)
+            if (groundChecker.IsGrounded && jumpBufferTimer.IsRunning)
             {
                 ProcessJump();
-                jumpBuffer.Stop();
+                jumpBufferTimer.Stop();
                 Debug.Log("Buffered");
             }
         }
@@ -150,13 +180,29 @@ public class PlayerController : MonoBehaviour
         velocity.y = initialJumpVelocity;
     }
 
+    private void Interact()
+    {
+        if (groundChecker.IsGrounded)
+        {
+            if (InputManager.Instance.InteractPressed && !InputManager.Instance.InteractHeld)
+            {
+                return;
+            }
+            
+            if (InputManager.Instance.InteractHeld)
+            {
+                isPushingObject = !isPushingObject;
+            }
+        }
+    }
+
     private void OnGroundEnter()
     {
-        coyoteTime.Stop();
+        coyoteTimer.Stop();
     }
 
     private void OnGroundExit()
     {
-        coyoteTime.Start();
+        coyoteTimer.Start();
     }
 }

@@ -1,15 +1,11 @@
-using EditorAttributes;
 using System;
-using UnityEngine;
 
-[Serializable]
 public class CountdownTimer
 {
-    [SerializeField] private float initialTime;
+    private float initialTime;
 
     public float CurrentTime { get; protected set; }
     public bool IsRunning { get; protected set; }
-
 
     public event Action OnTimerStart;
     public event Action OnTimerStop;
