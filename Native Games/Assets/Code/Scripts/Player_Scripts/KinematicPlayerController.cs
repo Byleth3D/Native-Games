@@ -2,13 +2,12 @@ using EditorAttributes;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class VelocityPlayerController : MonoBehaviour
+public class KinematicPlayerController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private CapsuleCollider capsuleCollider;
+    [SerializeField] private CharacterController controller;
     [SerializeField] private CinemachineCamera cinemachineCamera;
     [SerializeField] private GroundChecker groundChecker;
-    [SerializeField] private Rigidbody rigidBody;
 
     [Header("Motion")]
     [ShowInInspector] private Vector3 velocity;
@@ -32,14 +31,13 @@ public class VelocityPlayerController : MonoBehaviour
     private CountdownTimer coyoteTimer;
     private CountdownTimer jumpBufferTimer;
 
-    private bool canJump;
-
     [Header("Rotate")]
     [SerializeField] private float angularSpeed = 360.0f;
     [SerializeField] private Transform model;
-    
-    [Header("Interaction")]
+
+    //[Header("Interaction")]
     private bool isPushingObject;
+    //private Rigidbody objRb;
 
     private void Awake()
     {
@@ -76,17 +74,12 @@ public class VelocityPlayerController : MonoBehaviour
     {
         coyoteTimer.Tick(Time.deltaTime);
         jumpBufferTimer.Tick(Time.deltaTime);
-        Jump();
-        Rotate();
-        Interact();
-    }
-
-    private void FixedUpdate()
-    {
         MoveHorizontally();
         ApplyGravity();
-        ProcessJump();
-        ApplyVelocity();
+        Jump();
+        Rotate();
+        //Interact();
+        controller.Move(velocity * Time.deltaTime);
     }
 
     private void MoveHorizontally()
@@ -95,28 +88,28 @@ public class VelocityPlayerController : MonoBehaviour
         Vector3 previousMoveDirection = moveDirectionRaw;
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
 
-        if (isPushingObject)
-        {
-            float absX = Mathf.Abs(moveDirectionRaw.x);
-            float previousAbsX = Mathf.Abs(previousMoveDirection.x);
+        //if (isPushingObject)
+        //{
+        //    float absX = Mathf.Abs(moveDirectionRaw.x);
+        //    float previousAbsX = Mathf.Abs(previousMoveDirection.x);
 
-            float absZ = Mathf.Abs(moveDirectionRaw.z);
-            float previousAbsZ = Mathf.Abs(previousMoveDirection.z);
+        //    float absZ = Mathf.Abs(moveDirectionRaw.z);
+        //    float previousAbsZ = Mathf.Abs(previousMoveDirection.z);
 
-            if (absX > 0.0f && absZ > 0.0f)
-            {
-                if (previousAbsX > 0.0f)
-                {
-                    moveDirectionRaw.z = 0.0f;
-                }
-                else if (previousAbsZ > 0.0f)
-                {
-                    moveDirectionRaw.x = 0.0f;
-                }
-            }
+        //    if (absX > 0.0f && absZ > 0.0f)
+        //    {
+        //        if (previousAbsX > 0.0f)
+        //        {
+        //            moveDirectionRaw.z = 0.0f;
+        //        }
+        //        else if (previousAbsZ > 0.0f)
+        //        {
+        //            moveDirectionRaw.x = 0.0f;
+        //        }
+        //    }
 
-            moveDirectionRaw.Normalize();
-        }
+        //    moveDirectionRaw.Normalize();
+        //}
 
         Vector3 cameraForwardDirection = cinemachineCamera.transform.forward;
         cameraForwardDirection.y = 0.0f;
@@ -152,25 +145,19 @@ public class VelocityPlayerController : MonoBehaviour
             velocity.y += currentGravity * Time.deltaTime;
         }
     }
-
-    private void ApplyVelocity()
-    {
-        rigidBody.AddForce(velocity - rigidBody.linearVelocity, ForceMode.VelocityChange);
-    }
-
     private void Jump()
     {
         if (InputManager.Instance.JumpPressed)
         {
             if (groundChecker.IsGrounded)
             {
-                canJump = true;
+                ProcessJump();
             }
             else
             {
-                if (coyoteTimer.IsRunning && rigidBody.linearVelocity.y < 0.0f)
+                if (coyoteTimer.IsRunning && velocity.y < 0.0f)
                 {
-                    canJump = true;
+                    ProcessJump();
                     coyoteTimer.Stop();
                     Debug.Log("Coyote");
                     return;
@@ -183,7 +170,7 @@ public class VelocityPlayerController : MonoBehaviour
         {
             if (groundChecker.IsGrounded && jumpBufferTimer.IsRunning)
             {
-                canJump = true;
+                ProcessJump();
                 jumpBufferTimer.Stop();
                 Debug.Log("Buffered");
             }
@@ -192,26 +179,7 @@ public class VelocityPlayerController : MonoBehaviour
 
     private void ProcessJump()
     {
-        if (!canJump) return;
-        rigidBody.AddForce(Vector3.down * rigidBody.linearVelocity.y, ForceMode.VelocityChange);
         velocity.y = initialJumpVelocity;
-        canJump = false;
-    }
-
-    private void Interact()
-    {
-        if (groundChecker.IsGrounded)
-        {
-            if (InputManager.Instance.InteractPressed && !InputManager.Instance.InteractHeld)
-            {
-                return;
-            }
-
-            if (InputManager.Instance.InteractHeld)
-            {
-                isPushingObject = !isPushingObject;
-            }
-        }
     }
 
     private void OnGroundEnter()

@@ -37,7 +37,10 @@ public class InputManager : Singleton<InputManager>
         MotionInput = moveAction.ReadValue<Vector2>();
         JumpPressed = jumpAction.WasPressedThisFrame();
         InteractPressed = interactAction.WasPressedThisFrame();
-        InteractHeld = interactAction.WasPerformedThisFrame();
-        if (InteractHeld) Debug.Log("InteractHeld");
+
+        if (!InteractPressed)
+        {
+            InteractHeld = interactAction.phase == InputActionPhase.Performed ? true : false;
+        }
     }
 }

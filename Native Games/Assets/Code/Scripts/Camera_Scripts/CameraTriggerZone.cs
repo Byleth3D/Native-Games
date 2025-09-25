@@ -13,9 +13,11 @@ public enum Target
 
 public class CameraTriggerZone : MonoBehaviour
 {
-    [SerializeField] private CinemachineCamera cam;
 
-    [Header("Position")]
+    [Header("General")]
+    [SerializeField] private bool isOneWay = false;
+
+    [Header("Position Offset")]
     [SerializeField] private Vector3 cameraOffsetA;
     [SerializeField] private Vector3 cameraOffsetB;
 
@@ -25,6 +27,7 @@ public class CameraTriggerZone : MonoBehaviour
     [SerializeField] private float offsetTweenDuration = 0.25f;
 
     private Tween offsetTweenOperation;
+    private bool offsetActive = true;
 
     [Header("Rotation")]
     [SerializeField, Clamp(0.0f, 360f, 0.0f, 360f, 0.0f, 360f)]
@@ -40,14 +43,12 @@ public class CameraTriggerZone : MonoBehaviour
     [SerializeField] private Ease rotationTweenEase = Ease.InOutQuad;
     [SerializeField] private float rotationTweenDuration = 2.0f;
 
-    [SerializeField] private bool isOneWay = false;
-
-    private bool isEnabled = true;
-
     private Quaternion rotationA;
     private Quaternion rotationB;
 
     private Tween angleTweenOperation;
+    
+    private bool rotationActive = true;
 
     [Header("Distance")]
     [SerializeField] private float cameraDistanceA;
@@ -59,11 +60,26 @@ public class CameraTriggerZone : MonoBehaviour
     [SerializeField] private float distanceTweenDuration = 0.5f;
 
     private Tween distanceTweenOperation;
+    
+    private bool distanceActive = true;
+
+    private CinemachineCamera gameplayCamera;
+    private CinemachinePositionComposer positionComposer;
+
 
     private void Awake()
     {
         rotationA = Quaternion.Euler(eulerRotationA);
         rotationB = Quaternion.Euler(eulerRotationB);
+        GetCameraReferences();
+    }
+
+    private void GetCameraReferences()
+    {
+        GameObject cameraObject = GameObject.FindGameObjectWithTag("GameplayCamera");
+        gameplayCamera = cameraObject.GetComponent<CinemachineCamera>();
+        CinemachineComponentBase componentBase = gameplayCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+        positionComposer = componentBase as CinemachinePositionComposer;
     }
 
     private void OnValidate()
@@ -84,14 +100,16 @@ public class CameraTriggerZone : MonoBehaviour
 
     private void OffsetCamera()
     {
-        if (!isEnabled || cameraOffsetA == cameraOffsetB) return;
+        if (!offsetActive || cameraOffsetA == cameraOffsetB)
+        {
+            offsetActive = false;
+            return;
+        }
+
         offsetTweenOperation.Stop();
 
-        CinemachineComponentBase componentBase = cam.GetCinemachineComponent(CinemachineCore.Stage.Body);
-
-        if (componentBase is CinemachinePositionComposer)
+        if (positionComposer)
         {
-            CinemachinePositionComposer positionComposer = componentBase as CinemachinePositionComposer;
             Vector3 fromOffset = positionComposer.TargetOffset;
             Vector3 toOffset = Vector3.zero;
 
@@ -115,8 +133,8 @@ public class CameraTriggerZone : MonoBehaviour
 
             if (isOneWay)
             {
-                offsetTweenOperation.OnComplete(OnRotationComplete);
-                isEnabled = false;
+                offsetTweenOperation.OnComplete(OnTweenCompleted);
+                offsetActive = false;
             }
         }
 
@@ -124,14 +142,16 @@ public class CameraTriggerZone : MonoBehaviour
 
     private void DistanceCamera()
     {
-        if (!isEnabled || cameraDistanceA == cameraDistanceB) return;
+        if (!distanceActive || cameraDistanceA == cameraDistanceB)
+        {
+            distanceActive = false;
+            return;
+        }
+
         distanceTweenOperation.Stop();
 
-        CinemachineComponentBase componentBase = cam.GetCinemachineComponent(CinemachineCore.Stage.Body);
-
-        if (componentBase is CinemachinePositionComposer)
+        if (positionComposer)
         {
-            CinemachinePositionComposer positionComposer = componentBase as CinemachinePositionComposer;
             float fromDistance = positionComposer.CameraDistance;
             float toDistance = 0.0f;
 
@@ -156,17 +176,22 @@ public class CameraTriggerZone : MonoBehaviour
 
         if (isOneWay)
         {
-            distanceTweenOperation.OnComplete(OnRotationComplete);
-            isEnabled = false;
+            distanceTweenOperation.OnComplete(OnTweenCompleted);
+            distanceActive = false;
         }
     }
 
     private void RotateCamera()
     {
-        if (!isEnabled || rotationA == rotationB) return;
+        if (!rotationActive || rotationA == rotationB)
+        {
+            rotationActive = false;
+            return;
+        }
+
         angleTweenOperation.Stop();
 
-        Quaternion fromRotation = cam.transform.localRotation;
+        Quaternion fromRotation = gameplayCamera.transform.localRotation;
         Quaternion toRotation = Quaternion.identity;
 
         if (targetRotation == Target.A)
@@ -181,7 +206,7 @@ public class CameraTriggerZone : MonoBehaviour
         }
 
         angleTweenOperation = Tween.LocalRotation
-                                    (cam.transform,
+                                    (gameplayCamera.transform,
                                         fromRotation,
                                         toRotation,
                                         duration: rotationTweenDuration,
@@ -189,14 +214,14 @@ public class CameraTriggerZone : MonoBehaviour
 
         if (isOneWay)
         {
-            angleTweenOperation.OnComplete(OnRotationComplete);
-            isEnabled = false;
+            angleTweenOperation.OnComplete(OnTweenCompleted);
+            rotationActive = false;
         }
     }
 
-    private void OnRotationComplete()
+    private void OnTweenCompleted()
     {
-        if (angleTweenOperation.progress >= 1.0f && distanceTweenOperation.progress >= 1.0f && offsetTweenOperation.progress >= 1.0f)
+        if (!offsetActive && !distanceActive && !rotationActive)
         {
             this.gameObject.SetActive(false);
         }
