@@ -1,5 +1,8 @@
 using EditorAttributes;
+using PrimeTween;
+using System.Collections;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -36,11 +39,13 @@ public class PlayerController : MonoBehaviour
 
     [Header("Rotate")]
     [SerializeField] private float angularSpeed = 360.0f;
-    [SerializeField] private Transform model;
+    [SerializeField] private Transform modelTransform;
 
     [Header("Interaction")]
-    private bool isPushingObject;
-    private Rigidbody objRb;
+    private InteractionTrigger interactionTrigger;
+    private InteractionType interaction = InteractionType.None;
+    private bool isInteracting;
+    private PushableObject pushableObject;
 
     private void Awake()
     {
@@ -87,7 +92,7 @@ public class PlayerController : MonoBehaviour
         MoveHorizontally();
         ApplyGravity();
         ProcessJump();
-        if (objRb) objRb.MovePosition(objRb.position += velocity * Time.deltaTime);
+        PushObject();
         ApplyVelocity();
     }
 
@@ -97,28 +102,28 @@ public class PlayerController : MonoBehaviour
         Vector3 previousMoveDirection = moveDirectionRaw;
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
 
-        //if (isPushingObject)
-        //{
-        //    float absX = Mathf.Abs(moveDirectionRaw.x);
-        //    float previousAbsX = Mathf.Abs(previousMoveDirection.x);
+        if (interaction == InteractionType.ObjectPush)
+        {
+            float absX = Mathf.Abs(moveDirectionRaw.x);
+            float previousAbsX = Mathf.Abs(previousMoveDirection.x);
 
-        //    float absZ = Mathf.Abs(moveDirectionRaw.z);
-        //    float previousAbsZ = Mathf.Abs(previousMoveDirection.z);
+            float absZ = Mathf.Abs(moveDirectionRaw.z);
+            float previousAbsZ = Mathf.Abs(previousMoveDirection.z);
 
-        //    if (absX > 0.0f && absZ > 0.0f)
-        //    {
-        //        if (previousAbsX > 0.0f)
-        //        {
-        //            moveDirectionRaw.z = 0.0f;
-        //        }
-        //        else if (previousAbsZ > 0.0f)
-        //        {
-        //            moveDirectionRaw.x = 0.0f;
-        //        }
-        //    }
-        //
-        //    moveDirectionRaw.Normalize();
-        //}
+            if (absX > 0.0f && absZ > 0.0f)
+            {
+                if (previousAbsX > 0.0f)
+                {
+                    moveDirectionRaw.z = 0.0f;
+                }
+                else if (previousAbsZ > 0.0f)
+                {
+                    moveDirectionRaw.x = 0.0f;
+                }
+            }
+
+            moveDirectionRaw.Normalize();
+        }
 
         Vector3 cameraForwardDirection = cinemachineCamera.transform.forward;
         cameraForwardDirection.y = 0.0f;
@@ -134,12 +139,26 @@ public class PlayerController : MonoBehaviour
 
     private void Rotate()
     {
-        if (relativeMoveDirection.magnitude <= 0.0f || isPushingObject) return;
-
-        Quaternion currentModelRotation = model.localRotation;
-        Quaternion targetRotation = Quaternion.LookRotation(relativeMoveDirection);
+        Quaternion currentModelRotation = modelTransform.localRotation;
+        Quaternion targetRotation;
         float rotationStep = angularSpeed * Time.deltaTime;
-        model.localRotation = Quaternion.RotateTowards(currentModelRotation, targetRotation, rotationStep);
+
+        if (isInteracting && interaction == InteractionType.ObjectPush)
+        {
+            Vector3 direction = pushableObject.transform.position - transform.position;
+            direction.y = 0.0f;
+            direction.Normalize();
+
+            targetRotation = Quaternion.LookRotation(direction);
+        }
+        else
+        {
+            if (relativeMoveDirection.magnitude <= 0.0f) return;
+
+            targetRotation = Quaternion.LookRotation(relativeMoveDirection);
+        }
+
+        modelTransform.localRotation = Quaternion.RotateTowards(currentModelRotation, targetRotation, rotationStep);
     }
 
     private void ApplyGravity()
@@ -174,7 +193,6 @@ public class PlayerController : MonoBehaviour
                 {
                     canJump = true;
                     coyoteTimer.Stop();
-                    Debug.Log("Coyote");
                     return;
                 }
 
@@ -187,7 +205,6 @@ public class PlayerController : MonoBehaviour
             {
                 canJump = true;
                 jumpBufferTimer.Stop();
-                Debug.Log("Buffered");
             }
         }
     }
@@ -204,34 +221,23 @@ public class PlayerController : MonoBehaviour
     {
         if (groundChecker.IsGrounded)
         {
-            if (InputManager.Instance.InteractHeld && !isPushingObject)
+            if (InputManager.Instance.InteractHeld && !isInteracting && pushableObject)
             {
-
-                Vector3 origin = capsuleCollider.center;
-                float colliderRadius = capsuleCollider.radius;
-                origin = model.transform.rotation * origin;
-                origin += transform.position;
-
-                Ray ray = new Ray(origin, model.transform.forward);
-                bool hit = Physics.Raycast(ray, out RaycastHit hitInfo, (0.3f + colliderRadius));
-
-                Color color = hit ? Color.green : Color.red;
-
-                Debug.DrawRay(origin, model.transform.forward * (0.3f + colliderRadius), color, 5.0f);
-
-                if (hitInfo.collider != null)
-                {
-                    objRb = hitInfo.collider.attachedRigidbody;
-                    isPushingObject = true;
-                }
+                isInteracting = true;
+                interaction = InteractionType.ObjectPush;
             }
-            else if (!InputManager.Instance.InteractHeld && isPushingObject)
+            else if (!InputManager.Instance.InteractHeld && isInteracting)
             {
-                isPushingObject = false;
-                objRb.gameObject.transform.parent = null;
-                objRb = null;
+                isInteracting = false;
+                interactionTrigger.TriggerInteractCancel();
             }
         }
+    }
+
+    private void PushObject()
+    {
+        if (!isInteracting || pushableObject == null) return;
+        interactionTrigger.TriggerInteract(relativeMoveDirection);
     }
 
     private void OnGroundEnter()
@@ -242,5 +248,56 @@ public class PlayerController : MonoBehaviour
     private void OnGroundExit()
     {
         coyoteTimer.Start();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other == null || isInteracting) return;
+
+        other.gameObject.TryGetComponent(out interactionTrigger);
+        if (interactionTrigger != null)
+        {
+            switch (interactionTrigger.InteractableType)
+            {
+                case InteractionType.ItemCollect:
+                    break;
+                case InteractionType.ItemDeliver:
+                    break;
+                case InteractionType.ObjectPush:
+                    pushableObject = (PushableObject)interactionTrigger.Interactable;
+                    break;
+            }
+
+            interaction = interactionTrigger.InteractableType;
+            interactionTrigger.TriggerEnter();
+
+            return;
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == null || isInteracting) return;
+
+        if (interactionTrigger != null)
+        {
+            switch (interactionTrigger.InteractableType)
+            {
+                case InteractionType.ItemCollect:
+                    break;
+                case InteractionType.ItemDeliver:
+                    break;
+                case InteractionType.ObjectPush:
+                    pushableObject = null;
+                    break;
+            }
+
+            interaction = InteractionType.None;
+            interactionTrigger.TriggerExit();
+            interactionTrigger = null;
+
+            return;
+        }
     }
 }
