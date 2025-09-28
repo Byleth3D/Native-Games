@@ -1,25 +1,28 @@
 using EditorAttributes;
 using PrimeTween;
-using System.Collections;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(GroundChecker))]
+
+public class PlayerController : MonoBehaviour, IInteractorAgent
 {
-    [Header("References")]
-    [SerializeField] private CapsuleCollider capsuleCollider;
-    [SerializeField] private CinemachineCamera cinemachineCamera;
+    [SerializeField] private Rigidbody body;
+    [SerializeField] private CapsuleCollider collider3D;
+    [SerializeField] private GameObject gameplayCamera;
     [SerializeField] private GroundChecker groundChecker;
-    [SerializeField] private Rigidbody rigidBody;
 
     [Header("Motion")]
     [ShowInInspector] private Vector3 velocity;
 
     [Header("Horizontal Movement")]
     [SerializeField, Range(0.0f, 100.0f)] float horizontalSpeed = 3.5f;
+
     private Vector3 moveDirectionRaw;
     private Vector3 relativeMoveDirection;
+
+    private bool canMove = true;
 
     [Header("Jump")]
     [SerializeField, Range(0.1f, 100f)] private float maxJumpHeight = 2.5f;
@@ -39,19 +42,23 @@ public class PlayerController : MonoBehaviour
 
     [Header("Rotate")]
     [SerializeField] private float angularSpeed = 360.0f;
-    [SerializeField] private Transform modelTransform;
+    [SerializeField] private Transform model;
 
     [Header("Interaction")]
-    private InteractionTrigger interactionTrigger;
-    private InteractionType interaction = InteractionType.None;
+    public InteractorType Interactor { get; } = InteractorType.Agent;
+
+    private InteractionTrigger currentInteractionTrigger;
+    private Vector3 interactionCenter;
+    private IInteractable interactable;
+
+    private GameObject interactableGameObject;
+    private Vector3 interactableDirection;
+
     private bool isInteracting;
-    private PushableObject pushableObject;
 
     private void Awake()
     {
         SetJumpSettings();
-        coyoteTimer = new CountdownTimer(coyoteDuration);
-        jumpBufferTimer = new CountdownTimer(jumpBufferDuration);
     }
 
     private void OnValidate()
@@ -76,6 +83,8 @@ public class PlayerController : MonoBehaviour
         jumpGravity = -2.0f * maxJumpHeight / (jumpPeakTime * jumpPeakTime);
         fallGravity = -2.0f * maxJumpHeight / (jumpFallTime * jumpFallTime);
         initialJumpVelocity = 2.0f * maxJumpHeight / jumpPeakTime;
+        coyoteTimer = new CountdownTimer(coyoteDuration);
+        jumpBufferTimer = new CountdownTimer(jumpBufferDuration);
     }
 
     private void Update()
@@ -89,11 +98,26 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MoveHorizontally();
-        ApplyGravity();
+        ProcessMove();
+        ProcessGravity();
         ProcessJump();
         PushObject();
         ApplyVelocity();
+    }
+
+    private void ProcessMove()
+    {
+        if (canMove)
+        {
+            MoveHorizontally();
+        }
+        else
+        {
+            if (isInteracting && interactable.Interaction == InteractionType.ObjectPush)
+            {
+                AdjustPosition();
+            }
+        }
     }
 
     private void MoveHorizontally()
@@ -102,7 +126,7 @@ public class PlayerController : MonoBehaviour
         Vector3 previousMoveDirection = moveDirectionRaw;
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
 
-        if (interaction == InteractionType.ObjectPush)
+        if (isInteracting)
         {
             float absX = Mathf.Abs(moveDirectionRaw.x);
             float previousAbsX = Mathf.Abs(previousMoveDirection.x);
@@ -125,7 +149,7 @@ public class PlayerController : MonoBehaviour
             moveDirectionRaw.Normalize();
         }
 
-        Vector3 cameraForwardDirection = cinemachineCamera.transform.forward;
+        Vector3 cameraForwardDirection = gameplayCamera.transform.forward;
         cameraForwardDirection.y = 0.0f;
         cameraForwardDirection.Normalize();
 
@@ -137,46 +161,39 @@ public class PlayerController : MonoBehaviour
         velocity.z = relativeMoveDirection.z * horizontalSpeed;
     }
 
+    private void AdjustPosition()
+    {
+        Vector3 teleportPosition = interactionCenter;
+        teleportPosition.y = body.position.y;
+
+        body.position = teleportPosition;
+        canMove = true;
+    }
+
     private void Rotate()
     {
-        Quaternion currentModelRotation = modelTransform.localRotation;
-        Quaternion targetRotation;
+        Quaternion currentModelRotation = model.localRotation;
+        Quaternion targetRotation = Quaternion.identity;
+        Vector3 targetDirection = Vector3.zero;
         float rotationStep = angularSpeed * Time.deltaTime;
 
-        if (isInteracting && interaction == InteractionType.ObjectPush)
+        if (isInteracting)
         {
-            Vector3 direction = pushableObject.transform.position - transform.position;
-            direction.y = 0.0f;
-            direction.Normalize();
+            interactableDirection = interactableGameObject.transform.position - transform.position;
+            interactableDirection.y = 0.0f;
+            interactableDirection.Normalize();
 
-            targetRotation = Quaternion.LookRotation(direction);
+            targetDirection = interactableDirection;
         }
         else
         {
             if (relativeMoveDirection.magnitude <= 0.0f) return;
 
-            targetRotation = Quaternion.LookRotation(relativeMoveDirection);
+            targetDirection = relativeMoveDirection;
         }
 
-        modelTransform.localRotation = Quaternion.RotateTowards(currentModelRotation, targetRotation, rotationStep);
-    }
-
-    private void ApplyGravity()
-    {
-        if (groundChecker.IsGrounded)
-        {
-            velocity.y = 0.0f;
-        }
-        else
-        {
-            float currentGravity = velocity.y > 0.0f ? jumpGravity : fallGravity;
-            velocity.y += currentGravity * Time.deltaTime;
-        }
-    }
-
-    private void ApplyVelocity()
-    {
-        rigidBody.AddForce(velocity - rigidBody.linearVelocity, ForceMode.VelocityChange);
+        targetRotation = Quaternion.LookRotation(targetDirection);
+        model.localRotation = Quaternion.RotateTowards(currentModelRotation, targetRotation, rotationStep);
     }
 
     private void Jump()
@@ -189,7 +206,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if (coyoteTimer.IsRunning && rigidBody.linearVelocity.y < 0.0f)
+                if (coyoteTimer.IsRunning && body.linearVelocity.y < 0.0f)
                 {
                     canJump = true;
                     coyoteTimer.Stop();
@@ -212,92 +229,103 @@ public class PlayerController : MonoBehaviour
     private void ProcessJump()
     {
         if (!canJump) return;
-        rigidBody.AddForce(Vector3.down * rigidBody.linearVelocity.y, ForceMode.VelocityChange);
+        body.AddForce(Vector3.down * body.linearVelocity.y, ForceMode.VelocityChange);
         velocity.y = initialJumpVelocity;
         canJump = false;
+    }
+
+    private void ProcessGravity()
+    {
+        if (groundChecker.IsGrounded)
+        {
+            velocity.y = 0.0f;
+        }
+        else
+        {
+            float currentGravity = velocity.y > 0.0f ? jumpGravity : fallGravity;
+            velocity.y += currentGravity * Time.deltaTime;
+        }
+    }
+
+    private void ApplyVelocity()
+    {
+        body.AddForce(velocity - body.linearVelocity, ForceMode.VelocityChange);
     }
 
     private void Interact()
     {
         if (groundChecker.IsGrounded)
         {
-            if (InputManager.Instance.InteractHeld && !isInteracting && pushableObject)
+            if (interactable?.Interaction == InteractionType.ObjectPush)
             {
-                isInteracting = true;
-                interaction = InteractionType.ObjectPush;
+                if (InputManager.Instance.InteractHeld && !isInteracting)
+                {
+                    isInteracting = true;
+                    canMove = false;
+                }
+                else if (!InputManager.Instance.InteractHeld && isInteracting)
+                {
+                    isInteracting = false;
+                    currentInteractionTrigger.TriggerInteractCancel();
+                }
             }
-            else if (!InputManager.Instance.InteractHeld && isInteracting)
-            {
-                isInteracting = false;
-                interactionTrigger.TriggerInteractCancel();
-            }
+        }
+        else
+        {
+            isInteracting = false;
         }
     }
 
     private void PushObject()
     {
-        if (!isInteracting || pushableObject == null) return;
-        interactionTrigger.TriggerInteract(relativeMoveDirection);
+        if (interactable == null) return;
+        if (!isInteracting || interactable.Interaction != InteractionType.ObjectPush) return;
+        currentInteractionTrigger.TriggerInteract();
     }
 
-    private void OnGroundEnter()
+    public Vector3 GetVelocity() => velocity;
+
+    public Vector3 GetHorizontalVelocity() => velocity.WithoutY();
+
+    public Vector3 GetVerticalVelocity() => velocity.WithY();
+
+    public Vector3 GetForwardDirection() => model.transform.forward;
+
+    private void OnGroundEnter() => coyoteTimer.Stop();
+
+    private void OnGroundExit() => coyoteTimer.Stop();
+
+    private void OnTriggerEnter(Collider trigger)
     {
-        coyoteTimer.Stop();
+        if (trigger == null || isInteracting) return;
+
+        trigger.gameObject.TryGetComponent(out InteractionTrigger interactionTrigger);
+
+        if (interactionTrigger == null) return;
+        if (interactionTrigger.Interactable.Interaction == InteractionType.ItemCollect) return;
+
+        currentInteractionTrigger = interactionTrigger;
+
+        interactable = currentInteractionTrigger.Interactable;
+        interactionCenter = trigger.bounds.center;
+        interactableGameObject = trigger.transform.parent.gameObject;
+
+        currentInteractionTrigger.TriggerEnter(this);
     }
 
-    private void OnGroundExit()
+    private void OnTriggerExit(Collider trigger)
     {
-        coyoteTimer.Start();
-    }
+        if (trigger == null || isInteracting) return;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other == null || isInteracting) return;
+        if (currentInteractionTrigger == null || trigger.gameObject != currentInteractionTrigger.gameObject) return;
 
-        other.gameObject.TryGetComponent(out interactionTrigger);
-        if (interactionTrigger != null)
-        {
-            switch (interactionTrigger.InteractableType)
-            {
-                case InteractionType.ItemCollect:
-                    break;
-                case InteractionType.ItemDeliver:
-                    break;
-                case InteractionType.ObjectPush:
-                    pushableObject = (PushableObject)interactionTrigger.Interactable;
-                    break;
-            }
+        interactable = null;
+        interactionCenter = Vector3.zero;
+        interactableGameObject = null;
 
-            interaction = interactionTrigger.InteractableType;
-            interactionTrigger.TriggerEnter();
+        isInteracting = false;
 
-            return;
-        }
-
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other == null || isInteracting) return;
-
-        if (interactionTrigger != null)
-        {
-            switch (interactionTrigger.InteractableType)
-            {
-                case InteractionType.ItemCollect:
-                    break;
-                case InteractionType.ItemDeliver:
-                    break;
-                case InteractionType.ObjectPush:
-                    pushableObject = null;
-                    break;
-            }
-
-            interaction = InteractionType.None;
-            interactionTrigger.TriggerExit();
-            interactionTrigger = null;
-
-            return;
-        }
+        currentInteractionTrigger.TriggerExit();
+        currentInteractionTrigger = null;
     }
 }

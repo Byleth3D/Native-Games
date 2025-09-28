@@ -1,9 +1,11 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PushableObject : MonoBehaviour, IInteractable
 {
+    public InteractionType Interaction { get; } = InteractionType.ObjectPush;
+    private IInteractorAgent interactorController;
     private Rigidbody rigidBody;
 
     private void Awake()
@@ -34,21 +36,28 @@ public class PushableObject : MonoBehaviour, IInteractable
         rigidBody.interpolation = RigidbodyInterpolation.None;
     }
 
-    public void Push(Vector3 direction)
+    public void Push()
     {
         if (rigidBody == null) return;
+
         TurnRigidbodyDynamic();
-        rigidBody.AddForce(direction * 5f - rigidBody.linearVelocity, ForceMode.VelocityChange);
+
+        float speed = interactorController.GetHorizontalVelocity().magnitude;
+        Vector3 moveDirection = interactorController.GetHorizontalVelocity().normalized;
+
+        rigidBody.AddForce(moveDirection * speed - rigidBody.linearVelocity, ForceMode.VelocityChange);
     }
 
-    public void OnInteractionEnter()
+    public void OnInteractionEnter(IInteractorAgent interactorController)
     {
+        if (interactorController == null) return;
+        this.interactorController = interactorController as IInteractorAgent;
     }
 
-    public void OnInteract(Vector3 direction)
+    public void OnInteract()
     {
         TurnRigidbodyDynamic();
-        Push(direction);
+        Push();
     }
 
     public void OnInteractCancel()
@@ -58,22 +67,7 @@ public class PushableObject : MonoBehaviour, IInteractable
 
     public void OnInteractionExit()
     {
+        interactorController = null;
         TurnRigidbodyKinematic();
     }
-}
-
-public interface IInteractable
-{
-    void OnInteractionEnter();
-    void OnInteract(Vector3 direction);
-    void OnInteractCancel();
-    void OnInteractionExit();
-}
-
-public enum InteractionType
-{
-    ItemCollect,
-    ItemDeliver,
-    ObjectPush,
-    None
 }
