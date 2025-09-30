@@ -17,17 +17,19 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
     [ShowInInspector] private Vector3 velocity;
 
     [Header("Horizontal Movement")]
-    [SerializeField, Range(0.0f, 100.0f)] float horizontalSpeed = 3.5f;
+    [SerializeField] private float horizontalSpeed = 3.5f;
+    [SerializeField] private float teleportDuration = 0.25f;
 
     private Vector3 moveDirectionRaw;
     private Vector3 relativeMoveDirection;
+    private Tween teleportTween;
 
     private bool canMove = true;
 
     [Header("Jump")]
-    [SerializeField, Range(0.1f, 100f)] private float maxJumpHeight = 2.5f;
-    [SerializeField, Range(0.01f, 60f)] private float jumpPeakTime = 0.45f;
-    [SerializeField, Range(0.01f, 60f)] private float jumpFallTime = 0.35f;
+    [SerializeField] private float maxJumpHeight = 2.5f;
+    [SerializeField] private float jumpPeakTime = 0.45f;
+    [SerializeField] private float jumpFallTime = 0.35f;
     [SerializeField] private float coyoteDuration;
     [SerializeField] private float jumpBufferDuration;
 
@@ -99,9 +101,9 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
     private void FixedUpdate()
     {
         ProcessMove();
+        PushObject();
         ProcessGravity();
         ProcessJump();
-        PushObject();
         ApplyVelocity();
     }
 
@@ -113,10 +115,7 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
         }
         else
         {
-            if (isInteracting && interactable.Interaction == InteractionType.ObjectPush)
-            {
-                AdjustPosition();
-            }
+            Teleport();
         }
     }
 
@@ -161,20 +160,27 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
         velocity.z = relativeMoveDirection.z * horizontalSpeed;
     }
 
-    private void AdjustPosition()
+    private void Teleport()
     {
-        Vector3 teleportPosition = interactionCenter;
-        teleportPosition.y = body.position.y;
+        if (!teleportTween.isAlive)
+        {
+            Vector3 destiny = interactionCenter;
+            destiny.y = body.position.y;
 
-        body.position = teleportPosition;
-        canMove = true;
+            TweenSettings tweenSettings = new TweenSettings();
+            tweenSettings.duration = teleportDuration;
+            tweenSettings.updateType = UpdateType.FixedUpdate;
+
+            teleportTween = Tween.Custom(body.position, destiny, tweenSettings, onValueChange: newValue => body.position = newValue);
+            teleportTween.OnComplete(() => canMove = true);
+        }
     }
 
     private void Rotate()
     {
         Quaternion currentModelRotation = model.localRotation;
-        Quaternion targetRotation = Quaternion.identity;
-        Vector3 targetDirection = Vector3.zero;
+        Quaternion targetRotation;
+        Vector3 targetDirection;
         float rotationStep = angularSpeed * Time.deltaTime;
 
         if (isInteracting)
@@ -229,7 +235,9 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
     private void ProcessJump()
     {
         if (!canJump) return;
+
         body.AddForce(Vector3.down * body.linearVelocity.y, ForceMode.VelocityChange);
+        
         velocity.y = initialJumpVelocity;
         canJump = false;
     }
@@ -256,7 +264,7 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
     {
         if (groundChecker.IsGrounded)
         {
-            if (interactable?.Interaction == InteractionType.ObjectPush)
+            if (interactable?.Interactable == InteractableType.ObjectPush)
             {
                 if (InputManager.Instance.InteractHeld && !isInteracting)
                 {
@@ -270,16 +278,17 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
                 }
             }
         }
-        else
+        else if (!groundChecker.IsGrounded && isInteracting)
         {
             isInteracting = false;
+            InputManager.Instance.DisableAction("Interact", 0.5f);
         }
     }
 
     private void PushObject()
     {
-        if (interactable == null) return;
-        if (!isInteracting || interactable.Interaction != InteractionType.ObjectPush) return;
+        if (interactable == null || !canMove) return;
+        if (!isInteracting || interactable.Interactable != InteractableType.ObjectPush) return;
         currentInteractionTrigger.TriggerInteract();
     }
 
@@ -293,7 +302,7 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
 
     private void OnGroundEnter() => coyoteTimer.Stop();
 
-    private void OnGroundExit() => coyoteTimer.Stop();
+    private void OnGroundExit() => coyoteTimer.Start();
 
     private void OnTriggerEnter(Collider trigger)
     {
@@ -302,7 +311,7 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
         trigger.gameObject.TryGetComponent(out InteractionTrigger interactionTrigger);
 
         if (interactionTrigger == null) return;
-        if (interactionTrigger.Interactable.Interaction == InteractionType.ItemCollect) return;
+        if (interactionTrigger.Interactable.Interactable == InteractableType.ItemCollect) return;
 
         currentInteractionTrigger = interactionTrigger;
 

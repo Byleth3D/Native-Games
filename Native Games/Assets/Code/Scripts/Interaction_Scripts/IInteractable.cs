@@ -2,14 +2,14 @@
 
 public interface IInteractable
 {
-    InteractionType Interaction { get; }
+    InteractableType Interactable { get; }
     void OnInteractionEnter(IInteractorAgent interactor);
     void OnInteract();
     void OnInteractCancel();
     void OnInteractionExit();
 }
 
-public enum InteractionType
+public enum InteractableType
 {
     ItemCollect,
     Prompt,

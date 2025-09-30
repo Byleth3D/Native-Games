@@ -4,8 +4,8 @@ using System;
 [RequireComponent(typeof(Rigidbody))]
 public class PushableObject : MonoBehaviour, IInteractable
 {
-    public InteractionType Interaction { get; } = InteractionType.ObjectPush;
-    private IInteractorAgent interactorController;
+    public InteractableType Interactable { get; } = InteractableType.ObjectPush;
+    private IInteractorAgent interactorAgent;
     private Rigidbody rigidBody;
 
     private void Awake()
@@ -42,8 +42,8 @@ public class PushableObject : MonoBehaviour, IInteractable
 
         TurnRigidbodyDynamic();
 
-        float speed = interactorController.GetHorizontalVelocity().magnitude;
-        Vector3 moveDirection = interactorController.GetHorizontalVelocity().normalized;
+        float speed = interactorAgent.GetHorizontalVelocity().magnitude;
+        Vector3 moveDirection = interactorAgent.GetHorizontalVelocity().normalized;
 
         rigidBody.AddForce(moveDirection * speed - rigidBody.linearVelocity, ForceMode.VelocityChange);
     }
@@ -51,7 +51,7 @@ public class PushableObject : MonoBehaviour, IInteractable
     public void OnInteractionEnter(IInteractorAgent interactorController)
     {
         if (interactorController == null) return;
-        this.interactorController = interactorController as IInteractorAgent;
+        this.interactorAgent = interactorController as IInteractorAgent;
     }
 
     public void OnInteract()
@@ -67,7 +67,7 @@ public class PushableObject : MonoBehaviour, IInteractable
 
     public void OnInteractionExit()
     {
-        interactorController = null;
+        interactorAgent = null;
         TurnRigidbodyKinematic();
     }
 }

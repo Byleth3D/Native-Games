@@ -9,7 +9,7 @@ public class CountdownTimer
 
     public event Action OnTimerStart;
     public event Action OnTimerStop;
-    public Action OnTimerExpired;
+    public event Action OnTimerExpired;
 
     public CountdownTimer(float initialTime)
     {

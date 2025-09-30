@@ -1288,7 +1288,7 @@ GameObject:
   - component: {fileID: 427323092}
   - component: {fileID: 427323091}
   - component: {fileID: 427323090}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CameraTriggerZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1694,7 +1694,7 @@ GameObject:
   - component: {fileID: 537623862}
   - component: {fileID: 537623861}
   - component: {fileID: 537623860}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CameraTriggerZone (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1779,7 +1779,7 @@ GameObject:
   - component: {fileID: 592302941}
   - component: {fileID: 592302944}
   m_Layer: 8
-  m_Name: Player  -  RB
+  m_Name: 'Player '
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1797,8 +1797,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d105bfa5baaffa409e67603f27c432c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  circleRadius: 0.5
-  groundDistance: 0.05
+  circleRadius: 0.46
+  groundDistance: 0.01
   groundLayers:
     serializedVersion: 2
     m_Bits: 65
@@ -1864,10 +1864,11 @@ MonoBehaviour:
   gameplayCamera: {fileID: 1996275006}
   groundChecker: {fileID: 592302941}
   horizontalSpeed: 5
-  maxJumpHeight: 3
+  teleportDuration: 0.25
+  maxJumpHeight: 1.75
   jumpPeakTime: 0.45
   jumpFallTime: 0.35
-  coyoteDuration: 0.225
+  coyoteDuration: 0.125
   jumpBufferDuration: 0.2
   angularSpeed: 2160
   model: {fileID: 1118053064}
@@ -1937,6 +1938,59 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1998862099}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &614931757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 614931759}
+  - component: {fileID: 614931758}
+  m_Layer: 10
+  m_Name: DeathTriggerZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &614931758
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614931757}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 80, y: 1, z: 100}
+  m_Center: {x: 0, y: 5, z: -10}
+--- !u!4 &614931759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614931757}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &710561321
 GameObject:
@@ -2323,7 +2377,7 @@ GameObject:
   - component: {fileID: 939177044}
   - component: {fileID: 939177043}
   - component: {fileID: 939177042}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CameraTriggerZone (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2444,7 +2498,7 @@ GameObject:
   - component: {fileID: 973834315}
   - component: {fileID: 973834320}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: PushableObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2820,7 +2874,7 @@ GameObject:
   - component: {fileID: 1124339820}
   - component: {fileID: 1124339821}
   m_Layer: 7
-  m_Name: Cube
+  m_Name: InteractionTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2851,17 +2905,17 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.25, y: 0.5, z: 1}
-  m_Center: {x: 1.125, y: 0, z: 0}
+  m_Size: {x: 1.25, y: 0.5, z: 0.8}
+  m_Center: {x: 1.15, y: 0, z: 0}
 --- !u!65 &1124339820
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2872,17 +2926,17 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.25, y: 0.5, z: 1}
-  m_Center: {x: -1.125, y: 0, z: 0}
+  m_Size: {x: 1.25, y: 0.5, z: 0.8}
+  m_Center: {x: -1.15, y: 0, z: 0}
 --- !u!114 &1124339821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2895,7 +2949,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18963184d90631d45bf50d5416ef94b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interaction: 2
 --- !u!1 &1149314777
 GameObject:
   m_ObjectHideFlags: 0
@@ -4044,3 +4097,4 @@ SceneRoots:
   - {fileID: 427323092}
   - {fileID: 939177044}
   - {fileID: 537623862}
+  - {fileID: 614931759}

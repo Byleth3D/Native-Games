@@ -1,7 +1,10 @@
 ﻿
 public interface IInteractor
 {
-    InteractorType InteractorType { get; }
+    InteractorType Interactor { get; }
+    InteractableType CompatibleInteractions { get; }
+    void OnInteractionEnter(IInteractable interactable);
+    void OnInteractionExit();
 }
 
 public enum InteractorType
