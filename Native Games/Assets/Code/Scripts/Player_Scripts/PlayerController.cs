@@ -6,15 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(GroundChecker))]
 
-public class PlayerController : MonoBehaviour, IInteractorAgent
+public class PlayerController : InteractorAgent
 {
+    [Header("References", order = 0)]
     [SerializeField] private Rigidbody body;
     [SerializeField] private CapsuleCollider collider3D;
     [SerializeField] private GameObject gameplayCamera;
     [SerializeField] private GroundChecker groundChecker;
-
-    [Header("Motion")]
-    [ShowInInspector] private Vector3 velocity;
 
     [Header("Horizontal Movement")]
     [SerializeField] private float horizontalSpeed = 3.5f;
@@ -47,11 +45,9 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
     [SerializeField] private Transform model;
 
     [Header("Interaction")]
-    public InteractorType Interactor { get; } = InteractorType.Agent;
-
     private InteractionTrigger currentInteractionTrigger;
     private Vector3 interactionCenter;
-    private IInteractable interactable;
+    private Interactable interactable;
 
     private GameObject interactableGameObject;
     private Vector3 interactableDirection;
@@ -237,7 +233,7 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
         if (!canJump) return;
 
         body.AddForce(Vector3.down * body.linearVelocity.y, ForceMode.VelocityChange);
-        
+
         velocity.y = initialJumpVelocity;
         canJump = false;
     }
@@ -264,23 +260,23 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
     {
         if (groundChecker.IsGrounded)
         {
-            if (interactable?.Interactable == InteractableType.ObjectPush)
+            if (interactable?.GetInteractableDefinition() == InteractableType.ObjectPush)
             {
                 if (InputManager.Instance.InteractHeld && !isInteracting)
                 {
-                    isInteracting = true;
+                    OnInteraction();
                     canMove = false;
                 }
                 else if (!InputManager.Instance.InteractHeld && isInteracting)
                 {
-                    isInteracting = false;
-                    currentInteractionTrigger.TriggerInteractCancel();
+                    OnInteractionCanceled();
                 }
             }
         }
         else if (!groundChecker.IsGrounded && isInteracting)
         {
             isInteracting = false;
+            currentInteractionTrigger.OnTriggerInteractCanceled();
             InputManager.Instance.DisableAction("Interact", 0.5f);
         }
     }
@@ -288,53 +284,39 @@ public class PlayerController : MonoBehaviour, IInteractorAgent
     private void PushObject()
     {
         if (interactable == null || !canMove) return;
-        if (!isInteracting || interactable.Interactable != InteractableType.ObjectPush) return;
-        currentInteractionTrigger.TriggerInteract();
+        if (!isInteracting || interactable.GetInteractableDefinition() != InteractableType.ObjectPush) return;
+        currentInteractionTrigger.OnTriggerInteract();
     }
-
-    public Vector3 GetVelocity() => velocity;
-
-    public Vector3 GetHorizontalVelocity() => velocity.WithoutY();
-
-    public Vector3 GetVerticalVelocity() => velocity.WithY();
-
-    public Vector3 GetForwardDirection() => model.transform.forward;
 
     private void OnGroundEnter() => coyoteTimer.Stop();
 
     private void OnGroundExit() => coyoteTimer.Start();
 
-    private void OnTriggerEnter(Collider trigger)
+    public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
     {
-        if (trigger == null || isInteracting) return;
-
-        trigger.gameObject.TryGetComponent(out InteractionTrigger interactionTrigger);
-
-        if (interactionTrigger == null) return;
-        if (interactionTrigger.Interactable.Interactable == InteractableType.ItemCollect) return;
-
         currentInteractionTrigger = interactionTrigger;
 
         interactable = currentInteractionTrigger.Interactable;
-        interactionCenter = trigger.bounds.center;
-        interactableGameObject = trigger.transform.parent.gameObject;
-
-        currentInteractionTrigger.TriggerEnter(this);
+        interactionCenter = currentInteractionTrigger.ActiveTrigger.bounds.center;
+        interactableGameObject = currentInteractionTrigger.Interactable.gameObject;
     }
 
-    private void OnTriggerExit(Collider trigger)
+    public override void OnInteraction() => isInteracting = true;
+
+    public override void OnInteractionCanceled()
     {
-        if (trigger == null || isInteracting) return;
+        isInteracting = false;
+        currentInteractionTrigger.OnTriggerInteractCanceled();
+    }
 
-        if (currentInteractionTrigger == null || trigger.gameObject != currentInteractionTrigger.gameObject) return;
-
+    public override void OnInteractionExit()
+    {
         interactable = null;
         interactionCenter = Vector3.zero;
         interactableGameObject = null;
 
         isInteracting = false;
 
-        currentInteractionTrigger.TriggerExit();
         currentInteractionTrigger = null;
     }
 }

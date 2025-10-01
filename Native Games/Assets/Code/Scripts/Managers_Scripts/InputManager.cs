@@ -75,7 +75,6 @@ public class InputManager : Singleton<InputManager>
     private void EnableAction(InputAction actionToEnable)
     {
         actionToEnable.Enable();
-        Debug.Log("Enabled");
     }
 
     public void DisableAction(string actionToDisable)
@@ -94,7 +93,6 @@ public class InputManager : Singleton<InputManager>
         if (action == null) return;
 
         DisableAction(action);
-        Debug.Log("Disabled");
 
         CountdownTimer timer = new CountdownTimer(duration);
 

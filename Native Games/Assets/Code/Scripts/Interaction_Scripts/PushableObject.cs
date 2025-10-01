@@ -2,10 +2,9 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PushableObject : MonoBehaviour, IInteractable
+public class PushableObject : Interactable
 {
-    public InteractableType Interactable { get; } = InteractableType.ObjectPush;
-    private IInteractorAgent interactorAgent;
+    private InteractorAgent interactorAgent;
     private Rigidbody rigidBody;
 
     private void Awake()
@@ -48,24 +47,23 @@ public class PushableObject : MonoBehaviour, IInteractable
         rigidBody.AddForce(moveDirection * speed - rigidBody.linearVelocity, ForceMode.VelocityChange);
     }
 
-    public void OnInteractionEnter(IInteractorAgent interactorController)
+    public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
     {
-        if (interactorController == null) return;
-        this.interactorAgent = interactorController as IInteractorAgent;
+        interactorAgent = interactionTrigger.Interactor as InteractorAgent;
     }
 
-    public void OnInteract()
+    public override void OnInteraction()
     {
         TurnRigidbodyDynamic();
         Push();
     }
 
-    public void OnInteractCancel()
+    public override void OnInteractionCanceled()
     {
         TurnRigidbodyKinematic();
     }
 
-    public void OnInteractionExit()
+    public override void OnInteractionExit()
     {
         interactorAgent = null;
         TurnRigidbodyKinematic();
