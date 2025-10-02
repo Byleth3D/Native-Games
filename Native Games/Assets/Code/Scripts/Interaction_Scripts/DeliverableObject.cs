@@ -8,23 +8,25 @@ public class DeliverableObject : Interactable
 
     public override void OnInteraction()
     {
-        Debug.Log($"{gameObject.name}_OnInteraction");
+        UIManager.Instance.DisableInteractPopUp();
         Destroy(gate);
+        gameObject.SetActive(false);
     }
 
     public override void OnInteractionCanceled()
     {
-        Debug.Log($"{gameObject.name}_OnInteractionCanceled");
+        UIManager.Instance.EnableInteractFailedPopUp();
     }
 
     public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
     {
         interactor = interactionTrigger.Interactor as InteractorSystem;
-        Debug.Log($"{gameObject.name}_OnInteractionEnter");
+        UIManager.Instance.EnableInteractPopUp();
     }
 
     public override void OnInteractionExit()
     {
-        interactor = null;
+        UIManager.Instance.DisableInteractPopUp();
+        UIManager.Instance.DisableInteractFailedPopUp();
     }
 }

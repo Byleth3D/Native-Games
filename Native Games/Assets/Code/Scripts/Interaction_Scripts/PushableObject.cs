@@ -50,12 +50,14 @@ public class PushableObject : Interactable
     public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
     {
         interactorAgent = interactionTrigger.Interactor as InteractorAgent;
+        UIManager.Instance.EnablePushPopUp();
     }
 
     public override void OnInteraction()
     {
         TurnRigidbodyDynamic();
         Push();
+        UIManager.Instance.DisablePushPopUp();
     }
 
     public override void OnInteractionCanceled()
@@ -67,5 +69,6 @@ public class PushableObject : Interactable
     {
         interactorAgent = null;
         TurnRigidbodyKinematic();
+        UIManager.Instance.DisablePushPopUp();
     }
 }

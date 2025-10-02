@@ -6,7 +6,7 @@ public class CollectableItem : Interactable
 
     public override void OnInteraction()
     {
-        //Debug.Log($"{gameObject.name}_OnInteraction");
+        UIManager.Instance.DisableInteractPopUp();
         Destroy(gameObject, 0.25f);
     }
 
@@ -17,11 +17,11 @@ public class CollectableItem : Interactable
 
     public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
     {
-        //Debug.Log($"{gameObject.name}_OnInteractionEnter");
+        UIManager.Instance.EnableInteractPopUp();
     }
 
     public override void OnInteractionExit()
     {
-        //Debug.Log($"{gameObject.name}_OnInteractionExit ");
+        UIManager.Instance.DisableInteractPopUp();
     }
 }
