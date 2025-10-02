@@ -5,8 +5,10 @@ public abstract class InteractorAgent : Interactor
 {
     [Header("Motion")]
     [ShowInInspector] protected Vector3 velocity;
+    protected bool canMove = true;
 
     public Vector3 GetVelocity() => velocity;
     public Vector3 GetHorizontalVelocity() => velocity.WithoutY();
     public Vector3 GetVerticalVelocity() => velocity.WithY();
+    public bool CanMove() => canMove;
 }

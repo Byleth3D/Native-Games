@@ -17,13 +17,9 @@ public class PlayerController : InteractorAgent
     [Header("Horizontal Movement")]
     [SerializeField] private float horizontalSpeed = 3.5f;
     [SerializeField] private float pushingSpeed = 3.5f;
-    [SerializeField] private float teleportDuration = 0.25f;
 
     private Vector3 moveDirectionRaw;
     private Vector3 relativeMoveDirection;
-    private Tween teleportTween;
-
-    private bool canMove = true;
 
     [Header("Jump")]
     [SerializeField] private float maxJumpHeight = 2.5f;
@@ -161,18 +157,16 @@ public class PlayerController : InteractorAgent
 
     private void Teleport()
     {
-        if (!teleportTween.isAlive)
-        {
-            Vector3 destiny = interactionCenter;
-            destiny.y = body.position.y;
+        Vector3 position = interactionCenter;
 
-            TweenSettings tweenSettings = new TweenSettings();
-            tweenSettings.duration = teleportDuration;
-            tweenSettings.updateType = UpdateType.FixedUpdate;
+        Teleport(position);
+        canMove = true;
+    }
 
-            teleportTween = Tween.Custom(body.position, destiny, tweenSettings, onValueChange: newValue => body.position = newValue);
-            teleportTween.OnComplete(() => canMove = true);
-        }
+    private void Teleport(Vector3 position)
+    {
+        position.y = body.position.y;
+        body.position = position;
     }
 
     private void Rotate()
@@ -304,10 +298,9 @@ public class PlayerController : InteractorAgent
         interactableGameObject = currentInteractionTrigger.Interactable.gameObject;
     }
 
-    public override void OnInteraction() 
+    public override void OnInteraction()
     {
         isInteracting = true;
-        currentInteractionTrigger.OnTriggerInteract();
     }
 
     public override void OnInteractionCanceled()

@@ -18,13 +18,21 @@ public class InteractionTrigger : MonoBehaviour
 
     public void OnTriggerInteract()
     {
-        HasInteraction = true;
+        if (!HasInteraction)
+        {
+            HasInteraction = true;
+        }
+
         Interactable?.OnInteraction();
     }
 
     public void OnTriggerInteractCanceled()
     {
-        HasInteraction = false;
+        if (HasInteraction)
+        {
+            HasInteraction = false;
+        }
+
         Interactable?.OnInteractionCanceled();
     }
 

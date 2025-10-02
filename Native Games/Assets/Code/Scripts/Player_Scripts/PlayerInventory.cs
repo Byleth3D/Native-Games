@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class PlayerInventory : Interactor
+public class PlayerInventory : InteractorSystem
 {
-    private int itemCount = 0;
     private InteractionTrigger interactionTrigger;
     private Interactable interactable;
 
@@ -19,15 +18,23 @@ public class PlayerInventory : Interactor
         if (interactable.GetInteractableDefinition() == InteractableType.ItemCollect)
         {
             itemCount++;
+            interactionTrigger.OnTriggerInteract();
+            interactionTrigger.OnTriggerInteractCanceled();
         }
-        else if (interactable.GetInteractableDefinition() == InteractableType.ItemDeliver)
+        else
         {
-            //itemCount--;
-            //no-op
-        }
+            DeliverableObject deliverableObject = interactable as DeliverableObject;
 
-        interactionTrigger.OnTriggerInteract();
-        interactionTrigger.OnTriggerInteractCanceled();
+            if (deliverableObject.requestedAmountToDeliver == itemCount)
+            {
+                itemCount = 0;
+                interactionTrigger.OnTriggerInteract();
+            }
+            else
+            {
+                interactionTrigger.OnTriggerInteractCanceled();
+            }
+        }
     }
 
     public override void OnInteractionCanceled() { }
