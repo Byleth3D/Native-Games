@@ -16,12 +16,13 @@ public class CameraTriggerZone : MonoBehaviour
 
     [Header("General")]
     [SerializeField] private bool isOneWay = false;
+    bool isPlayerGoingBackwards;
 
     [Header("Position Offset")]
     [SerializeField] private Vector3 cameraOffsetA;
     [SerializeField] private Vector3 cameraOffsetB;
 
-    [SerializeField] private Target offsetTarget = Target.B;
+    [SerializeField] private Target targetOffset = Target.B;
 
     [SerializeField] private Ease offsetTweenEase = Ease.InOutQuad;
     [SerializeField] private float offsetTweenDuration = 0.25f;
@@ -47,7 +48,7 @@ public class CameraTriggerZone : MonoBehaviour
     private Quaternion rotationB;
 
     private Tween angleTweenOperation;
-    
+
     private bool rotationActive = true;
 
     [Header("Distance")]
@@ -60,7 +61,7 @@ public class CameraTriggerZone : MonoBehaviour
     [SerializeField] private float distanceTweenDuration = 0.5f;
 
     private Tween distanceTweenOperation;
-    
+
     private bool distanceActive = true;
 
     private CinemachineCamera gameplayCamera;
@@ -92,6 +93,23 @@ public class CameraTriggerZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Vector3 triggerZoneForward = gameObject.transform.forward;
+
+            Vector3 playerVelocityDirection = other.attachedRigidbody.linearVelocity;
+            playerVelocityDirection.y = 0.0f;
+            playerVelocityDirection.Normalize();
+
+            float dotProduct = Vector3.Dot(triggerZoneForward, playerVelocityDirection);
+
+            isPlayerGoingBackwards = dotProduct < 0.0f;
+
+            if (isPlayerGoingBackwards)
+            {
+                targetDistance = Target.A;
+                targetOffset = Target.A;
+                targetRotation = Target.A;
+            }
+
             DistanceCamera();
             OffsetCamera();
             RotateCamera();
@@ -113,15 +131,15 @@ public class CameraTriggerZone : MonoBehaviour
             Vector3 fromOffset = positionComposer.TargetOffset;
             Vector3 toOffset = Vector3.zero;
 
-            if (offsetTarget == Target.A)
+            if (targetOffset == Target.A)
             {
                 toOffset = cameraOffsetA;
-                offsetTarget = Target.B;
+                targetOffset = Target.B;
             }
             else
             {
                 toOffset = cameraOffsetB;
-                offsetTarget = Target.A;
+                targetOffset = Target.A;
             }
 
             offsetTweenOperation = Tween.Custom
@@ -131,13 +149,12 @@ public class CameraTriggerZone : MonoBehaviour
                                     onValueChange: newValue => positionComposer.TargetOffset = newValue,
                                     ease: offsetTweenEase);
 
-            if (isOneWay)
+            if (isOneWay && !isPlayerGoingBackwards)
             {
                 offsetTweenOperation.OnComplete(OnTweenCompleted);
                 offsetActive = false;
             }
         }
-
     }
 
     private void DistanceCamera()
@@ -174,7 +191,7 @@ public class CameraTriggerZone : MonoBehaviour
                                             ease: distanceTweenEase);
         }
 
-        if (isOneWay)
+        if (isOneWay && !isPlayerGoingBackwards)
         {
             distanceTweenOperation.OnComplete(OnTweenCompleted);
             distanceActive = false;
@@ -212,7 +229,7 @@ public class CameraTriggerZone : MonoBehaviour
                                         duration: rotationTweenDuration,
                                         ease: rotationTweenEase);
 
-        if (isOneWay)
+        if (isOneWay && !isPlayerGoingBackwards)
         {
             angleTweenOperation.OnComplete(OnTweenCompleted);
             rotationActive = false;
