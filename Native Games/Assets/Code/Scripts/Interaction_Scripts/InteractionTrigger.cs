@@ -8,7 +8,7 @@ public class InteractionTrigger : MonoBehaviour
     public Interactor Interactor { get; private set; }
     public Collider ActiveTrigger { get; private set; }
     public Collider[] triggers { get; private set; }
-    public bool HasInteraction { get; private set; }
+    public bool HasInteraction { get; private set; } = false;
 
     private void Awake()
     {
@@ -87,7 +87,6 @@ public class InteractionTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider interactorCollider)
     {
         if (HasInteraction) return;
-
         List<Interactor> interactors = new();
         interactorCollider.GetComponents(interactors);
 
@@ -108,7 +107,6 @@ public class InteractionTrigger : MonoBehaviour
     private void OnTriggerExit(Collider interactorCollider)
     {
         if (HasInteraction) return;
-
         List<Interactor> interactors = new();
         interactorCollider.GetComponents(interactors);
 

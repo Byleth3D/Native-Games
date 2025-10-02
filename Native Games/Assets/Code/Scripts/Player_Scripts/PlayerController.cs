@@ -16,6 +16,7 @@ public class PlayerController : InteractorAgent
 
     [Header("Horizontal Movement")]
     [SerializeField] private float horizontalSpeed = 3.5f;
+    [SerializeField] private float pushingSpeed = 3.5f;
     [SerializeField] private float teleportDuration = 0.25f;
 
     private Vector3 moveDirectionRaw;
@@ -120,6 +121,7 @@ public class PlayerController : InteractorAgent
         Vector2 motionInput = InputManager.Instance.MotionInput;
         Vector3 previousMoveDirection = moveDirectionRaw;
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
+        float currentHorizontalSpeed = horizontalSpeed;
 
         if (isInteracting)
         {
@@ -142,6 +144,7 @@ public class PlayerController : InteractorAgent
             }
 
             moveDirectionRaw.Normalize();
+            currentHorizontalSpeed = pushingSpeed;
         }
 
         Vector3 cameraForwardDirection = gameplayCamera.transform.forward;
@@ -152,8 +155,8 @@ public class PlayerController : InteractorAgent
 
         relativeMoveDirection = cameraForwardRotation * moveDirectionRaw;
 
-        velocity.x = relativeMoveDirection.x * horizontalSpeed;
-        velocity.z = relativeMoveDirection.z * horizontalSpeed;
+        velocity.x = relativeMoveDirection.x * currentHorizontalSpeed;
+        velocity.z = relativeMoveDirection.z * currentHorizontalSpeed;
     }
 
     private void Teleport()
@@ -301,7 +304,11 @@ public class PlayerController : InteractorAgent
         interactableGameObject = currentInteractionTrigger.Interactable.gameObject;
     }
 
-    public override void OnInteraction() => isInteracting = true;
+    public override void OnInteraction() 
+    {
+        isInteracting = true;
+        currentInteractionTrigger.OnTriggerInteract();
+    }
 
     public override void OnInteractionCanceled()
     {

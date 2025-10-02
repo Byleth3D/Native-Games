@@ -6,22 +6,22 @@ public class CollectableItem : Interactable
 
     public override void OnInteraction()
     {
-        Debug.Log($"{gameObject.name}_OnInteraction");
-        Destroy(gameObject, 0.5f);
+        //Debug.Log($"{gameObject.name}_OnInteraction");
+        Destroy(gameObject, 0.25f);
     }
 
     public override void OnInteractionCanceled()
     {
-        Debug.Log($"{gameObject.name}_OnInteractionCanceled");
+        //Debug.Log($"{gameObject.name}_OnInteractionCanceled");
     }
 
     public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
     {
-        Debug.Log($"{gameObject.name}_OnInteractionEnter");
+        //Debug.Log($"{gameObject.name}_OnInteractionEnter");
     }
 
     public override void OnInteractionExit()
     {
-        Debug.Log($"{gameObject.name}_OnInteractionExit ");
+        //Debug.Log($"{gameObject.name}_OnInteractionExit ");
     }
 }
