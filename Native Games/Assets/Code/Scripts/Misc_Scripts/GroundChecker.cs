@@ -1,13 +1,16 @@
-using UnityEngine;
 using System;
+using UnityEditor.PackageManager;
+using UnityEngine;
 
 public class GroundChecker : MonoBehaviour
 {
-    [SerializeField] private float circleRadius = 0.5f;
+    [SerializeField] private float sphereRadius = 0.5f;
     [SerializeField] private float groundDistance = 0.01f;
     [SerializeField] private LayerMask groundLayers;
 
-    [SerializeField] private Collider collider3D;
+    [SerializeField] private CapsuleCollider collider3D;
+
+    private RaycastHit hitInfo;
 
     public event Action OnGroundEnter;
     public event Action OnGroundExit;
@@ -24,20 +27,18 @@ public class GroundChecker : MonoBehaviour
 
     private void Check()
     {
-        Vector3 origin;
+        Vector3 origin = transform.position + Vector3.up * collider3D.radius;
 
-        if (collider3D)
+        bool hit = Physics.SphereCast(origin, sphereRadius, Vector3.down, out hitInfo, 1000f, groundLayers, QueryTriggerInteraction.Ignore);
+
+        if (!hit)
         {
-            origin = collider3D.bounds.center - Vector3.up * (circleRadius - groundDistance);
+            IsGrounded = false;
         }
         else
         {
-            origin = transform.position + Vector3.up * (circleRadius - groundDistance);
+            IsGrounded = transform.position.y - hitInfo.point.y <= groundDistance ? true : false;
         }
-
-        Collider[] hits = Physics.OverlapSphere(origin, circleRadius, groundLayers);
-
-        IsGrounded = hits.Length > 0 ? true : false;
     }
 
     private void Respond()
@@ -55,17 +56,10 @@ public class GroundChecker : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = IsGrounded ? Color.green : Color.red;
-        Vector3 origin;
 
-        if (collider3D)
-        {
-            origin = collider3D.bounds.center - Vector3.up * (circleRadius - groundDistance);
-        }
-        else
-        {
-            origin = transform.position + Vector3.up * (circleRadius - groundDistance);
-        }
+        Vector3 origin = transform.position + Vector3.up * sphereRadius;
+        origin = IsGrounded ? origin : origin + Vector3.down * 1000f;
 
-        Gizmos.DrawSphere(origin, circleRadius);
+        Gizmos.DrawSphere(origin, sphereRadius);
     }
 }
