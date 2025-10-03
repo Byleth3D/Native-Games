@@ -4,83 +4,62 @@ using UnityEngine;
 
 public class InteractionTrigger : MonoBehaviour
 {
-    public Interactable Interactable { get; private set; }
-    public Interactor Interactor { get; private set; }
+    private IInteractable interactable;
+    public PlayerController PlayerController { get; private set; }
+
+    public Collider[] Triggers { get; private set; }
     public Collider ActiveTrigger { get; private set; }
-    public Collider[] triggers { get; private set; }
+
     public bool HasInteraction { get; private set; } = false;
 
     private void Awake()
     {
-        Interactable = GetComponentInParent<Interactable>();
-        triggers = GetComponents<Collider>();
+        interactable = GetComponentInParent<IInteractable>();
+        Triggers = GetComponents<Collider>();
     }
 
-    public void OnTriggerInteract()
+    public void TriggerInteract()
     {
         if (!HasInteraction)
         {
             HasInteraction = true;
         }
 
-        Interactable?.OnInteraction();
+        interactable.Interaction();
     }
 
-    public void OnTriggerInteractCanceled()
+    public void TriggerInteractCancel()
     {
         if (HasInteraction)
         {
             HasInteraction = false;
         }
 
-        Interactable?.OnInteractionCanceled();
+        interactable.InteractionCancel();
     }
 
-    private Interactor GetCompatibleInteractor(List<Interactor> interactors)
+    public InteractionType GetInteractionType()
     {
-        InteractableType interactableDefinition = Interactable.GetInteractableDefinition();
-        InteractorType interactorFilter = Interactable.GetInteractorFilter();
-
-        foreach (Interactor interactor in interactors)
-        {
-            if (interactorFilter == interactor.GetInteractorDefinition() && interactor.HasInteractableInFilter(interactableDefinition))
-            {
-                return interactor;
-            }
-        }
-        return null;
+        return interactable.InteractionType;
     }
 
-    private Interactor TryGetActiveInteractor(List<Interactor> interactors)
+    private Collider GetActiveCollider(Collider actorCollider)
     {
-        foreach (Interactor interactor in interactors)
-        {
-            if (this.Interactor == interactor)
-            {
-                return interactor;
-            }
-        }
-        return null;
-    }
-
-    private Collider GetActiveCollider(Interactor interactor)
-    {
-        Vector3 interactorPosition = interactor.gameObject.transform.position;
-        interactorPosition.y = 0.0f;
+        Vector3 actorPosition = actorCollider.attachedRigidbody.position.WithoutY();
 
         Collider colliderToReturn = null;
         float minSqrDistance = 0.0f;
 
-        foreach (Collider trigger in triggers)
+        foreach (Collider trigger in Triggers)
         {
             if (colliderToReturn == null)
             {
                 colliderToReturn = trigger;
-                minSqrDistance = (trigger.bounds.center - interactorPosition).sqrMagnitude;
+                minSqrDistance = (trigger.bounds.center - actorPosition).sqrMagnitude;
                 continue;
             }
 
-            float sqrDistance = (trigger.bounds.center - interactorPosition).sqrMagnitude;
+            float sqrDistance = (trigger.bounds.center - actorPosition).sqrMagnitude;
 
             if (sqrDistance < minSqrDistance)
             {
@@ -92,43 +71,55 @@ public class InteractionTrigger : MonoBehaviour
         return colliderToReturn;
     }
 
-    private void OnTriggerEnter(Collider interactorCollider)
+    private void OnTriggerEnter(Collider actorCollider)
     {
-        if (HasInteraction) return;
-        List<Interactor> interactors = new();
-        interactorCollider.GetComponents(interactors);
+        if (HasInteraction)
+        {
+            return;
+        }
 
-        if (interactors.Count == 0) return;
+        if (PlayerController == null)
+        {
+            PlayerController playerController = actorCollider.gameObject.GetComponent<PlayerController>();
 
-        Interactor activeInteractor = GetCompatibleInteractor(interactors);
+            if (playerController == null)
+            {
+                return;
+            }
 
-        if (activeInteractor == null) return;
+            this.PlayerController = playerController;
+        }
 
-        ActiveTrigger = GetActiveCollider(activeInteractor);
+        ActiveTrigger = GetActiveCollider(actorCollider);
 
-        this.Interactor = activeInteractor;
-        Interactor.OnInteractionEnter(this);
+        this.PlayerController.InteractionEnter(this);
 
-        Interactable.OnInteractionEnter(this);
+        interactable.InteractionEnter(this, PlayerController);
     }
 
-    private void OnTriggerExit(Collider interactorCollider)
+    private void OnTriggerExit(Collider actorCollider)
     {
-        if (HasInteraction) return;
-        List<Interactor> interactors = new();
-        interactorCollider.GetComponents(interactors);
+        if (actorCollider == null || PlayerController == null || ActiveTrigger == null)
+        {
+            return;
+        }
 
-        if (interactors.Count == 0) return;
+        if (HasInteraction)
+        {
+            float sqrDistance = Vector3.Distance(ActiveTrigger.bounds.center, actorCollider.attachedRigidbody.position);
 
-        Interactor activeInteractor = TryGetActiveInteractor(interactors);
+            if (sqrDistance <= PlayerController.MaxInteractionDistance)
+            {
+                return;
+            }
+        }
 
-        if (activeInteractor == null) return;
+        HasInteraction = false;
 
         ActiveTrigger = null;
 
-        Interactor.OnInteractionExit();
-        Interactor = null;
+        PlayerController.InteractionExit();
 
-        Interactable.OnInteractionExit();
+        interactable.InteractionExit();
     }
 }

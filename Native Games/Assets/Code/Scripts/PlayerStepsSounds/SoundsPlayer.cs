@@ -33,7 +33,7 @@ public class SoundsPlayer : MonoBehaviour
 
             if (stepTimer <= 0f)
             {
-                if (controller.GetHorizontalVelocity().magnitude > 0f)
+                if (controller.Velocity.magnitude > 0f)
                 {
                     PlayStep(passos);
                     stepTimer = passosInterval;
@@ -51,8 +51,7 @@ public class SoundsPlayer : MonoBehaviour
 
     void PlayStep(AudioClip clips)
     {
-    
-            audioSource.PlayOneShot(clips);
+        audioSource.PlayOneShot(clips);
     }
 
     void PlayJump()
@@ -62,5 +61,4 @@ public class SoundsPlayer : MonoBehaviour
             audioSource.PlayOneShot(pulo);
         }
     }
-
 }

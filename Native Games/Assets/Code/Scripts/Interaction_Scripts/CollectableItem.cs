@@ -1,26 +1,28 @@
 using UnityEngine;
 
-public class CollectableItem : Interactable
+public class CollectableItem : MonoBehaviour, IInteractable
 {
-    private InteractionTrigger interactionTrigger;
+    public InteractionTrigger InteractionTrigger { get; }
+    public InteractionType InteractionType { get; } = InteractionType.Collect;
 
-    public override void OnInteraction()
-    {
-        UIManager.Instance.DisableInteractPopUp();
-        Destroy(gameObject, 0.25f);
-    }
-
-    public override void OnInteractionCanceled()
-    {
-        //Debug.Log($"{gameObject.name}_OnInteractionCanceled");
-    }
-
-    public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
+    public void InteractionEnter(InteractionTrigger interactionTrigger, PlayerController playerController)
     {
         UIManager.Instance.EnableInteractPopUp();
     }
 
-    public override void OnInteractionExit()
+    public void Interaction()
+    {
+        Debug.Log("Interaction Collectable");
+        UIManager.Instance.DisableInteractPopUp();
+        Destroy(gameObject, 0.25f);
+    }
+
+    public void InteractionCancel()
+    {
+
+    }
+
+    public void InteractionExit()
     {
         UIManager.Instance.DisableInteractPopUp();
     }

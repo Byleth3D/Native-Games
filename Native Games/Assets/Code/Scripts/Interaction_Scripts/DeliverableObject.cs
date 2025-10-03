@@ -1,30 +1,32 @@
 using UnityEngine;
+using UnityEngine.Events;
 
-public class DeliverableObject : Interactable
+public class DeliverableObject : MonoBehaviour, IInteractable
 {
     [SerializeField] public int requestedAmountToDeliver = 3;
-    [SerializeField] public GameObject gate;
-    private InteractorSystem interactor;
+    [SerializeField] private UnityEvent OnInteraction;
 
-    public override void OnInteraction()
+    public InteractionTrigger InteractionTrigger { get; set; }
+    public InteractionType InteractionType { get; } = InteractionType.Deliver;
+
+    public void InteractionEnter(InteractionTrigger interactionTrigger, PlayerController playerController)
     {
-        UIManager.Instance.DisableInteractPopUp();
-        Destroy(gate);
-        gameObject.SetActive(false);
+        UIManager.Instance.EnableInteractPopUp();
     }
 
-    public override void OnInteractionCanceled()
+    public void Interaction()
+    {
+        UIManager.Instance.DisableInteractPopUp();
+        gameObject.SetActive(false);
+        OnInteraction?.Invoke();
+    }
+
+    public void InteractionCancel()
     {
         UIManager.Instance.EnableInteractFailedPopUp();
     }
 
-    public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
-    {
-        interactor = interactionTrigger.Interactor as InteractorSystem;
-        UIManager.Instance.EnableInteractPopUp();
-    }
-
-    public override void OnInteractionExit()
+    public void InteractionExit()
     {
         UIManager.Instance.DisableInteractPopUp();
         UIManager.Instance.DisableInteractFailedPopUp();

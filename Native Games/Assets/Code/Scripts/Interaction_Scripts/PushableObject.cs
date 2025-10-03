@@ -2,10 +2,13 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PushableObject : Interactable
+public class PushableObject : MonoBehaviour, IInteractable
 {
-    private InteractorAgent interactorAgent;
     private Rigidbody rigidBody;
+    private PlayerController playerController;
+
+    public InteractionTrigger InteractionTrigger { get; set; }
+    public InteractionType InteractionType { get; } = InteractionType.Push;
 
     private void Awake()
     {
@@ -41,33 +44,32 @@ public class PushableObject : Interactable
 
         TurnRigidbodyDynamic();
 
-        float speed = interactorAgent.GetHorizontalVelocity().magnitude;
-        Vector3 moveDirection = interactorAgent.GetHorizontalVelocity().normalized;
+        float speed = playerController.Velocity.magnitude;
+        Vector3 moveDirection = playerController.Velocity.normalized;
 
         rigidBody.AddForce(moveDirection * speed - rigidBody.linearVelocity, ForceMode.VelocityChange);
     }
 
-    public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
+    public void InteractionEnter(InteractionTrigger interactionTrigger, PlayerController playerController)
     {
-        interactorAgent = interactionTrigger.Interactor as InteractorAgent;
+        this.playerController = playerController;
         UIManager.Instance.EnablePushPopUp();
     }
 
-    public override void OnInteraction()
+    public void Interaction()
     {
         TurnRigidbodyDynamic();
         Push();
         UIManager.Instance.DisablePushPopUp();
     }
 
-    public override void OnInteractionCanceled()
+    public void InteractionCancel()
     {
         TurnRigidbodyKinematic();
     }
 
-    public override void OnInteractionExit()
+    public void InteractionExit()
     {
-        interactorAgent = null;
         TurnRigidbodyKinematic();
         UIManager.Instance.DisablePushPopUp();
     }

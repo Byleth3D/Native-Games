@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(GroundChecker))]
 
-public class PlayerController : InteractorAgent
+public class PlayerController : MonoBehaviour
 {
     [Header("References", order = 0)]
     [SerializeField] private Rigidbody body;
@@ -14,12 +14,18 @@ public class PlayerController : InteractorAgent
     [SerializeField] private GameObject gameplayCamera;
     [SerializeField] private GroundChecker groundChecker;
 
+    [Header("Motion")]
+    [ShowInInspector] private Vector3 velocity;
+    public Vector3 Velocity => velocity;
+
     [Header("Horizontal Movement")]
     [SerializeField] private float horizontalSpeed = 3.5f;
     [SerializeField] private float pushingSpeed = 3.5f;
 
     private Vector3 moveDirectionRaw;
     private Vector3 relativeMoveDirection;
+
+    private bool canMove = true;
 
     [Header("Jump")]
     [SerializeField] private float maxJumpHeight = 2.5f;
@@ -42,15 +48,17 @@ public class PlayerController : InteractorAgent
     [SerializeField] private Transform model;
 
     [Header("Interaction")]
-    private InteractionTrigger currentInteractionTrigger;
+    public float MaxInteractionDistance => collider3D.radius;
+
+    private InteractionTrigger interactionTrigger;
     private Vector3 interactionCenter;
-    private Interactable interactable;
 
     private GameObject interactableGameObject;
     private Vector3 interactableDirection;
 
-    private bool isInteracting;
+    public bool IsInteracting { get; protected set; }
 
+    #region Unity Methods
     private void Awake()
     {
         SetJumpSettings();
@@ -73,21 +81,12 @@ public class PlayerController : InteractorAgent
         groundChecker.OnGroundExit -= OnGroundExit;
     }
 
-    private void SetJumpSettings()
-    {
-        jumpGravity = -2.0f * maxJumpHeight / (jumpPeakTime * jumpPeakTime);
-        fallGravity = -2.0f * maxJumpHeight / (jumpFallTime * jumpFallTime);
-        initialJumpVelocity = 2.0f * maxJumpHeight / jumpPeakTime;
-        coyoteTimer = new CountdownTimer(coyoteDuration);
-        jumpBufferTimer = new CountdownTimer(jumpBufferDuration);
-    }
-
     private void Update()
     {
         coyoteTimer.Tick(Time.deltaTime);
         jumpBufferTimer.Tick(Time.deltaTime);
         Jump();
-        Interact();
+        Interaction();
         Rotate();
     }
 
@@ -99,7 +98,76 @@ public class PlayerController : InteractorAgent
         ProcessJump();
         ApplyVelocity();
     }
+    #endregion
 
+    #region Core Loop Methods
+    private void SetJumpSettings()
+    {
+        jumpGravity = -2.0f * maxJumpHeight / (jumpPeakTime * jumpPeakTime);
+        fallGravity = -2.0f * maxJumpHeight / (jumpFallTime * jumpFallTime);
+        initialJumpVelocity = 2.0f * maxJumpHeight / jumpPeakTime;
+        coyoteTimer = new CountdownTimer(coyoteDuration);
+        jumpBufferTimer = new CountdownTimer(jumpBufferDuration);
+    }
+
+    private void Rotate()
+    {
+        Quaternion currentModelRotation = model.localRotation;
+        Quaternion targetRotation;
+        Vector3 targetDirection;
+        float rotationStep = angularSpeed * Time.deltaTime;
+
+        if (IsInteracting)
+        {
+            interactableDirection = interactableGameObject.transform.position - transform.position;
+            interactableDirection.y = 0.0f;
+            interactableDirection.Normalize();
+
+            targetDirection = interactableDirection;
+        }
+        else
+        {
+            if (relativeMoveDirection.magnitude <= 0.0f) return;
+
+            targetDirection = relativeMoveDirection;
+        }
+
+        targetRotation = Quaternion.LookRotation(targetDirection);
+        model.localRotation = Quaternion.RotateTowards(currentModelRotation, targetRotation, rotationStep);
+    }
+
+    private void Jump()
+    {
+        if (InputManager.Instance.JumpPressed)
+        {
+            if (groundChecker.IsGrounded)
+            {
+                canJump = true;
+            }
+            else
+            {
+                if (coyoteTimer.IsRunning && body.linearVelocity.y < 0.0f)
+                {
+                    canJump = true;
+                    coyoteTimer.Stop();
+                    return;
+                }
+
+                jumpBufferTimer.Start();
+            }
+        }
+        else
+        {
+            if (groundChecker.IsGrounded && jumpBufferTimer.IsRunning)
+            {
+                canJump = true;
+                jumpBufferTimer.Stop();
+            }
+        }
+    }
+    #endregion
+
+    #region Physics Loop Methods
     private void ProcessMove()
     {
         if (canMove)
@@ -108,6 +176,11 @@ public class PlayerController : InteractorAgent
         }
         else
         {
+            if (!IsInteracting)
+            {
+                return;
+            }
+
             Teleport();
         }
     }
@@ -119,7 +192,7 @@ public class PlayerController : InteractorAgent
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
         float currentHorizontalSpeed = horizontalSpeed;
 
-        if (isInteracting)
+        if (IsInteracting && interactionTrigger.GetInteractionType() == InteractionType.Push)
         {
             float absX = Mathf.Abs(moveDirectionRaw.x);
             float previousAbsX = Mathf.Abs(previousMoveDirection.x);
@@ -169,70 +242,19 @@ public class PlayerController : InteractorAgent
         body.position = position;
     }
 
-    private void Rotate()
+    private void PushObject()
     {
-        Quaternion currentModelRotation = model.localRotation;
-        Quaternion targetRotation;
-        Vector3 targetDirection;
-        float rotationStep = angularSpeed * Time.deltaTime;
-
-        if (isInteracting)
+        if (interactionTrigger == null || !canMove)
         {
-            interactableDirection = interactableGameObject.transform.position - transform.position;
-            interactableDirection.y = 0.0f;
-            interactableDirection.Normalize();
-
-            targetDirection = interactableDirection;
-        }
-        else
-        {
-            if (relativeMoveDirection.magnitude <= 0.0f) return;
-
-            targetDirection = relativeMoveDirection;
+            return;
         }
 
-        targetRotation = Quaternion.LookRotation(targetDirection);
-        model.localRotation = Quaternion.RotateTowards(currentModelRotation, targetRotation, rotationStep);
-    }
-
-    private void Jump()
-    {
-        if (InputManager.Instance.JumpPressed)
+        if (!IsInteracting || interactionTrigger.GetInteractionType() != InteractionType.Push)
         {
-            if (groundChecker.IsGrounded)
-            {
-                canJump = true;
-            }
-            else
-            {
-                if (coyoteTimer.IsRunning && body.linearVelocity.y < 0.0f)
-                {
-                    canJump = true;
-                    coyoteTimer.Stop();
-                    return;
-                }
-
-                jumpBufferTimer.Start();
-            }
+            return;
         }
-        else
-        {
-            if (groundChecker.IsGrounded && jumpBufferTimer.IsRunning)
-            {
-                canJump = true;
-                jumpBufferTimer.Stop();
-            }
-        }
-    }
 
-    private void ProcessJump()
-    {
-        if (!canJump) return;
-
-        body.AddForce(Vector3.down * body.linearVelocity.y, ForceMode.VelocityChange);
-
-        velocity.y = initialJumpVelocity;
-        canJump = false;
+        interactionTrigger.TriggerInteract();
     }
 
     private void ProcessGravity()
@@ -248,75 +270,87 @@ public class PlayerController : InteractorAgent
         }
     }
 
+    private void ProcessJump()
+    {
+        if (!canJump) return;
+
+        body.AddForce(Vector3.down * body.linearVelocity.y, ForceMode.VelocityChange);
+
+        velocity.y = initialJumpVelocity;
+        canJump = false;
+    }
+
     private void ApplyVelocity()
     {
         body.AddForce(velocity - body.linearVelocity, ForceMode.VelocityChange);
     }
+    #endregion
 
-    private void Interact()
+    #region Ground Response Methods
+    private void OnGroundEnter()
     {
-        if (groundChecker.IsGrounded)
+        coyoteTimer.Stop();
+    }
+
+    private void OnGroundExit()
+    {
+        coyoteTimer.Start();
+    }
+    #endregion
+
+    #region Interaction Methods
+    public void InteractionEnter(InteractionTrigger interactionTrigger)
+    {
+        this.interactionTrigger = interactionTrigger;
+        interactableGameObject = interactionTrigger.transform.parent.gameObject;
+        interactionCenter = interactionTrigger.ActiveTrigger.bounds.center;
+    }
+
+    public void Interaction()
+    {
+        if (groundChecker.IsGrounded && interactionTrigger)
         {
-            if (interactable?.GetInteractableDefinition() == InteractableType.ObjectPush)
+            if (interactionTrigger.GetInteractionType() == InteractionType.Push)
             {
-                if (InputManager.Instance.InteractHeld && !isInteracting)
+                if (InputManager.Instance.InteractHeld && !IsInteracting)
                 {
-                    OnInteraction();
+                    IsInteracting = true;
                     canMove = false;
                 }
-                else if (!InputManager.Instance.InteractHeld && isInteracting)
+                else if (!InputManager.Instance.InteractHeld && IsInteracting)
                 {
-                    OnInteractionCanceled();
+                    InteractionCancel();
+                    canMove = true;
+                }
+            }
+            else
+            {
+                if (InputManager.Instance.InteractPressed)
+                {
+                    interactionTrigger.TriggerInteract();
                 }
             }
         }
-        else if (!groundChecker.IsGrounded && isInteracting)
+        else if (!groundChecker.IsGrounded && IsInteracting)
         {
-            isInteracting = false;
-            currentInteractionTrigger.OnTriggerInteractCanceled();
+            InteractionCancel();
+            interactionTrigger.TriggerInteractCancel();
             InputManager.Instance.DisableAction("Interact", 0.5f);
         }
     }
 
-    private void PushObject()
+    public void InteractionCancel()
     {
-        if (interactable == null || !canMove) return;
-        if (!isInteracting || interactable.GetInteractableDefinition() != InteractableType.ObjectPush) return;
-        currentInteractionTrigger.OnTriggerInteract();
+        IsInteracting = false;
+        interactionTrigger.TriggerInteractCancel();
     }
 
-    private void OnGroundEnter() => coyoteTimer.Stop();
-
-    private void OnGroundExit() => coyoteTimer.Start();
-
-    public override void OnInteractionEnter(InteractionTrigger interactionTrigger)
+    public void InteractionExit()
     {
-        currentInteractionTrigger = interactionTrigger;
-
-        interactable = currentInteractionTrigger.Interactable;
-        interactionCenter = currentInteractionTrigger.ActiveTrigger.bounds.center;
-        interactableGameObject = currentInteractionTrigger.Interactable.gameObject;
-    }
-
-    public override void OnInteraction()
-    {
-        isInteracting = true;
-    }
-
-    public override void OnInteractionCanceled()
-    {
-        isInteracting = false;
-        currentInteractionTrigger.OnTriggerInteractCanceled();
-    }
-
-    public override void OnInteractionExit()
-    {
-        interactable = null;
-        interactionCenter = Vector3.zero;
+        interactionTrigger = null;
         interactableGameObject = null;
-
-        isInteracting = false;
-
-        currentInteractionTrigger = null;
+        interactionCenter = Vector3.zero;
+        IsInteracting = false;
     }
+    #endregion
 }
