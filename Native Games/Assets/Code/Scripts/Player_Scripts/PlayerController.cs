@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviour
             if (groundChecker.IsGrounded)
             {
                 canJump = true;
+                animator.SetTrigger("Jump");
             }
             else
             {
@@ -151,6 +152,7 @@ public class PlayerController : MonoBehaviour
                 {
                     canJump = true;
                     coyoteTimer.Stop();
+                    animator.SetTrigger("Jump");
                     return;
                 }
 
@@ -162,6 +164,7 @@ public class PlayerController : MonoBehaviour
             if (groundChecker.IsGrounded && jumpBufferTimer.IsRunning)
             {
                 canJump = true;
+                animator.SetTrigger("Jump");
                 jumpBufferTimer.Stop();
             }
         }
@@ -256,7 +259,20 @@ public class PlayerController : MonoBehaviour
         if (!IsInteracting || interactionTrigger.GetInteractionType() != InteractionType.Push)
         {
             animator.SetBool("Push", false);
+            animator.SetBool("Pull", false);
             return;
+        }
+
+        float dot = Vector3.Dot(velocity.WithoutY().normalized, model.transform.forward);
+        Debug.Log($"{dot}");
+
+        if (dot < 0.0f)
+        {
+            animator.SetBool("Pull", true);
+        }
+        else if (dot >= 0.0f)
+        {
+            animator.SetBool("Pull", false);
         }
 
         interactionTrigger.TriggerInteract(true);
@@ -299,11 +315,6 @@ public class PlayerController : MonoBehaviour
     {
         coyoteTimer.Stop();
         animator.SetBool("IsGrounded", true);
-
-        if (!canJump)
-        {
-            animator.SetTrigger("FallingNormal");
-        }
     }
 
     private void OnGroundExit()
@@ -331,7 +342,6 @@ public class PlayerController : MonoBehaviour
                 {
                     IsInteracting = true;
                     canMove = false;
-
                     animator.SetBool("Push", true);
                 }
                 else if (!InputManager.Instance.InteractHeld && IsInteracting)
@@ -339,6 +349,7 @@ public class PlayerController : MonoBehaviour
                     InteractionCancel();
                     canMove = true;
                     animator.SetBool("Push", false);
+                    animator.SetBool("Pull", false);
                 }
             }
             else
@@ -375,6 +386,8 @@ public class PlayerController : MonoBehaviour
         interactableGameObject = null;
         interactionCenter = Vector3.zero;
         IsInteracting = false;
+        animator.SetBool("Push", false);
+        animator.SetBool("Pull", false);
     }
     #endregion
 }
