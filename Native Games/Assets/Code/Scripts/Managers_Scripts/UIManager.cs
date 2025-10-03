@@ -1,8 +1,13 @@
 using PrimeTween;
+using TMPro;
 using UnityEngine;
 
 public class UIManager : Singleton<UIManager>
 {
+    [Header("Item Display")]
+    [SerializeField] private TextMeshProUGUI itemDisplayText;
+
+    [Header("Popups")]
     [SerializeField] private GameObject movePopup;
     [SerializeField] private GameObject interactPopup;
     [SerializeField] private GameObject interactFailed;
@@ -17,6 +22,12 @@ public class UIManager : Singleton<UIManager>
         Invoke(nameof(DisableActivePopup), 5.0f);
     }
 
+    public void UpdateItemDisplay(int count)
+    {
+        itemDisplayText.text = $"{count.ToString()}/3";
+    }
+
+    #region Popup Methods
     public void EnableMovePopUp()
     {
         DisableActivePopup();
@@ -75,4 +86,5 @@ public class UIManager : Singleton<UIManager>
         activePopup.SetActive(false);
         activePopup = null;
     }
+    #endregion
 }

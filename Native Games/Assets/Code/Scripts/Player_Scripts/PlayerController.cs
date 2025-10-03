@@ -254,7 +254,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        interactionTrigger.TriggerInteract();
+        interactionTrigger.TriggerInteract(true);
     }
 
     private void ProcessGravity()
@@ -327,14 +327,14 @@ public class PlayerController : MonoBehaviour
             {
                 if (InputManager.Instance.InteractPressed)
                 {
-                    interactionTrigger.TriggerInteract();
+                    interactionTrigger.TriggerInteract(false);
                 }
             }
         }
         else if (!groundChecker.IsGrounded && IsInteracting)
         {
             InteractionCancel();
-            interactionTrigger.TriggerInteractCancel();
+            interactionTrigger.TriggerInteractCancel(true);
             InputManager.Instance.DisableAction("Interact", 0.5f);
         }
     }
@@ -342,7 +342,7 @@ public class PlayerController : MonoBehaviour
     public void InteractionCancel()
     {
         IsInteracting = false;
-        interactionTrigger.TriggerInteractCancel();
+        interactionTrigger.TriggerInteractCancel(true);
     }
 
     public void InteractionExit()

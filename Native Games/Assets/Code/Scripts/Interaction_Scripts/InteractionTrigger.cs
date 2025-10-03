@@ -18,9 +18,9 @@ public class InteractionTrigger : MonoBehaviour
         Triggers = GetComponents<Collider>();
     }
 
-    public void TriggerInteract()
+    public void TriggerInteract(bool persistentInteraction)
     {
-        if (!HasInteraction)
+        if (!HasInteraction && persistentInteraction)
         {
             HasInteraction = true;
         }
@@ -28,14 +28,14 @@ public class InteractionTrigger : MonoBehaviour
         interactable.Interaction();
     }
 
-    public void TriggerInteractCancel()
+    public void TriggerInteractCancel(bool persistentInteraction)
     {
-        if (HasInteraction)
+        if (HasInteraction && persistentInteraction)
         {
-            HasInteraction = false;
+            interactable.InteractionCancel();
         }
 
-        interactable.InteractionCancel();
+        HasInteraction = false;
     }
 
     public InteractionType GetInteractionType()

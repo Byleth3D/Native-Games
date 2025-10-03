@@ -13,6 +13,7 @@ public class CollectableItem : MonoBehaviour, IInteractable
     public void Interaction()
     {
         Debug.Log("Interaction Collectable");
+        InventoryManager.Instance.Collect();
         UIManager.Instance.DisableInteractPopUp();
         Destroy(gameObject, 0.25f);
     }
