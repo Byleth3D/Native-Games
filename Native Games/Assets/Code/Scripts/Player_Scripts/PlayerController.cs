@@ -9,6 +9,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("References", order = 0)]
+    [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody body;
     [SerializeField] private CapsuleCollider collider3D;
     [SerializeField] private GameObject gameplayCamera;
@@ -181,8 +182,11 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
+            velocity = Vector3.zero;
             Teleport();
         }
+
+        animator.SetBool("Run", velocity.WithoutY().magnitude > 0.0f);
     }
 
     private void MoveHorizontally()
@@ -251,6 +255,7 @@ public class PlayerController : MonoBehaviour
 
         if (!IsInteracting || interactionTrigger.GetInteractionType() != InteractionType.Push)
         {
+            animator.SetBool("Push", false);
             return;
         }
 
@@ -272,7 +277,10 @@ public class PlayerController : MonoBehaviour
 
     private void ProcessJump()
     {
-        if (!canJump) return;
+        if (!canJump)
+        {
+            return;
+        }
 
         body.AddForce(Vector3.down * body.linearVelocity.y, ForceMode.VelocityChange);
 
@@ -290,11 +298,18 @@ public class PlayerController : MonoBehaviour
     private void OnGroundEnter()
     {
         coyoteTimer.Stop();
+        animator.SetBool("IsGrounded", true);
+
+        if (!canJump)
+        {
+            animator.SetTrigger("FallingNormal");
+        }
     }
 
     private void OnGroundExit()
     {
         coyoteTimer.Start();
+        animator.SetBool("IsGrounded", false);
     }
     #endregion
 
@@ -316,17 +331,26 @@ public class PlayerController : MonoBehaviour
                 {
                     IsInteracting = true;
                     canMove = false;
+
+                    animator.SetBool("Push", true);
                 }
                 else if (!InputManager.Instance.InteractHeld && IsInteracting)
                 {
                     InteractionCancel();
                     canMove = true;
+                    animator.SetBool("Push", false);
                 }
             }
             else
             {
                 if (InputManager.Instance.InteractPressed)
                 {
+                    if (interactionTrigger.GetInteractionType() == InteractionType.Collect)
+                    {
+                        animator.SetTrigger("Pick");
+                        InputManager.Instance.DisableAction("Move", 2.3f);
+                    }
+
                     interactionTrigger.TriggerInteract(false);
                 }
             }

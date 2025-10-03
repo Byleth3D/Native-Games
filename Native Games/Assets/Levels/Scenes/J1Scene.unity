@@ -981,12 +981,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ce7d0291d1def4d880c9992fd07817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 2031095460}
   body: {fileID: 276946596}
   collider3D: {fileID: 276946597}
   gameplayCamera: {fileID: 1941460350}
   groundChecker: {fileID: 276946595}
   horizontalSpeed: 5
-  pushingSpeed: 2.75
+  pushingSpeed: 1
   maxJumpHeight: 1.75
   jumpPeakTime: 0.45
   jumpFallTime: 0.35
@@ -6675,6 +6676,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018582943}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &2031095460 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 716a4a0cfea74ac45b7057f251bb358a, type: 3}
+  m_PrefabInstance: {fileID: 461035929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2037648885
 GameObject:
   m_ObjectHideFlags: 0
