@@ -59,6 +59,8 @@ public class PlayerController : MonoBehaviour
 
     public bool IsInteracting { get; protected set; }
 
+    public bool IsAlive { get; private set; } = true;
+
     #region Unity Methods
     private void Awake()
     {
@@ -86,18 +88,25 @@ public class PlayerController : MonoBehaviour
     {
         coyoteTimer.Tick(Time.deltaTime);
         jumpBufferTimer.Tick(Time.deltaTime);
-        Jump();
-        Interaction();
-        Rotate();
+
+        if (IsAlive)
+        {
+            Jump();
+            Interaction();
+            Rotate();
+        }
     }
 
     private void FixedUpdate()
     {
-        ProcessMove();
-        PushObject();
-        ProcessGravity();
-        ProcessJump();
-        ApplyVelocity();
+        if (IsAlive)
+        {
+            ProcessMove();
+            PushObject();
+            ProcessGravity();
+            ProcessJump();
+            ApplyVelocity();
+        }
     }
     #endregion
 
@@ -145,6 +154,7 @@ public class PlayerController : MonoBehaviour
             {
                 canJump = true;
                 animator.SetTrigger("Jump");
+                animator.SetBool("IsGrounded", false);
             }
             else
             {
@@ -153,6 +163,7 @@ public class PlayerController : MonoBehaviour
                     canJump = true;
                     coyoteTimer.Stop();
                     animator.SetTrigger("Jump");
+                    animator.SetBool("IsGrounded", false);
                     return;
                 }
 
@@ -165,6 +176,7 @@ public class PlayerController : MonoBehaviour
             {
                 canJump = true;
                 animator.SetTrigger("Jump");
+                animator.SetBool("IsGrounded", false);
                 jumpBufferTimer.Stop();
             }
         }
@@ -189,7 +201,7 @@ public class PlayerController : MonoBehaviour
             Teleport();
         }
 
-        animator.SetBool("Run", velocity.WithoutY().magnitude > 0.0f);
+        animator.SetBool("Run", body.linearVelocity.WithoutY().magnitude > 0.0f);
     }
 
     private void MoveHorizontally()
@@ -264,7 +276,6 @@ public class PlayerController : MonoBehaviour
         }
 
         float dot = Vector3.Dot(velocity.WithoutY().normalized, model.transform.forward);
-        Debug.Log($"{dot}");
 
         if (dot < 0.0f)
         {
@@ -310,17 +321,45 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region Death Response
+    public void SetAsAlive()
+    {
+        IsAlive = true;
+        animator.SetTrigger("Alive");
+    }
+
+    public void SetAsDead()
+    {
+        IsAlive = false;
+        coyoteTimer.Stop();
+        jumpBufferTimer.Stop();
+        animator.SetTrigger("FallingDeath");
+        animator.SetBool("Run", false);
+        animator.SetBool("Pull", false);
+        animator.SetBool("Push", false);
+        animator.SetBool("IsGrounded", false);
+    }
+    #endregion
+
     #region Ground Response Methods
     private void OnGroundEnter()
     {
         coyoteTimer.Stop();
-        animator.SetBool("IsGrounded", true);
+
+        if (IsAlive)
+        {
+            animator.SetBool("IsGrounded", true);
+        }
     }
 
     private void OnGroundExit()
     {
         coyoteTimer.Start();
-        animator.SetBool("IsGrounded", false);
+
+        if (IsAlive)
+        {
+            animator.SetBool("IsGrounded", false);
+        }
     }
     #endregion
 
