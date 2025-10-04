@@ -19,25 +19,27 @@ public class SceneLoader : Singleton<SceneLoader>
 
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
-        if (nextSceneIndex > sceneCount)
+        if (nextSceneIndex > sceneCount - 1)
         {
             nextSceneIndex = 0;
         }
 
-        ScreenFadeManager.Instance.RequestFadeOut(() => LoadScene(nextSceneIndex), 0.5f);
+        ScreenFadeManager.Instance.ResetValues();
+        ScreenFadeManager.Instance.RequestFadeOut(() => LoadScene(nextSceneIndex));
     }
 
     public void ReloadScene()
     {
         int sceneCount = SceneManager.sceneCountInBuildSettings;
 
-        if (sceneCount == 0)
+        if (sceneCount == 0 && ScreenFadeManager.Instance.IsFading)
         {
             return;
         }
 
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        SceneManager.LoadSceneAsync(currentSceneIndex);
+        ScreenFadeManager.Instance.ResetValues();
+        ScreenFadeManager.Instance.RequestFadeOut(() => LoadScene(currentSceneIndex));
     }
 }

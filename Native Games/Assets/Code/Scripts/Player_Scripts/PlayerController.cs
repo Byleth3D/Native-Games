@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject gameplayCamera;
     [SerializeField] private GroundChecker groundChecker;
 
+    [Header("General")]
+    [SerializeField] private float inputDisableDuration = 0.25f;
+
     [Header("Motion")]
     [ShowInInspector] private Vector3 velocity;
     public Vector3 Velocity => velocity;
@@ -250,15 +253,16 @@ public class PlayerController : MonoBehaviour
     private void Teleport()
     {
         Vector3 position = interactionCenter;
+        position.y = body.position.y;
 
-        Teleport(position);
+        body.position = position;
         canMove = true;
     }
 
-    private void Teleport(Vector3 position)
+    public void Teleport(Vector3 position)
     {
-        position.y = body.position.y;
         body.position = position;
+        canMove = true;
     }
 
     private void PushObject()
@@ -326,13 +330,17 @@ public class PlayerController : MonoBehaviour
     {
         IsAlive = true;
         animator.SetTrigger("Alive");
+        InputManager.Instance.DisablePlayerActions(inputDisableDuration);
     }
 
     public void SetAsDead()
     {
         IsAlive = false;
+        canMove = false;
+
         coyoteTimer.Stop();
         jumpBufferTimer.Stop();
+
         animator.SetTrigger("FallingDeath");
         animator.SetBool("Run", false);
         animator.SetBool("Pull", false);

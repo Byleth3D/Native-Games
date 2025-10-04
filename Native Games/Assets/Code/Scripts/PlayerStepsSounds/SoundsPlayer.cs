@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class SoundsPlayer : MonoBehaviour
 {
-    public AudioClip passos;
-    public AudioClip pulo;
-
-    public float passosInterval = 0.5f;
-    public float corridaInterval = 0.3f;
-
-    private float stepTimer = 0f;
     private PlayerController controller;
     private GroundChecker groundChecker;
     private AudioSource audioSource;
 
+    public AudioClip steps;
+    public AudioClip jump;
 
+    public float stepsInterval = 0.5f;
+
+    private CountdownTimer stepTimer;
 
     void Awake()
     {
@@ -21,44 +19,55 @@ public class SoundsPlayer : MonoBehaviour
         groundChecker = GetComponent<GroundChecker>();
         audioSource = GetComponent<AudioSource>();
 
-
+        stepTimer = new(stepsInterval);
+        stepTimer.Start();
     }
 
-
-    void Update()
+    private void OnEnable()
     {
-        if (groundChecker.IsGrounded)
-        {
-            stepTimer -= Time.deltaTime;
-
-            if (stepTimer <= 0f)
-            {
-                if (controller.Velocity.magnitude > 0f)
-                {
-                    PlayStep(passos);
-                    stepTimer = passosInterval;
-                }
-            }
-        }
-
-        if (!groundChecker.IsGrounded && groundChecker.PreviousGrounded)
-        {
-            PlayJump();
-
-        }
-
+        groundChecker.OnGroundExit += PlayJump;
+        stepTimer.OnTimerExpired += PlayStep;
     }
 
-    void PlayStep(AudioClip clips)
+    private void OnDisable()
     {
-        audioSource.PlayOneShot(clips);
+        groundChecker.OnGroundExit -= PlayJump;
+        stepTimer.OnTimerExpired -= PlayStep;
     }
 
-    void PlayJump()
+    private void Update()
     {
-        if (pulo != null)
+        if (groundChecker.IsGrounded && stepTimer.IsRunning)
         {
-            audioSource.PlayOneShot(pulo);
+            stepTimer.Tick(Time.deltaTime);
         }
+    }
+
+    private void PlayStep()
+    {
+        if (controller.Velocity.WithoutY().magnitude > 0f && !controller.IsInteracting)
+        {
+            PlayClip(steps);
+        }
+
+        stepTimer.Start();
+    }
+
+    private void PlayJump()
+    {
+        if (controller.Velocity.y > 0.0f)
+        {
+            PlayClip(jump);
+        }
+    }
+
+    private void PlayClip(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            return;
+        }
+
+        audioSource.PlayOneShot(clip);
     }
 }

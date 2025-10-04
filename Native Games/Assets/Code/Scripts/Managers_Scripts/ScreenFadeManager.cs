@@ -6,19 +6,24 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
 {
     [SerializeField] private bool fadeOnAwake = true;
 
-    [SerializeField] private float fadeInDuration = 1.0f;
-    [SerializeField] private float fadeOutDuration = 1.0f;
-    [SerializeField] private float fadeDelay = 1.0f;
+    [SerializeField] private float defaultFadeInDuration = 1.0f;
+    [SerializeField] private float defaultFadeOutDuration = 1.0f;
+    [SerializeField] private float defaultFadeDelay = 1.0f;
 
-    [SerializeField] private Color fadeColor = Color.black;
+    public float CurrentFadeInDuration { get; set; }
+    public float CurrentFadeOutDuration { get; set; }
+    public float CurrentFadeDelay { get; set; }
+
+    [SerializeField] private Color fadeColor = Color.white;
     private Color currentColor;
 
-    [SerializeField] private float callbackDelay = 1.0f;
+    [SerializeField] private float defaultCallbackDelay = 1.0f;
     private Action onFadeComplete;
+    public float CurrentCallbackDelay { get; set; }
 
     private FadeType fadeType = FadeType.FadeIn;
 
-    private bool isFading = false;
+    public bool IsFading { get; private set; } = false;
 
     protected override void Awake()
     {
@@ -26,11 +31,17 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
 
         fadeType = fadeOnAwake ? FadeType.FadeIn : FadeType.FadeOut;
 
+        CurrentFadeInDuration = defaultFadeInDuration;
+        CurrentFadeOutDuration = defaultFadeOutDuration;
+        CurrentFadeDelay = defaultFadeDelay;
+
+        CurrentCallbackDelay = defaultCallbackDelay;
+
         if (fadeOnAwake)
         {
             fadeColor.a = fadeType == FadeType.FadeIn ? 1.0f : 0.0f;
             currentColor = fadeColor;
-            Invoke(nameof(StartFade), fadeDelay);
+            Invoke(nameof(StartFade), CurrentFadeDelay);
         }
     }
 
@@ -40,7 +51,7 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
         GUI.color = currentColor;
         GUI.DrawTexture(new Rect(0.0f, 0.0f, Screen.width, Screen.height), Texture2D.whiteTexture);
 
-        if (isFading)
+        if (IsFading)
         {
             if (fadeType == FadeType.FadeIn)
             {
@@ -55,68 +66,74 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
 
     public void RequestFadeOut()
     {
-        if (isFading)
+        if (IsFading || currentColor.a >= 1.0f)
         {
             return;
         }
 
-        fadeColor.a = fadeType == FadeType.FadeIn ? 1.0f : 0.0f;
+        fadeColor.a = 0.0f;
+        fadeType = FadeType.FadeOut;
         currentColor = fadeColor;
-        Invoke(nameof(StartFade), fadeDelay);
-    }
-
-    public void RequestFadeOut(float newFadeDelay)
-    {
-        if (isFading)
-        {
-            return;
-        }
-
-        fadeColor.a = fadeType == FadeType.FadeIn ? 1.0f : 0.0f;
-        currentColor = fadeColor;
-        Invoke(nameof(StartFade), newFadeDelay);
+        Invoke(nameof(StartFade), CurrentFadeDelay);
     }
 
     public void RequestFadeOut(Action callback)
     {
-        if (isFading)
+        if (IsFading || currentColor.a >= 1.0f)
         {
             return;
         }
 
-        fadeColor.a = fadeType == FadeType.FadeIn ? 1.0f : 0.0f;
+        fadeColor.a = 0.0f;
+        fadeType = FadeType.FadeOut;
         currentColor = fadeColor;
-        Invoke(nameof(StartFade), fadeDelay);
+        onFadeComplete = callback;
+        Invoke(nameof(StartFade), CurrentFadeDelay);
     }
 
-    public void RequestFadeOut(Action callback, float newFadeDelay)
+    public void RequestFadeIn()
     {
-        if (isFading)
+        if (IsFading || currentColor.a <= 0.0f)
         {
             return;
         }
 
-        fadeColor.a = fadeType == FadeType.FadeIn ? 1.0f : 0.0f;
+        fadeColor.a = 1.0f;
+        fadeType = FadeType.FadeIn;
         currentColor = fadeColor;
-        Invoke(nameof(StartFade), newFadeDelay);
+        Invoke(nameof(StartFade), CurrentFadeDelay);
+    }
+
+    public void RequestFadeIn(Action callback)
+    {
+        if (IsFading || currentColor.a <= 0.0f)
+        {
+            return;
+        }
+
+        fadeColor.a = 1.0f;
+        fadeType = FadeType.FadeIn;
+        currentColor = fadeColor;
+        onFadeComplete = callback;
+        Invoke(nameof(StartFade), CurrentFadeDelay);
     }
 
     private void StartFade()
     {
-        isFading = true;
+        IsFading = true;
     }
 
     private void FadeIn()
     {
         if (currentColor.a > 0.0f)
         {
-            currentColor.a -= Time.deltaTime / fadeInDuration;
+            currentColor.a -= Time.deltaTime / CurrentFadeInDuration;
         }
         else
         {
-            isFading = false;
+            IsFading = false;
             fadeType = FadeType.FadeOut;
-            Invoke(nameof(OnFadeComplete), callbackDelay);
+            Invoke(nameof(OnFadeComplete), CurrentCallbackDelay);
         }
     }
 
@@ -124,13 +141,13 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
     {
         if (currentColor.a < 1.0f)
         {
-            currentColor.a += Time.deltaTime / fadeOutDuration;
+            currentColor.a += Time.deltaTime / CurrentFadeOutDuration;
         }
         else
         {
-            isFading = false;
+            IsFading = false;
             fadeType = FadeType.FadeIn;
-            Invoke(nameof(OnFadeComplete), callbackDelay);
+            Invoke(nameof(OnFadeComplete), CurrentCallbackDelay);
         }
     }
 
@@ -138,6 +155,13 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
     {
         onFadeComplete?.Invoke();
         onFadeComplete = null;
+    }
+
+    public void ResetValues()
+    {
+        CurrentFadeInDuration = defaultFadeInDuration;
+        CurrentFadeOutDuration = defaultFadeOutDuration;
+        CurrentFadeDelay = defaultFadeDelay;
     }
 }
 
