@@ -616,8 +616,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 32.2, y: 14.990902, z: 24.606735}
+  m_LocalRotation: {x: 0.21696578, y: -0.6729977, z: 0.21696578, w: 0.67299765}
+  m_LocalPosition: {x: -22.653708, y: 17.041773, z: -34.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1646,7 +1646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d105bfa5baaffa409e67603f27c432c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphereRadius: 0.5
+  circleRadius: 0.46
   groundDistance: 0.01
   groundLayers:
     serializedVersion: 2
@@ -1708,13 +1708,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ce7d0291d1def4d880c9992fd07817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  interactorDefinition: 1
+  interactableFilter: 03000000
   body: {fileID: 592302942}
   collider3D: {fileID: 592302945}
   gameplayCamera: {fileID: 1996275006}
   groundChecker: {fileID: 592302941}
   horizontalSpeed: 5
-  pushingSpeed: 3.5
+  teleportDuration: 0.25
   maxJumpHeight: 1.75
   jumpPeakTime: 0.45
   jumpFallTime: 0.35
