@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -41,5 +42,14 @@ public class SceneLoader : Singleton<SceneLoader>
 
         ScreenFadeManager.Instance.ResetValues();
         ScreenFadeManager.Instance.RequestFadeOut(() => LoadScene(currentSceneIndex));
+    }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
