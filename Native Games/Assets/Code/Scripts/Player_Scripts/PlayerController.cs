@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject gameplayCamera;
     [SerializeField] private GroundChecker groundChecker;
 
+    [Header("General")]
+    [SerializeField] private float inputDisableDuration = 0.25f;
+
     [Header("Motion")]
     [ShowInInspector] private Vector3 velocity;
     public Vector3 Velocity => velocity;
@@ -59,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
     public bool IsInteracting { get; protected set; }
 
+    public bool IsAlive { get; private set; } = true;
+
     #region Unity Methods
     private void Awake()
     {
@@ -86,18 +91,25 @@ public class PlayerController : MonoBehaviour
     {
         coyoteTimer.Tick(Time.deltaTime);
         jumpBufferTimer.Tick(Time.deltaTime);
-        Jump();
-        Interaction();
-        Rotate();
+
+        if (IsAlive)
+        {
+            Jump();
+            Interaction();
+            Rotate();
+        }
     }
 
     private void FixedUpdate()
     {
-        ProcessMove();
-        PushObject();
-        ProcessGravity();
-        ProcessJump();
-        ApplyVelocity();
+        if (IsAlive)
+        {
+            ProcessMove();
+            PushObject();
+            ProcessGravity();
+            ProcessJump();
+            ApplyVelocity();
+        }
     }
     #endregion
 
@@ -144,6 +156,8 @@ public class PlayerController : MonoBehaviour
             if (groundChecker.IsGrounded)
             {
                 canJump = true;
+                animator.SetTrigger("Jump");
+                animator.SetBool("IsGrounded", false);
             }
             else
             {
@@ -151,6 +165,8 @@ public class PlayerController : MonoBehaviour
                 {
                     canJump = true;
                     coyoteTimer.Stop();
+                    animator.SetTrigger("Jump");
+                    animator.SetBool("IsGrounded", false);
                     return;
                 }
 
@@ -162,6 +178,8 @@ public class PlayerController : MonoBehaviour
             if (groundChecker.IsGrounded && jumpBufferTimer.IsRunning)
             {
                 canJump = true;
+                animator.SetTrigger("Jump");
+                animator.SetBool("IsGrounded", false);
                 jumpBufferTimer.Stop();
             }
         }
@@ -235,15 +253,16 @@ public class PlayerController : MonoBehaviour
     private void Teleport()
     {
         Vector3 position = interactionCenter;
+        position.y = body.position.y;
 
-        Teleport(position);
+        body.position = position;
         canMove = true;
     }
 
-    private void Teleport(Vector3 position)
+    public void Teleport(Vector3 position)
     {
-        position.y = body.position.y;
         body.position = position;
+        canMove = true;
     }
 
     private void PushObject()
@@ -256,7 +275,19 @@ public class PlayerController : MonoBehaviour
         if (!IsInteracting || interactionTrigger.GetInteractionType() != InteractionType.Push)
         {
             animator.SetBool("Push", false);
+            animator.SetBool("Pull", false);
             return;
+        }
+
+        float dot = Vector3.Dot(velocity.WithoutY().normalized, model.transform.forward);
+
+        if (dot < 0.0f)
+        {
+            animator.SetBool("Pull", true);
+        }
+        else if (dot >= 0.0f)
+        {
+            animator.SetBool("Pull", false);
         }
 
         interactionTrigger.TriggerInteract(true);
@@ -294,22 +325,49 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region Death Response
+    public void SetAsAlive()
+    {
+        IsAlive = true;
+        animator.SetTrigger("Alive");
+        InputManager.Instance.DisablePlayerActions(inputDisableDuration);
+    }
+
+    public void SetAsDead()
+    {
+        IsAlive = false;
+        canMove = false;
+
+        coyoteTimer.Stop();
+        jumpBufferTimer.Stop();
+
+        animator.SetTrigger("FallingDeath");
+        animator.SetBool("Run", false);
+        animator.SetBool("Pull", false);
+        animator.SetBool("Push", false);
+        animator.SetBool("IsGrounded", false);
+    }
+    #endregion
+
     #region Ground Response Methods
     private void OnGroundEnter()
     {
         coyoteTimer.Stop();
-        animator.SetBool("IsGrounded", true);
 
-        if (!canJump)
+        if (IsAlive)
         {
-            animator.SetTrigger("FallingNormal");
+            animator.SetBool("IsGrounded", true);
         }
     }
 
     private void OnGroundExit()
     {
         coyoteTimer.Start();
-        animator.SetBool("IsGrounded", false);
+
+        if (IsAlive)
+        {
+            animator.SetBool("IsGrounded", false);
+        }
     }
     #endregion
 
@@ -331,7 +389,6 @@ public class PlayerController : MonoBehaviour
                 {
                     IsInteracting = true;
                     canMove = false;
-
                     animator.SetBool("Push", true);
                 }
                 else if (!InputManager.Instance.InteractHeld && IsInteracting)
@@ -339,6 +396,7 @@ public class PlayerController : MonoBehaviour
                     InteractionCancel();
                     canMove = true;
                     animator.SetBool("Push", false);
+                    animator.SetBool("Pull", false);
                 }
             }
             else
@@ -348,7 +406,7 @@ public class PlayerController : MonoBehaviour
                     if (interactionTrigger.GetInteractionType() == InteractionType.Collect)
                     {
                         animator.SetTrigger("Pick");
-                        InputManager.Instance.DisableAction("Move", 2.3f);
+                        InputManager.Instance.DisablePlayerActions(2.3f);
                     }
 
                     interactionTrigger.TriggerInteract(false);
@@ -375,6 +433,8 @@ public class PlayerController : MonoBehaviour
         interactableGameObject = null;
         interactionCenter = Vector3.zero;
         IsInteracting = false;
+        animator.SetBool("Push", false);
+        animator.SetBool("Pull", false);
     }
     #endregion
 }

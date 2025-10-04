@@ -106,4 +106,25 @@ public class InputManager : Singleton<InputManager>
     {
         actionToDisable.Disable();
     }
+
+    public void EnablePlayerActions()
+    {
+        gameInputs.Player.Enable();
+    }
+
+    public void DisablePlayerActions()
+    {
+        gameInputs.Player.Disable();
+    }
+
+    public void DisablePlayerActions(float duration)
+    {
+        gameInputs.Player.Disable();
+        CountdownTimer timer = new CountdownTimer(duration);
+
+        timer.OnTimerExpired += () => EnablePlayerActions();
+        timer.Start();
+
+        disabledActionsTimers.Add(timer);
+    }
 }
