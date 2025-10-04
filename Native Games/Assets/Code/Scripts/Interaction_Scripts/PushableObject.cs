@@ -65,11 +65,13 @@ public class PushableObject : MonoBehaviour, IInteractable
 
     public void InteractionCancel()
     {
+        rigidBody.AddForce(-rigidBody.linearVelocity, ForceMode.VelocityChange);
         TurnRigidbodyKinematic();
     }
 
     public void InteractionExit()
     {
+        rigidBody.AddForce(-rigidBody.linearVelocity, ForceMode.VelocityChange);
         TurnRigidbodyKinematic();
         UIManager.Instance.DisablePushPopUp();
     }

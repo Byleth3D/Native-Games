@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
             Teleport();
         }
 
-        animator.SetBool("Run", body.linearVelocity.WithoutY().magnitude > 0.0f);
+        animator.SetBool("Run", velocity.WithoutY().magnitude > 0.0f);
     }
 
     private void MoveHorizontally()
@@ -406,7 +406,7 @@ public class PlayerController : MonoBehaviour
                     if (interactionTrigger.GetInteractionType() == InteractionType.Collect)
                     {
                         animator.SetTrigger("Pick");
-                        InputManager.Instance.DisableAction("Move", 2.3f);
+                        InputManager.Instance.DisablePlayerActions(2.3f);
                     }
 
                     interactionTrigger.TriggerInteract(false);
