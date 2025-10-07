@@ -20,37 +20,55 @@ public class SoundsPlayer : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         stepTimer = new(stepsInterval);
-        stepTimer.Start();
     }
 
     private void OnEnable()
     {
-        groundChecker.OnGroundExit += PlayJump;
-        stepTimer.OnTimerExpired += PlayStep;
+        groundChecker.OnGroundExit += OnGroundExit;
     }
 
     private void OnDisable()
     {
-        groundChecker.OnGroundExit -= PlayJump;
-        stepTimer.OnTimerExpired -= PlayStep;
+        groundChecker.OnGroundExit -= OnGroundExit;
     }
 
     private void Update()
     {
-        if (groundChecker.IsGrounded && stepTimer.IsRunning)
+        if (groundChecker.IsGrounded)
         {
-            stepTimer.Tick(Time.deltaTime);
+            if (stepTimer.IsRunning)
+            {
+                stepTimer.Tick(Time.deltaTime);
+                return;
+            }
+
+            if (controller.Velocity.WithoutY().magnitude > 0.0f)
+            {
+                PlayStep();
+            }
+            else
+            {
+                stepTimer.Stop();
+                Debug.Log($"Stopped Zero Vel | Time: {Time.time}");
+                return;
+            }
+        }
+        else
+        {
+            stepTimer.Stop();
         }
     }
 
     private void PlayStep()
     {
-        if (controller.Velocity.WithoutY().magnitude > 0f && !controller.IsInteracting)
+        if (controller.Velocity.WithoutY().magnitude > 0.0f && !controller.IsInteracting)
         {
             PlayClip(steps);
+            Debug.Log($"Step | Grounded: {groundChecker.IsGrounded} | Time: {Time.time}" +
+                $"Timer Running: {stepTimer.IsRunning}");
+            stepTimer.Start();
+            Debug.Log($"Timer Running: {stepTimer.IsRunning}");
         }
-
-        stepTimer.Start();
     }
 
     private void PlayJump()
@@ -69,5 +87,10 @@ public class SoundsPlayer : MonoBehaviour
         }
 
         audioSource.PlayOneShot(clip);
+    }
+
+    private void OnGroundExit()
+    {
+        PlayJump();
     }
 }

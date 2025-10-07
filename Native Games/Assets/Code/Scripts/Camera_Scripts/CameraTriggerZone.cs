@@ -16,7 +16,11 @@ public class CameraTriggerZone : MonoBehaviour
 
     [Header("General")]
     [SerializeField] private bool isOneWay = false;
+    [SerializeField, Range(0.0f, 180f)] private float angleThresholdA = 90f;
+    [SerializeField, Range(0.0f, 180f)] private float angleThresholdB = 45f;
+    [SerializeField, Range(0.0f, 180f)] private float tolerance = 1f;
     bool isPlayerGoingBackwards;
+
 
     [Header("Position Offset")]
     [SerializeField] private Vector3 cameraOffsetA;
@@ -100,14 +104,26 @@ public class CameraTriggerZone : MonoBehaviour
             playerVelocityDirection.Normalize();
 
             float dotProduct = Vector3.Dot(triggerZoneForward, playerVelocityDirection);
+            float x = Vector3.Angle(triggerZoneForward, playerVelocityDirection);
 
-            isPlayerGoingBackwards = dotProduct < 0.0f;
+            Debug.Log($"Dot: {dotProduct} | Angle: {x} | AT: {angleThresholdA} | BT: {angleThresholdB} | Backwards: {isPlayerGoingBackwards} |" +
+                $" Trigger Forward: {triggerZoneForward} | Player Velocity Direction: {playerVelocityDirection}");
 
-            if (isPlayerGoingBackwards)
+            if (x >= angleThresholdA - tolerance)
             {
                 targetDistance = Target.A;
                 targetOffset = Target.A;
                 targetRotation = Target.A;
+                isPlayerGoingBackwards = true;
+                Debug.Log("TO A");
+            }
+            else
+            {
+                targetDistance = Target.B;
+                targetOffset = Target.B;
+                targetRotation = Target.B;
+                isPlayerGoingBackwards = false;
+                Debug.Log("TO B");
             }
 
             DistanceCamera();
