@@ -24,38 +24,25 @@ public class SoundsPlayer : MonoBehaviour
 
     private void OnEnable()
     {
-        groundChecker.OnGroundExit += OnGroundExit;
+        groundChecker.OnGroundExit += PlayJump;
     }
 
     private void OnDisable()
     {
-        groundChecker.OnGroundExit -= OnGroundExit;
+        groundChecker.OnGroundExit -= PlayJump;
     }
 
     private void Update()
     {
         if (groundChecker.IsGrounded)
         {
-            if (stepTimer.IsRunning)
+            if (!stepTimer.IsRunning)
             {
-                stepTimer.Tick(Time.deltaTime);
+                PlayStep();
                 return;
             }
 
-            if (controller.Velocity.WithoutY().magnitude > 0.0f)
-            {
-                PlayStep();
-            }
-            else
-            {
-                stepTimer.Stop();
-                Debug.Log($"Stopped Zero Vel | Time: {Time.time}");
-                return;
-            }
-        }
-        else
-        {
-            stepTimer.Stop();
+            stepTimer.Tick(Time.deltaTime);
         }
     }
 
@@ -64,10 +51,7 @@ public class SoundsPlayer : MonoBehaviour
         if (controller.Velocity.WithoutY().magnitude > 0.0f && !controller.IsInteracting)
         {
             PlayClip(steps);
-            Debug.Log($"Step | Grounded: {groundChecker.IsGrounded} | Time: {Time.time}" +
-                $"Timer Running: {stepTimer.IsRunning}");
             stepTimer.Start();
-            Debug.Log($"Timer Running: {stepTimer.IsRunning}");
         }
     }
 
@@ -87,10 +71,5 @@ public class SoundsPlayer : MonoBehaviour
         }
 
         audioSource.PlayOneShot(clip);
-    }
-
-    private void OnGroundExit()
-    {
-        PlayJump();
     }
 }
