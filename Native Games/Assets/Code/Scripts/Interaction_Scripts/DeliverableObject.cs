@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public class DeliverableObject : MonoBehaviour, IInteractable
 {
+    [SerializeField] public InventoryItem inventoryItem;
     [SerializeField] public int requestedItemAmount = 3;
     [SerializeField] private UnityEvent OnInteraction;
 
@@ -19,9 +20,9 @@ public class DeliverableObject : MonoBehaviour, IInteractable
     {
         UIManager.Instance.DisableInteractPopUp();
 
-        if (InventoryManager.Instance.ItemCount == requestedItemAmount)
+
+        if (InventoryManager.Instance.Deliver(inventoryItem, requestedItemAmount)) 
         {
-            InventoryManager.Instance.Deliver();
             OnInteraction?.Invoke();
             gameObject.SetActive(false);
         }

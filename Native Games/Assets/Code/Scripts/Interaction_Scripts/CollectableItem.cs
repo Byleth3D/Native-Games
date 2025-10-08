@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class CollectableItem : MonoBehaviour, IInteractable
 {
+    [SerializeField] private InventoryItem inventoryItem;
     public InteractionTrigger InteractionTrigger { get; }
     public InteractionType InteractionType { get; } = InteractionType.Collect;
 
@@ -12,10 +13,11 @@ public class CollectableItem : MonoBehaviour, IInteractable
 
     public void Interaction()
     {
-        Debug.Log("Interaction Collectable");
-        InventoryManager.Instance.Collect();
-        UIManager.Instance.DisableInteractPopUp();
-        Destroy(gameObject, 0.25f);
+        if (InventoryManager.Instance.Collect(inventoryItem))
+        {
+            UIManager.Instance.DisableInteractPopUp();
+            Destroy(gameObject, 0.25f);
+        }
     }
 
     public void InteractionCancel()

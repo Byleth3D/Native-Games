@@ -968,6 +968,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CollectableItem - 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7390303719055577606, guid: 73074519e9323934faec673dd6aadc29, type: 3}
+      propertyPath: inventoryItem
+      value: 
+      objectReference: {fileID: 11400000, guid: e1eb0a25c5ac3f7469de930dc15c6d0d, type: 2}
     - target: {fileID: 8341604914552010156, guid: 73074519e9323934faec673dd6aadc29, type: 3}
       propertyPath: m_LocalPosition.x
       value: -38
@@ -5939,6 +5943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f8c360db85f6040939ae6aafafee77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryItem: {fileID: 11400000, guid: e1eb0a25c5ac3f7469de930dc15c6d0d, type: 2}
   requestedItemAmount: 3
   OnInteraction:
     m_PersistentCalls:
@@ -6490,6 +6495,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CollectableItem - 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7390303719055577606, guid: 73074519e9323934faec673dd6aadc29, type: 3}
+      propertyPath: inventoryItem
+      value: 
+      objectReference: {fileID: 11400000, guid: e1eb0a25c5ac3f7469de930dc15c6d0d, type: 2}
     - target: {fileID: 8341604914552010156, guid: 73074519e9323934faec673dd6aadc29, type: 3}
       propertyPath: m_LocalPosition.x
       value: -32
@@ -6694,6 +6703,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CollectableItem - 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7390303719055577606, guid: 73074519e9323934faec673dd6aadc29, type: 3}
+      propertyPath: inventoryItem
+      value: 
+      objectReference: {fileID: 11400000, guid: e1eb0a25c5ac3f7469de930dc15c6d0d, type: 2}
     - target: {fileID: 8341604914552010156, guid: 73074519e9323934faec673dd6aadc29, type: 3}
       propertyPath: m_LocalPosition.x
       value: -29.125011
