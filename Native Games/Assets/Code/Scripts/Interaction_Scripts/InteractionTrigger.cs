@@ -90,6 +90,11 @@ public class InteractionTrigger : MonoBehaviour
             this.PlayerController = playerController;
         }
 
+        if (PlayerController.InteractionTrigger != null && PlayerController.InteractionTrigger != this)
+        {
+            return;
+        }
+
         ActiveTrigger = GetActiveCollider(actorCollider);
 
         this.PlayerController.InteractionEnter(this);

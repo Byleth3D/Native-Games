@@ -53,8 +53,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Interaction")]
     public float MaxInteractionDistance => collider3D.radius;
-
-    private InteractionTrigger interactionTrigger;
+    public InteractionTrigger InteractionTrigger { get; set; }
     private Vector3 interactionCenter;
 
     private GameObject interactableGameObject;
@@ -214,7 +213,7 @@ public class PlayerController : MonoBehaviour
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
         float currentHorizontalSpeed = horizontalSpeed;
 
-        if (IsInteracting && interactionTrigger.GetInteractionType() == InteractionType.Push)
+        if (IsInteracting && InteractionTrigger.GetInteractionType() == InteractionType.Push)
         {
             float absX = Mathf.Abs(moveDirectionRaw.x);
             float previousAbsX = Mathf.Abs(previousMoveDirection.x);
@@ -267,12 +266,12 @@ public class PlayerController : MonoBehaviour
 
     private void PushObject()
     {
-        if (interactionTrigger == null || !canMove)
+        if (InteractionTrigger == null || !canMove)
         {
             return;
         }
 
-        if (!IsInteracting || interactionTrigger.GetInteractionType() != InteractionType.Push)
+        if (!IsInteracting || InteractionTrigger.GetInteractionType() != InteractionType.Push)
         {
             animator.SetBool("Push", false);
             animator.SetBool("Pull", false);
@@ -290,7 +289,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Pull", false);
         }
 
-        interactionTrigger.TriggerInteract(true);
+        InteractionTrigger.TriggerInteract(true);
     }
 
     private void ProcessGravity()
@@ -374,16 +373,16 @@ public class PlayerController : MonoBehaviour
     #region Interaction Methods
     public void InteractionEnter(InteractionTrigger interactionTrigger)
     {
-        this.interactionTrigger = interactionTrigger;
+        this.InteractionTrigger = interactionTrigger;
         interactableGameObject = interactionTrigger.transform.parent.gameObject;
         interactionCenter = interactionTrigger.ActiveTrigger.bounds.center;
     }
 
     public void Interaction()
     {
-        if (groundChecker.IsGrounded && interactionTrigger)
+        if (groundChecker.IsGrounded && InteractionTrigger)
         {
-            if (interactionTrigger.GetInteractionType() == InteractionType.Push)
+            if (InteractionTrigger.GetInteractionType() == InteractionType.Push)
             {
                 if (InputManager.Instance.InteractHeld && !IsInteracting)
                 {
@@ -403,20 +402,20 @@ public class PlayerController : MonoBehaviour
             {
                 if (InputManager.Instance.InteractPressed)
                 {
-                    if (interactionTrigger.GetInteractionType() == InteractionType.Collect)
+                    if (InteractionTrigger.GetInteractionType() == InteractionType.Collect)
                     {
                         animator.SetTrigger("Pick");
                         InputManager.Instance.DisablePlayerActions(2.3f);
                     }
 
-                    interactionTrigger.TriggerInteract(false);
+                    InteractionTrigger.TriggerInteract(false);
                 }
             }
         }
         else if (!groundChecker.IsGrounded && IsInteracting)
         {
             InteractionCancel();
-            interactionTrigger.TriggerInteractCancel(true);
+            InteractionTrigger.TriggerInteractCancel(true);
             InputManager.Instance.DisableAction("Interact", 0.5f);
         }
     }
@@ -424,12 +423,12 @@ public class PlayerController : MonoBehaviour
     public void InteractionCancel()
     {
         IsInteracting = false;
-        interactionTrigger.TriggerInteractCancel(true);
+        InteractionTrigger.TriggerInteractCancel(true);
     }
 
     public void InteractionExit()
     {
-        interactionTrigger = null;
+        InteractionTrigger = null;
         interactableGameObject = null;
         interactionCenter = Vector3.zero;
         IsInteracting = false;
