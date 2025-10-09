@@ -66,6 +66,7 @@ public class PlayerController : MonoBehaviour
     #region Unity Methods
     private void Awake()
     {
+        body.maxLinearVelocity = 80f;
         SetJumpSettings();
     }
 
@@ -211,7 +212,7 @@ public class PlayerController : MonoBehaviour
         Vector2 motionInput = InputManager.Instance.MotionInput;
         Vector3 previousMoveDirection = moveDirectionRaw;
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
-       
+
         float currentHorizontalSpeed = horizontalSpeed;
 
         if (IsInteracting && InteractionTrigger.GetInteractionType() == InteractionType.Push)
