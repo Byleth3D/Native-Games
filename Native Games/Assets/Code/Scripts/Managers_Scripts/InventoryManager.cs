@@ -7,9 +7,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public bool Collect(InventoryItem inventoryItem)
     {
-
         bool exists = storedItens.ContainsKey(inventoryItem);
-        Debug.Log($"Item: {inventoryItem} | Exists: {exists}");
 
         if (exists)
         {
@@ -23,13 +21,11 @@ public class InventoryManager : Singleton<InventoryManager>
 
             storedItens[inventoryItem] = newAmount;
             UIManager.Instance.UpdateItemDisplay(newAmount);
-            Debug.Log($"Item: {inventoryItem.itemName}| Amount: {newAmount}");
         }
         else
         {
             storedItens.Add(inventoryItem, inventoryItem.itemAmount);
             UIManager.Instance.UpdateItemDisplay(inventoryItem.itemAmount);
-            Debug.Log($"Item: {inventoryItem.itemName}| Amount: {storedItens[inventoryItem]}");
         }
 
         return true;

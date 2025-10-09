@@ -211,29 +211,11 @@ public class PlayerController : MonoBehaviour
         Vector2 motionInput = InputManager.Instance.MotionInput;
         Vector3 previousMoveDirection = moveDirectionRaw;
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
+       
         float currentHorizontalSpeed = horizontalSpeed;
 
         if (IsInteracting && InteractionTrigger.GetInteractionType() == InteractionType.Push)
         {
-            float absX = Mathf.Abs(moveDirectionRaw.x);
-            float previousAbsX = Mathf.Abs(previousMoveDirection.x);
-
-            float absZ = Mathf.Abs(moveDirectionRaw.z);
-            float previousAbsZ = Mathf.Abs(previousMoveDirection.z);
-
-            if (absX > 0.0f && absZ > 0.0f)
-            {
-                if (previousAbsX > 0.0f)
-                {
-                    moveDirectionRaw.z = 0.0f;
-                }
-                else if (previousAbsZ > 0.0f)
-                {
-                    moveDirectionRaw.x = 0.0f;
-                }
-            }
-
-            moveDirectionRaw.Normalize();
             currentHorizontalSpeed = pushingSpeed;
         }
 

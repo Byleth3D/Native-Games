@@ -20,7 +20,6 @@ public class DeliverableObject : MonoBehaviour, IInteractable
     {
         UIManager.Instance.DisableInteractPopUp();
 
-
         if (InventoryManager.Instance.Deliver(inventoryItem, requestedItemAmount)) 
         {
             OnInteraction?.Invoke();
