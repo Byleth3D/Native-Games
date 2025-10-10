@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SoundsPlayer : MonoBehaviour
 {
@@ -71,5 +72,7 @@ public class SoundsPlayer : MonoBehaviour
         }
 
         audioSource.PlayOneShot(clip);
+
     }
+
 }
