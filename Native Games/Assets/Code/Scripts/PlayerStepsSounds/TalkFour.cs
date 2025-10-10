@@ -1,7 +1,8 @@
 using UnityEngine;
 
 public class TalkFour : MonoBehaviour
-{ public AudioClip soundClip;
+{ 
+    public AudioClip soundClip;
 
     private bool soundPlayed = false;
 

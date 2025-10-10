@@ -7854,6 +7854,10 @@ PrefabInstance:
       value: CollectableItem - 3
       objectReference: {fileID: 0}
     - target: {fileID: 7390303719055577606, guid: 73074519e9323934faec673dd6aadc29, type: 3}
+      propertyPath: collectSound
+      value: 
+      objectReference: {fileID: 1020273173}
+    - target: {fileID: 7390303719055577606, guid: 73074519e9323934faec673dd6aadc29, type: 3}
       propertyPath: inventoryItem
       value: 
       objectReference: {fileID: 11400000, guid: e1eb0a25c5ac3f7469de930dc15c6d0d, type: 2}
