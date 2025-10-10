@@ -9,17 +9,49 @@ public class SaveManager : Singleton<SaveManager>
     public void PreloadSaveFiles()
     {
         saveFiles = new List<SaveData>();
-        
+
+        if (PlayerPrefs.HasKey("SaveDataCount"))
+        {
+            int saveDataCount = PlayerPrefs.GetInt("SaveDataCount");
+
+            for (int i = 0; i < saveDataCount; i++)
+            {
+                SaveData saveData = new SaveData()
+                {
+                    fileName = PlayerPrefs.GetString($"Save_{i}_FileName"),
+                    fileDate = PlayerPrefs.GetString($"Save_{i}_FileDate"),
+                    checkpointIndex = PlayerPrefs.GetInt($"Save_{i}_CheckpointIndex"),
+                    inventoryItems = PlayerPrefs.GetString($"Save_{i}_InventoryItems"),
+                    inventoryItemsAmount = PlayerPrefs.GetString($"Save_{i}_InventoryItemsAmount")
+                };
+            }
+        }
     }
 
-    public void SaveGame()
+    public void SaveGame(SaveData saveData)
     {
+        int saveIndex = 0;
 
+        if (!PlayerPrefs.HasKey("SaveDataCount"))
+        {
+            PlayerPrefs.SetInt("SaveDataCount", 0);
+        }
+
+        saveIndex = PlayerPrefs.GetInt("SaveDataCount");
+        PlayerPrefs.SetInt("SaveDataCount", saveIndex + 1);
+
+        PlayerPrefs.SetString($"Save_{saveIndex}_FileName", saveData.fileName);
+        PlayerPrefs.SetString($"Save_{saveIndex}_FileDate", saveData.fileDate);
+        PlayerPrefs.SetInt($"Save_{saveIndex}_CheckpointIndex", saveData.checkpointIndex);
+        PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItems", saveData.inventoryItems);
+        PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItemsAmount", saveData.inventoryItemsAmount);
+
+        saveFiles.Add(saveData);
     }
 
     public void LoadGame()
     {
-        saveFiles = new List<SaveData>();
+
     }
 }
 
@@ -28,22 +60,8 @@ public class SaveData
     public string fileName;
     public string fileDate;
 
-    #region Checkpoint Fields
     public int checkpointIndex;
 
-    public float checkpointPositionX;
-    public float checkpointPositionY;
-    public float checkpointPositionZ;
-
-    public float checkpointForwardX;
-    public float checkpointForwardY;
-    public float checkpointForwardZ;
-    #endregion
-}
-
-public class InventoryItemSaveData
-{
-    public string scriptableObjectName;
-    public int currentAmount;
-    public int saveDataIndex = -1;
+    public string inventoryItems;
+    public string inventoryItemsAmount;
 }

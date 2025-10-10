@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
-    private Dictionary<InventoryItem, int> storedItens = new();
+    private Dictionary<InventoryItem, int> storedItems = new();
 
     public bool Collect(InventoryItem inventoryItem)
     {
-        bool exists = storedItens.ContainsKey(inventoryItem);
+        bool exists = storedItems.ContainsKey(inventoryItem);
 
         if (exists)
         {
-            int currentAmount = storedItens[inventoryItem];
+            int currentAmount = storedItems[inventoryItem];
             int newAmount = currentAmount + inventoryItem.itemAmount;
 
             if (newAmount > inventoryItem.itemStackLimit)
@@ -19,12 +19,12 @@ public class InventoryManager : Singleton<InventoryManager>
                 return false;
             }
 
-            storedItens[inventoryItem] = newAmount;
+            storedItems[inventoryItem] = newAmount;
             UIManager.Instance.UpdateItemDisplay(newAmount);
         }
         else
         {
-            storedItens.Add(inventoryItem, inventoryItem.itemAmount);
+            storedItems.Add(inventoryItem, inventoryItem.itemAmount);
             UIManager.Instance.UpdateItemDisplay(inventoryItem.itemAmount);
         }
 
@@ -33,12 +33,12 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public bool Deliver(InventoryItem inventoryItem, int requestedAmount)
     {
-        if (!storedItens.ContainsKey(inventoryItem))
+        if (!storedItems.ContainsKey(inventoryItem))
         {
             return false;
         }
 
-        int currentAmount = storedItens[inventoryItem];
+        int currentAmount = storedItems[inventoryItem];
 
         if (requestedAmount > currentAmount)
         {
@@ -49,11 +49,11 @@ public class InventoryManager : Singleton<InventoryManager>
 
         if (newAmount == 0)
         {
-            storedItens.Remove(inventoryItem);
+            storedItems.Remove(inventoryItem);
         }
         else
         {
-            storedItens[inventoryItem] = newAmount;
+            storedItems[inventoryItem] = newAmount;
         }
 
         UIManager.Instance.UpdateItemDisplay(newAmount);
