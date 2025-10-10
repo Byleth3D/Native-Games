@@ -18,7 +18,7 @@ public class DeathTriggerZone : MonoBehaviour
 
         playerController.SetAsDead();
 
-        ScreenFadeManager.Instance.CurrentFadeDelay = 0.25f;
+        ScreenFadeManager.Instance.CurrentFadeDelay = 0.0f;
         ScreenFadeManager.Instance.CurrentCallbackDelay = 0.5f;
         ScreenFadeManager.Instance.CurrentFadeInDuration = 1.5f;
         ScreenFadeManager.Instance.CurrentFadeOutDuration = 2.0f;

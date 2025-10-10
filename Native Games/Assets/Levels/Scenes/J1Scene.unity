@@ -1435,7 +1435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d54531977ecb194c95e2d3aa7a5d72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ControlPath: <Keyboard>/v
+  m_ControlPath: <Gamepad>/buttonWest
 --- !u!114 &303376972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3430,6 +3430,14 @@ PrefabInstance:
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: isOneWay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: cameraDistanceA
+      value: 12.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: cameraDistanceB
+      value: 12.5
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: cameraOffsetA.z
@@ -8841,6 +8849,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876400978}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1877478874 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+  m_PrefabInstance: {fileID: 691004571}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f13b21c3a89a44094c6231cd1cfe60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1877700340
 GameObject:
   m_ObjectHideFlags: 0
@@ -9063,6 +9082,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7334891769770485296, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
   m_PrefabInstance: {fileID: 738140593}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1964309532 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+  m_PrefabInstance: {fileID: 738140593}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f13b21c3a89a44094c6231cd1cfe60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1979016701
 GameObject:
   m_ObjectHideFlags: 0
@@ -9958,6 +9988,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Checkpoint - 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7830917310792340783, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
+      propertyPath: cameraTriggerZones.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7830917310792340783, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
+      propertyPath: 'cameraTriggerZones.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1964309532}
+    - target: {fileID: 7830917310792340783, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
+      propertyPath: 'cameraTriggerZones.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1877478874}
     - target: {fileID: 8186074216408408926, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
       propertyPath: m_Size.x
       value: 10

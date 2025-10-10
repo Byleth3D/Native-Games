@@ -367,13 +367,13 @@ public class PlayerController : MonoBehaviour
         {
             if (InteractionTrigger.GetInteractionType() == InteractionType.Push)
             {
-                if (InputManager.Instance.InteractHeld && !IsInteracting)
+                if (InputManager.Instance.PushHeld && !IsInteracting)
                 {
                     IsInteracting = true;
                     canMove = false;
                     animator.SetBool("Push", true);
                 }
-                else if (!InputManager.Instance.InteractHeld && IsInteracting)
+                else if (!InputManager.Instance.PushHeld && IsInteracting)
                 {
                     InteractionCancel();
                     canMove = true;
@@ -399,7 +399,7 @@ public class PlayerController : MonoBehaviour
         {
             InteractionCancel();
             InteractionTrigger.TriggerInteractCancel(true);
-            InputManager.Instance.DisableAction("Interact", 0.5f);
+            InputManager.Instance.DisableAction("Push", 0.5f);
         }
     }
 

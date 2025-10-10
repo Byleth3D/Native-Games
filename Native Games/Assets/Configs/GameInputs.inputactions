@@ -32,6 +32,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Push",
+                    "type": "Button",
+                    "id": "88736568-b60e-4be6-812a-e6b479067fe8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -125,9 +134,9 @@
                 },
                 {
                     "name": "",
-                    "id": "1c04ea5f-b012-41d1-a6f7-02e963b52893",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Hold",
+                    "id": "b3f66d0b-7751-423f-908b-a11c5bd95930",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
@@ -136,12 +145,34 @@
                 },
                 {
                     "name": "",
-                    "id": "b3f66d0b-7751-423f-908b-a11c5bd95930",
-                    "path": "<Gamepad>/buttonWest",
+                    "id": "b8f6a2af-36c6-46b2-ba44-01cf54f585b7",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c04ea5f-b012-41d1-a6f7-02e963b52893",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Push",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90a8e4fb-f668-4f69-8833-c3ea6f9cc87d",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Push",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -11,11 +11,12 @@ public class InputManager : Singleton<InputManager>
     private InputAction interactAction;
     private InputAction jumpAction;
     private InputAction moveAction;
+    private InputAction pushAction;
 
     public Vector2 MotionInput { get; private set; }
     public bool JumpPressed { get; private set; }
     public bool InteractPressed { get; private set; }
-    public bool InteractHeld { get; private set; }
+    public bool PushHeld { get; private set; }
     #endregion
 
     private InputAction submitAction;
@@ -37,6 +38,7 @@ public class InputManager : Singleton<InputManager>
         interactAction = gameInputs.Player.Interact;
         jumpAction = gameInputs.Player.Jump;
         moveAction = gameInputs.Player.Move;
+        pushAction = gameInputs.Player.Push;
         cancelAction = gameInputs.UI.Cancel;
         inventoryAction = gameInputs.UI.Inventory;
     }
@@ -64,20 +66,15 @@ public class InputManager : Singleton<InputManager>
     {
         MotionInput = moveAction.ReadValue<Vector2>();
         JumpPressed = jumpAction.WasPressedThisFrame();
+        InteractPressed = interactAction.WasPressedThisFrame();
 
-        if (interactAction.enabled)
+        if (pushAction.enabled)
         {
-            InteractPressed = interactAction.WasPressedThisFrame();
-
-            if (!InteractPressed && interactAction.enabled)
-            {
-                InteractHeld = interactAction.phase == InputActionPhase.Performed ? true : false;
-            }
+            PushHeld = pushAction.phase == InputActionPhase.Performed ? true : false;
         }
         else
         {
-            InteractPressed = false;
-            InteractHeld = false;
+            PushHeld = false;
         }
     }
 
