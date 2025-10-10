@@ -7,6 +7,7 @@ public class InputManager : Singleton<InputManager>
 {
     private GameInputs gameInputs;
 
+    #region Gameplay Fields
     private InputAction interactAction;
     private InputAction jumpAction;
     private InputAction moveAction;
@@ -15,6 +16,14 @@ public class InputManager : Singleton<InputManager>
     public bool JumpPressed { get; private set; }
     public bool InteractPressed { get; private set; }
     public bool InteractHeld { get; private set; }
+    #endregion
+
+    private InputAction submitAction;
+    private InputAction cancelAction;
+    private InputAction inventoryAction;
+
+    public bool CancelPressed { get; private set; }
+    public bool InventoryPressed { get; private set; }
 
     private List<CountdownTimer> disabledActionsTimers = new();
 
@@ -24,9 +33,12 @@ public class InputManager : Singleton<InputManager>
 
         gameInputs ??= new GameInputs();
         gameInputs.Player.Enable();
+        gameInputs.UI.Enable();
         interactAction = gameInputs.Player.Interact;
         jumpAction = gameInputs.Player.Jump;
         moveAction = gameInputs.Player.Move;
+        cancelAction = gameInputs.UI.Cancel;
+        inventoryAction = gameInputs.UI.Inventory;
     }
 
     private void OnDisable()
@@ -34,6 +46,7 @@ public class InputManager : Singleton<InputManager>
         if (this != Instance) return;
 
         gameInputs.Player.Disable();
+        gameInputs.UI.Disable();
     }
 
     private void Update()
@@ -43,6 +56,12 @@ public class InputManager : Singleton<InputManager>
             timer.Tick(Time.deltaTime);
         }
 
+        GetPlayerInputs();
+        GetUserInterfaceInputs();
+    }
+
+    private void GetPlayerInputs()
+    {
         MotionInput = moveAction.ReadValue<Vector2>();
         JumpPressed = jumpAction.WasPressedThisFrame();
 
@@ -60,7 +79,12 @@ public class InputManager : Singleton<InputManager>
             InteractPressed = false;
             InteractHeld = false;
         }
+    }
 
+    private void GetUserInterfaceInputs()
+    {
+        CancelPressed = cancelAction.WasPressedThisFrame();
+        InventoryPressed = inventoryAction.WasPressedThisFrame();
     }
 
     public void EnableAction(string actionToEnable)

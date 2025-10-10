@@ -1,4 +1,3 @@
-using PrimeTween;
 using TMPro;
 using UnityEngine;
 
@@ -6,6 +5,11 @@ public class UIManager : Singleton<UIManager>
 {
     [Header("Item Display")]
     [SerializeField] private TextMeshProUGUI itemDisplayText;
+
+    [Header("Menus")]
+    [SerializeField] private GameObject inventoryMenu;
+    [SerializeField] private GameObject pauseMenu;
+    private GameObject activeMenu;
 
     [Header("Popups")]
     [SerializeField] private GameObject movePopup;
@@ -20,6 +24,34 @@ public class UIManager : Singleton<UIManager>
         base.Awake();
         EnableMovePopUp();
         Invoke(nameof(DisableActivePopup), 5.0f);
+    }
+
+    private void Update()
+    {
+        if (!GameManager.Instance.Paused)
+        {
+            if (InputManager.Instance.CancelPressed)
+            {
+                EnablePauseMenu();
+                GameManager.Instance.PauseGame();
+                return;
+            }
+
+            if (InputManager.Instance.InventoryPressed)
+            {
+                EnableInventoryMenu();
+
+                return;
+            }
+        }
+        else
+        {
+            if (InputManager.Instance.CancelPressed)
+            {
+                DisableActiveMenu();
+                GameManager.Instance.UnpauseGame();
+            }
+        }
     }
 
     public void UpdateItemDisplay(int count)
@@ -87,4 +119,44 @@ public class UIManager : Singleton<UIManager>
         activePopup = null;
     }
     #endregion
+
+    public void EnablePauseMenu()
+    {
+        EnableActiveMenu(pauseMenu);
+        GameManager.Instance.PauseGame();
+    }
+
+    public void DisablePauseMenu()
+    {
+        DisableActiveMenu();
+    }
+
+    public void EnableInventoryMenu()
+    {
+        EnableActiveMenu(inventoryMenu);
+        GameManager.Instance.PauseGame();
+    }
+
+    public void DisableInventoryMenu()
+    {
+        DisableActiveMenu();
+    }
+
+    private void EnableActiveMenu(GameObject menu)
+    {
+        DisableActiveMenu();
+        activeMenu = menu;
+        activeMenu.SetActive(true);
+    }
+
+    private void DisableActiveMenu()
+    {
+        if (activeMenu == null)
+        {
+            return;
+        }
+
+        activeMenu.SetActive(false);
+        activeMenu = null;
+    }
 }
