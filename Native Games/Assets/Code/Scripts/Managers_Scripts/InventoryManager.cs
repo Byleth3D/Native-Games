@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager : Singleton<InventoryManager>
@@ -58,5 +59,25 @@ public class InventoryManager : Singleton<InventoryManager>
 
         UIManager.Instance.UpdateItemDisplay(newAmount);
         return true;
+    }
+
+    public void LoadInventory(string items, string itemsAmount)
+    {
+        string[] inventoryItems = items.Split("|");
+        string[] inventoryItemsAmount = itemsAmount.Split("|");
+
+        for (int i = 0; i < inventoryItems.Length; i++)
+        {
+            InventoryItem item = Resources.Load<InventoryItem>("ScriptableObjects/" + inventoryItems[i]);
+            int amount = int.Parse(inventoryItemsAmount[i]);
+
+            storedItems.Add(item, amount);
+            Debug.Log($"{item.name} | {storedItems[item]}");
+
+            if (item.name == "CottonCord")
+            {
+                UIManager.Instance.UpdateItemDisplay(storedItems[item]);
+            }
+        }
     }
 }

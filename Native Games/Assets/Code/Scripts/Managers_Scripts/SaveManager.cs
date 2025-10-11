@@ -6,6 +6,13 @@ public class SaveManager : Singleton<SaveManager>
     private List<SaveData> saveFiles;
     private int currentSaveIndex = -1;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        PreloadSaveFiles();
+        LoadGame(0);
+    }
+
     public void PreloadSaveFiles()
     {
         saveFiles = new List<SaveData>();
@@ -24,6 +31,8 @@ public class SaveManager : Singleton<SaveManager>
                     inventoryItems = PlayerPrefs.GetString($"Save_{i}_InventoryItems"),
                     inventoryItemsAmount = PlayerPrefs.GetString($"Save_{i}_InventoryItemsAmount")
                 };
+
+                saveFiles.Add(saveData);
             }
         }
     }
@@ -49,9 +58,20 @@ public class SaveManager : Singleton<SaveManager>
         saveFiles.Add(saveData);
     }
 
-    public void LoadGame()
+    public void LoadGame(int index)
     {
+        if (index >= saveFiles.Count)
+        {
+            Debug.LogError("Array Out of Bounds");
+            Debug.Log(saveFiles.Count);
+            return;
+        }
 
+        SaveData saveFile = saveFiles[index];
+        currentSaveIndex = index;
+
+        CheckpointManager.Instance.CheckpointTeleport(saveFile.checkpointIndex);
+        InventoryManager.Instance.LoadInventory(saveFile.inventoryItems, saveFile.inventoryItemsAmount);
     }
 }
 

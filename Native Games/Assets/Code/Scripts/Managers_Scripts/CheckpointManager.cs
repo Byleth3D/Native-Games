@@ -101,5 +101,7 @@ public class CheckpointManager : Singleton<CheckpointManager>
         currentCheckpointIndex = checkPointIndex;
         playerController.SetAsAlive();
         playerController.Teleport(checkpoints[checkPointIndex].transform.position);
+
+        currentCheckpoint.ResetCameraTriggersAlong();
     }
 }

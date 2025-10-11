@@ -67,18 +67,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOneWay: 0
+  backwardsAngleThreshold: 46
+  tolerance: 0.5
   cameraOffsetA: {x: 0, y: 0, z: 0}
   cameraOffsetB: {x: 0, y: 0, z: 0}
-  offsetTarget: 1
   offsetTweenEase: 7
   offsetTweenDuration: 0.25
   eulerRotationA: {x: 0, y: 0, z: 0}
   eulerRotationB: {x: 0, y: 0, z: 0}
-  targetRotation: 1
   rotationTweenEase: 7
   rotationTweenDuration: 2
   cameraDistanceA: 0
   cameraDistanceB: 0
-  targetDistance: 1
   distanceTweenEase: 7
   distanceTweenDuration: 0.5
