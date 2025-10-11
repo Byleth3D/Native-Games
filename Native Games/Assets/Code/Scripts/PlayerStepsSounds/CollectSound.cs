@@ -9,7 +9,5 @@ public class CollectSound : MonoBehaviour
         if (collectSound == null) return;
 
         AudioSource.PlayClipAtPoint(collectSound, transform.position);
-
-        Destroy(gameObject);
     }
 }

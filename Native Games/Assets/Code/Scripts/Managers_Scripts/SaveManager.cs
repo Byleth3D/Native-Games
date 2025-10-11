@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class SaveManager : Singleton<SaveManager>
@@ -10,7 +11,7 @@ public class SaveManager : Singleton<SaveManager>
     {
         base.Awake();
         PreloadSaveFiles();
-        LoadGame(0);
+        LoadLatestGame();
     }
 
     public void PreloadSaveFiles()
@@ -29,7 +30,8 @@ public class SaveManager : Singleton<SaveManager>
                     fileDate = PlayerPrefs.GetString($"Save_{i}_FileDate"),
                     checkpointIndex = PlayerPrefs.GetInt($"Save_{i}_CheckpointIndex"),
                     inventoryItems = PlayerPrefs.GetString($"Save_{i}_InventoryItems"),
-                    inventoryItemsAmount = PlayerPrefs.GetString($"Save_{i}_InventoryItemsAmount")
+                    inventoryItemsAmount = PlayerPrefs.GetString($"Save_{i}_InventoryItemsAmount"),
+                    collectedItems = PlayerPrefs.GetString($"Save_{i}_CollectedItems")
                 };
 
                 saveFiles.Add(saveData);
@@ -37,7 +39,22 @@ public class SaveManager : Singleton<SaveManager>
         }
     }
 
-    public void SaveGame(SaveData saveData)
+    public void NewSaveGame()
+    {
+        SaveData saveData = new SaveData()
+        {
+            fileName = "SaveX",
+            fileDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            checkpointIndex = CheckpointManager.Instance.CurrentCheckpointIndex,
+            inventoryItems = InventoryManager.Instance.SaveInventoryItems(),
+            inventoryItemsAmount = InventoryManager.Instance.SaveInventoryItemsAmount(),
+            collectedItems = InventoryManager.Instance.SaveCollectedItems()
+        };
+
+        currentSaveIndex = SaveGame(saveData);
+    }
+
+    private int SaveGame(SaveData saveData)
     {
         int saveIndex = 0;
 
@@ -54,8 +71,10 @@ public class SaveManager : Singleton<SaveManager>
         PlayerPrefs.SetInt($"Save_{saveIndex}_CheckpointIndex", saveData.checkpointIndex);
         PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItems", saveData.inventoryItems);
         PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItemsAmount", saveData.inventoryItemsAmount);
+        PlayerPrefs.SetString($"Save_{saveIndex}_CollectedItems", saveData.collectedItems);
 
         saveFiles.Add(saveData);
+        return saveIndex;
     }
 
     public void LoadGame(int index)
@@ -70,8 +89,23 @@ public class SaveManager : Singleton<SaveManager>
         SaveData saveFile = saveFiles[index];
         currentSaveIndex = index;
 
-        CheckpointManager.Instance.CheckpointTeleport(saveFile.checkpointIndex);
+        Debug.Log(saveFile.collectedItems);
+
+        CheckpointManager.Instance.ReloadCheckpointsFrom(saveFile.checkpointIndex);
         InventoryManager.Instance.LoadInventory(saveFile.inventoryItems, saveFile.inventoryItemsAmount);
+        InventoryManager.Instance.LoadCollectedItems(saveFile.collectedItems);
+    }
+
+    public void LoadLatestGame()
+    {
+        if (!PlayerPrefs.HasKey("SaveDataCount"))
+        {
+            Debug.Log("No SaveData Found!");
+            return;
+        }
+
+        int index = PlayerPrefs.GetInt("SaveDataCount") - 1;
+        LoadGame(index);
     }
 }
 
@@ -84,4 +118,6 @@ public class SaveData
 
     public string inventoryItems;
     public string inventoryItemsAmount;
+
+    public string collectedItems;
 }

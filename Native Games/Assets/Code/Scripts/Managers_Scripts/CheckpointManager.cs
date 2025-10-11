@@ -6,7 +6,7 @@ public class CheckpointManager : Singleton<CheckpointManager>
     [SerializeField] private List<Checkpoint> checkpoints = new();
 
     private Checkpoint currentCheckpoint;
-    private int currentCheckpointIndex = 0;
+    public int CurrentCheckpointIndex { get; private set; } = 0;
 
     protected override void Awake()
     {
@@ -34,15 +34,15 @@ public class CheckpointManager : Singleton<CheckpointManager>
 
         int checkpointIndex = checkpoints.IndexOf(checkpoint);
 
-        if (checkpointIndex <= currentCheckpointIndex)
+        if (checkpointIndex <= CurrentCheckpointIndex)
         {
             return;
         }
 
         currentCheckpoint = checkpoint;
-        currentCheckpointIndex = checkpointIndex;
+        CurrentCheckpointIndex = checkpointIndex;
 
-        if (currentCheckpointIndex == checkpoints.Count - 1)
+        if (CurrentCheckpointIndex == checkpoints.Count - 1)
         {
             SceneLoader.Instance.LoadNextScene();
         }
@@ -98,10 +98,29 @@ public class CheckpointManager : Singleton<CheckpointManager>
             return;
         }
 
-        currentCheckpointIndex = checkPointIndex;
+        CurrentCheckpointIndex = checkPointIndex;
         playerController.SetAsAlive();
         playerController.Teleport(checkpoints[checkPointIndex].transform.position);
 
         currentCheckpoint.ResetCameraTriggersAlong();
+    }
+
+    public void ReloadCheckpointsFrom(int index)
+    {
+        if (index >= checkpoints.Count)
+        {
+            Debug.LogError("Array Out of Bounds!");
+            return;
+        }
+
+        if (index < checkpoints.Count - 1)
+        {
+            for (int i = index + 1; i < checkpoints.Count; i++)
+            {
+                checkpoints[i].ResetCameraTriggersAlong();
+            }
+        }
+
+        CheckpointTeleport(index);
     }
 }
