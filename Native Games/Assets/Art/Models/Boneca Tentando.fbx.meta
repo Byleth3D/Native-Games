@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8aad7a34bd82ba14ebbbac7aa8727eb4
+guid: 29e99c8a408d41d49a4425613d04b496
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -15,7 +15,7 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
-    motionNodeName: 
+    motionNodeName: Rig Boneca/root
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -118,7 +118,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: root
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
