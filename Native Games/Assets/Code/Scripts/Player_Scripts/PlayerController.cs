@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
     private GameObject interactableGameObject;
     private Vector3 interactableDirection;
 
-    public bool IsInteracting { get; protected set; }
+    public bool IsPushing { get; protected set; }
 
     public bool IsAlive { get; private set; } = true;
 
@@ -128,10 +128,11 @@ public class PlayerController : MonoBehaviour
     {
         Quaternion currentModelRotation = model.localRotation;
         Quaternion targetRotation;
-        Vector3 targetDirection;
+        Vector3 targetDirection = Vector3.zero;
         float rotationStep = angularSpeed * Time.deltaTime;
 
-        if (IsInteracting)
+
+        if (InteractionTrigger && (InputManager.Instance.InteractPressed || IsPushing))
         {
             interactableDirection = interactableGameObject.transform.position - transform.position;
             interactableDirection.y = 0.0f;
@@ -141,13 +142,24 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (relativeMoveDirection.magnitude <= 0.0f) return;
+            if (relativeMoveDirection.magnitude <= 0.0f)
+            {
+                return;
+            }
 
             targetDirection = relativeMoveDirection;
         }
 
         targetRotation = Quaternion.LookRotation(targetDirection);
-        model.localRotation = Quaternion.RotateTowards(currentModelRotation, targetRotation, rotationStep);
+
+        if (InteractionTrigger == null || (IsPushing && InteractionTrigger.GetInteractionType() == InteractionType.Push))
+        {
+            model.localRotation = Quaternion.RotateTowards(currentModelRotation, targetRotation, rotationStep);
+        }
+        else
+        {
+            model.localRotation = targetRotation;
+        }
     }
 
     private void Jump()
@@ -196,7 +208,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (!IsInteracting)
+            if (!IsPushing)
             {
                 return;
             }
@@ -220,7 +232,7 @@ public class PlayerController : MonoBehaviour
         {
             currentHorizontalSpeed *= airMultiplier;
         }
-        else if (IsInteracting && InteractionTrigger.GetInteractionType() == InteractionType.Push)
+        else if (IsPushing && InteractionTrigger.GetInteractionType() == InteractionType.Push)
         {
             currentHorizontalSpeed = pushingSpeed;
         }
@@ -259,7 +271,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!IsInteracting || InteractionTrigger.GetInteractionType() != InteractionType.Push)
+        if (!IsPushing || InteractionTrigger.GetInteractionType() != InteractionType.Push)
         {
             animator.SetBool("Push", false);
             animator.SetBool("Pull", false);
@@ -277,7 +289,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Pull", false);
         }
 
-        InteractionTrigger.TriggerInteract(true);
+        InteractionTrigger.TriggerInteract();
     }
 
     private void ProcessGravity()
@@ -315,8 +327,12 @@ public class PlayerController : MonoBehaviour
     #region Death Response
     public void SetAsAlive()
     {
-        IsAlive = true;
-        animator.SetTrigger("Alive");
+        if (!IsAlive)
+        {
+            IsAlive = true;
+            animator.SetTrigger("Alive");
+        }
+
         InputManager.Instance.DisablePlayerActions(inputDisableDuration);
     }
 
@@ -372,35 +388,34 @@ public class PlayerController : MonoBehaviour
         {
             if (InteractionTrigger.GetInteractionType() == InteractionType.Push)
             {
-                if (InputManager.Instance.PushHeld && !IsInteracting)
+                if (InputManager.Instance.PushHeld && !IsPushing)
                 {
-                    IsInteracting = true;
+                    IsPushing = true;
                     canMove = false;
                     animator.SetBool("Push", true);
                 }
-                else if (!InputManager.Instance.PushHeld && IsInteracting)
+                else if (!InputManager.Instance.PushHeld && IsPushing)
                 {
                     InteractionCancel();
                     canMove = true;
-                    animator.SetBool("Push", false);
-                    animator.SetBool("Pull", false);
                 }
             }
             else
             {
                 if (InputManager.Instance.InteractPressed)
                 {
-                    if (InteractionTrigger.GetInteractionType() == InteractionType.Collect)
+                    InteractionTrigger.TriggerInteract();
+
+                    if (InteractionTrigger.GetInteractionType() == InteractionType.Collect && InteractionTrigger.HasInteraction)
                     {
                         animator.SetTrigger("Pick");
                         InputManager.Instance.DisablePlayerActions(2.3f);
                     }
 
-                    InteractionTrigger.TriggerInteract(false);
                 }
             }
         }
-        else if (!groundChecker.IsGrounded && IsInteracting)
+        else if (!groundChecker.IsGrounded && IsPushing)
         {
             InteractionCancel();
             InteractionTrigger.TriggerInteractCancel(true);
@@ -410,8 +425,10 @@ public class PlayerController : MonoBehaviour
 
     public void InteractionCancel()
     {
-        IsInteracting = false;
+        IsPushing = false;
         InteractionTrigger.TriggerInteractCancel(true);
+        animator.SetBool("Push", false);
+        animator.SetBool("Pull", false);
     }
 
     public void InteractionExit()
@@ -419,7 +436,7 @@ public class PlayerController : MonoBehaviour
         InteractionTrigger = null;
         interactableGameObject = null;
         interactionCenter = Vector3.zero;
-        IsInteracting = false;
+        IsPushing = false;
         animator.SetBool("Push", false);
         animator.SetBool("Pull", false);
     }

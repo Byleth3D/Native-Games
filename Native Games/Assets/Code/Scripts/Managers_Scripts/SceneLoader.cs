@@ -44,6 +44,16 @@ public class SceneLoader : Singleton<SceneLoader>
         ScreenFadeManager.Instance.RequestFadeOut(() => LoadScene(currentSceneIndex));
     }
 
+    public int GetActiveSceneIndex()
+    {
+        return SceneManager.GetActiveScene().buildIndex;
+    }
+
+    public string GetActiveSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
+
     public void ExitGame()
     {
 #if UNITY_EDITOR

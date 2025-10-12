@@ -31,7 +31,8 @@ public class SaveManager : Singleton<SaveManager>
                     checkpointIndex = PlayerPrefs.GetInt($"Save_{i}_CheckpointIndex"),
                     inventoryItems = PlayerPrefs.GetString($"Save_{i}_InventoryItems"),
                     inventoryItemsAmount = PlayerPrefs.GetString($"Save_{i}_InventoryItemsAmount"),
-                    collectedItems = PlayerPrefs.GetString($"Save_{i}_CollectedItems")
+                    collectedItems = PlayerPrefs.GetString($"Save_{i}_CollectedItems"),
+                    activeSceneName = PlayerPrefs.GetString($"Save_{i}_ActiveSceneName")
                 };
 
                 saveFiles.Add(saveData);
@@ -48,7 +49,8 @@ public class SaveManager : Singleton<SaveManager>
             checkpointIndex = CheckpointManager.Instance.CurrentCheckpointIndex,
             inventoryItems = InventoryManager.Instance.SaveInventoryItems(),
             inventoryItemsAmount = InventoryManager.Instance.SaveInventoryItemsAmount(),
-            collectedItems = InventoryManager.Instance.SaveCollectedItems()
+            collectedItems = InventoryManager.Instance.SaveCollectedItems(),
+            activeSceneName = SceneLoader.Instance.GetActiveSceneName()
         };
 
         currentSaveIndex = SaveGame(saveData);
@@ -72,6 +74,7 @@ public class SaveManager : Singleton<SaveManager>
         PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItems", saveData.inventoryItems);
         PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItemsAmount", saveData.inventoryItemsAmount);
         PlayerPrefs.SetString($"Save_{saveIndex}_CollectedItems", saveData.collectedItems);
+        PlayerPrefs.SetString($"Save_{saveIndex}_ActiveSceneName", saveData.activeSceneName);
 
         saveFiles.Add(saveData);
         return saveIndex;
@@ -88,8 +91,6 @@ public class SaveManager : Singleton<SaveManager>
 
         SaveData saveFile = saveFiles[index];
         currentSaveIndex = index;
-
-        Debug.Log(saveFile.collectedItems);
 
         CheckpointManager.Instance.ReloadCheckpointsFrom(saveFile.checkpointIndex);
         InventoryManager.Instance.LoadInventory(saveFile.inventoryItems, saveFile.inventoryItemsAmount);
@@ -120,4 +121,6 @@ public class SaveData
     public string inventoryItemsAmount;
 
     public string collectedItems;
+
+    public string activeSceneName;
 }

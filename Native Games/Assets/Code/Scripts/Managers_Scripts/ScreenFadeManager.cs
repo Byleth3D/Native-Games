@@ -154,6 +154,7 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
     private void OnFadeComplete()
     {
         onFadeComplete?.Invoke();
+        Debug.Log("Calledback");
         onFadeComplete = null;
     }
 

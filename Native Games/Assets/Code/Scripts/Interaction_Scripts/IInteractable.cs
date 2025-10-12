@@ -1,6 +1,6 @@
 public interface IInteractable
 {
-    InteractionTrigger InteractionTrigger { get; }
+    InteractionTrigger InteractionTrigger { get; set; }
     InteractionType InteractionType { get; }
 
     void InteractionEnter(InteractionTrigger interactionTrigger, PlayerController playerController);
