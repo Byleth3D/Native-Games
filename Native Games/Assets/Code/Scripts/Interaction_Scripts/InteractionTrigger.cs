@@ -18,13 +18,9 @@ public class InteractionTrigger : MonoBehaviour
         Triggers = GetComponents<Collider>();
     }
 
-    public void TriggerInteract(bool persistentInteraction)
+    public void TriggerInteract()
     {
-        if (!HasInteraction && persistentInteraction)
-        {
-            HasInteraction = true;
-        }
-
+        HasInteraction = true;
         interactable.Interaction();
     }
 
@@ -36,6 +32,15 @@ public class InteractionTrigger : MonoBehaviour
         }
 
         HasInteraction = false;
+    }
+
+    public void TriggerForceInteractExit()
+    {
+        HasInteraction = false;
+
+        ActiveTrigger = null;
+
+        PlayerController.InteractionExit();
     }
 
     public InteractionType GetInteractionType()

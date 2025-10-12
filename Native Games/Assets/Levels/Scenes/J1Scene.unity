@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Checkpoint - 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3927922358967735875, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7830917310792340783, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
       propertyPath: cameraTriggerZones.Array.size
       value: 1
@@ -5977,7 +5981,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   checkpoints:
   - {fileID: 588026501}
-  - {fileID: 936530301}
   - {fileID: 1874311630}
 --- !u!1001 &738140593
 PrefabInstance:
@@ -7601,17 +7604,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &936530301 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7830917310792340783, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
-  m_PrefabInstance: {fileID: 427168}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89828cde2dbc25f4eae03d40b08fa7bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &950314990
 GameObject:
   m_ObjectHideFlags: 0

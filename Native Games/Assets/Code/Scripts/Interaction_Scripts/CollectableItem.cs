@@ -5,7 +5,7 @@ public class CollectableItem : MonoBehaviour, IInteractable
     [SerializeField] private InventoryItem inventoryItem;
     [SerializeField] private CollectSound collectSound;
 
-    public InteractionTrigger InteractionTrigger { get; }
+    public InteractionTrigger InteractionTrigger { get; set; }
     public InteractionType InteractionType { get; } = InteractionType.Collect;
 
     public void SetEnable()
@@ -15,12 +15,14 @@ public class CollectableItem : MonoBehaviour, IInteractable
 
     public void SetDisable()
     {
+        InteractionTrigger.TriggerForceInteractExit();
         gameObject.SetActive(false);
     }
 
     public void InteractionEnter(InteractionTrigger interactionTrigger, PlayerController playerController)
     {
         UIManager.Instance.EnableInteractPopUp();
+        InteractionTrigger = interactionTrigger;
     }
 
     public void Interaction()
@@ -30,6 +32,10 @@ public class CollectableItem : MonoBehaviour, IInteractable
             UIManager.Instance.DisableInteractPopUp();
             collectSound?.PlayCollectSound();
             Invoke(nameof(SetDisable), 0.25f);
+        }
+        else
+        {
+            InteractionTrigger.TriggerInteractCancel(false);
         }
     }
 

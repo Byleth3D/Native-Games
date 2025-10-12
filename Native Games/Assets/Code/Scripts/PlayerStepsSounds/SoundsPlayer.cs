@@ -49,7 +49,7 @@ public class SoundsPlayer : MonoBehaviour
 
     private void PlayStep()
     {
-        if (controller.Velocity.WithoutY().magnitude > 0.0f && !controller.IsInteracting)
+        if (controller.Velocity.WithoutY().magnitude > 0.0f && !controller.IsPushing)
         {
             PlayClip(steps);
             stepTimer.Start();
