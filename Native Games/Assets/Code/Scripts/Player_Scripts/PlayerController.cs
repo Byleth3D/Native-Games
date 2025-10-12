@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [Header("Horizontal Movement")]
     [SerializeField] private float horizontalSpeed = 3.5f;
     [SerializeField] private float pushingSpeed = 3.5f;
+    [SerializeField, Range(0.01f, 1f)] private float airMultiplier = 0.75f;
 
     private Vector3 moveDirectionRaw;
     private Vector3 relativeMoveDirection;
@@ -215,7 +216,11 @@ public class PlayerController : MonoBehaviour
 
         float currentHorizontalSpeed = horizontalSpeed;
 
-        if (IsInteracting && InteractionTrigger.GetInteractionType() == InteractionType.Push)
+        if (!groundChecker.IsGrounded)
+        {
+            currentHorizontalSpeed *= airMultiplier;
+        }
+        else if (IsInteracting && InteractionTrigger.GetInteractionType() == InteractionType.Push)
         {
             currentHorizontalSpeed = pushingSpeed;
         }
