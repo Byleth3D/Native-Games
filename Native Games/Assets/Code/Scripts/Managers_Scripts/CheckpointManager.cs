@@ -45,7 +45,10 @@ public class CheckpointManager : Singleton<CheckpointManager>
         if (CurrentCheckpointIndex == checkpoints.Count - 1)
         {
             SceneLoader.Instance.LoadNextScene();
+            return;
         }
+
+        SaveManager.Instance.NewSaveGame();
     }
 
     public void CheckpointTeleport()
