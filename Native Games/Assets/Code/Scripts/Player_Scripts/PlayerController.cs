@@ -327,8 +327,12 @@ public class PlayerController : MonoBehaviour
     #region Death Response
     public void SetAsAlive()
     {
-        IsAlive = true;
-        animator.SetTrigger("Alive");
+        if (!IsAlive)
+        {
+            IsAlive = true;
+            animator.SetTrigger("Alive");
+        }
+
         InputManager.Instance.DisablePlayerActions(inputDisableDuration);
     }
 
