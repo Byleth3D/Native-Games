@@ -56,6 +56,13 @@ public class Cord : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
             {
                 Sewing.HoveredCord = this;
             }
+            else
+            {
+                if (Sewing.HoveredCord == this)
+                {
+                    Sewing.HoveredCord = null;
+                }
+            }
 
             return;
         }
@@ -91,18 +98,9 @@ public class Cord : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     private void ShowCord()
     {
         Vector2 lineRendererScreenPointStart = RectTransformUtility.WorldToScreenPoint(null, lineRenderer.transform.position);
-        Vector2 pointerScreenPoint = InputManager.Instance.GetPointerPosition();
+        Vector2 pointerScreenPointRaw = InputManager.Instance.GetPointerPosition();
+        Vector2 pointerScreenPoint = pointerScreenPointRaw / cordRectTransform.GetParentCanvas().scaleFactor;
         Vector2 lineRendererScreenPointEnd = pointerScreenPoint - lineRendererScreenPointStart;
-
-        float angle = Vector2.Angle(lineRendererScreenPointStart.normalized, pointerScreenPoint.normalized);
-
-        if (angle >= 90f)
-        {
-            HideCord();
-            isDragged = false;
-            Sewing.DraggedCord = null;
-            return;
-        }
 
         lineRenderer.enabled = true;
         lineRenderer.Points[0] = Vector2.zero;
