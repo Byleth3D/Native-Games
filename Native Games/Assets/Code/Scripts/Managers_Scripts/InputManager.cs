@@ -148,4 +148,9 @@ public class InputManager : Singleton<InputManager>
 
         disabledActionsTimers.Add(timer);
     }
+
+    public Vector2 GetPointerPosition()
+    {
+        return gameInputs.UI.Point.ReadValue<Vector2>();
+    }
 }

@@ -10,6 +10,10 @@ public class Sewing : MonoBehaviour
     private List<Cord> availableLeftCords;
     private List<Cord> availableRightCords;
 
+    public Cord DraggedCord { get; set; }
+    public Cord HoveredCord { get; set; }
+
+
     private void Start()
     {
         availableCordColors = new(cordColors);
@@ -27,6 +31,8 @@ public class Sewing : MonoBehaviour
             {
                 availableRightCords.Add(cord);
             }
+
+            cord.Sewing = this;
         }
 
         while (cordColors.Count > 0 && availableLeftCords.Count > 0 && availableRightCords.Count > 0)
