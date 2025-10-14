@@ -2780,6 +2780,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1686110722}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 1686110730}
         m_TargetAssemblyTypeName: UnityEngine.Playables.PlayableDirector, UnityEngine
         m_MethodName: Play
@@ -2803,6 +2815,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 352922357}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &456014287
 MonoBehaviour:
@@ -6238,7 +6262,7 @@ PlayableDirector:
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
   m_InitialState: 1
-  m_WrapMode: 0
+  m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
@@ -6262,6 +6286,12 @@ PlayableDirector:
     value: {fileID: 1120454958}
   - key: {fileID: 3494407967564648100, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
     value: {fileID: 1120454958}
+  - key: {fileID: 2873899457730659889, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
+    value: {fileID: 561282615}
+  - key: {fileID: -3953006507159935854, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
+    value: {fileID: 342358529}
+  - key: {fileID: -4836874252445819746, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
+    value: {fileID: 965556093}
   m_ExposedReferences:
     m_References:
     - c4d86a59415b5624baf663bd5807c7d9: {fileID: 561282612}
@@ -14607,6 +14637,18 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 965556093}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 561282615}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -23960,7 +24002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 628076634085601417, guid: 709ff234e1c14894580d5cc698e5f6b7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 730080779324423453, guid: 709ff234e1c14894580d5cc698e5f6b7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25477,7 +25519,15 @@ PlayableDirector:
   - key: {fileID: 3494407967564648100, guid: 828c84a0098e8694797085e319ee6855, type: 2}
     value: {fileID: 1120454958}
   - key: {fileID: 461338185014158969, guid: 828c84a0098e8694797085e319ee6855, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 352922357}
+  - key: {fileID: -6156464975346311551, guid: 828c84a0098e8694797085e319ee6855, type: 2}
+    value: {fileID: 965556093}
+  - key: {fileID: 800957939963459387, guid: 828c84a0098e8694797085e319ee6855, type: 2}
+    value: {fileID: 342358529}
+  - key: {fileID: -3519896769548594493, guid: 828c84a0098e8694797085e319ee6855, type: 2}
+    value: {fileID: 561282615}
+  - key: {fileID: -9182390453962728044, guid: 828c84a0098e8694797085e319ee6855, type: 2}
+    value: {fileID: 1686110722}
   m_ExposedReferences:
     m_References:
     - c4d86a59415b5624baf663bd5807c7d9: {fileID: 1210801487}
