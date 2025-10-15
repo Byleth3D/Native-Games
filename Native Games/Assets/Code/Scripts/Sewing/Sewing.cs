@@ -7,48 +7,46 @@ public class Sewing : MonoBehaviour
     [SerializeField] private List<Cord> cords;
 
     private List<Color> availableCordColors;
-    private List<Cord> availableLeftCords;
-    private List<Cord> availableRightCords;
+    private List<Cord> availableInitialCords;
+    private List<Cord> availableEndCords;
 
-    public Cord DraggedCord { get; set; }
-    public Cord HoveredCord { get; set; }
+    public InitialCord DraggedCord { get; set; }
+    public FinalCord HoveredCord { get; set; }
 
 
     private void Start()
     {
         availableCordColors = new(cordColors);
-        availableLeftCords = new List<Cord>();
-        availableRightCords = new List<Cord>();
+        availableInitialCords = new List<Cord>();
+        availableEndCords = new List<Cord>();
 
 
         foreach (Cord cord in cords)
         {
-            if (cord.LeftCord)
+            if (cord is InitialCord)
             {
-                availableLeftCords.Add(cord);
+                availableInitialCords.Add(cord);
             }
             else
             {
-                availableRightCords.Add(cord);
+                availableEndCords.Add(cord);
             }
-
-            cord.Sewing = this;
         }
 
-        while (cordColors.Count > 0 && availableLeftCords.Count > 0 && availableRightCords.Count > 0)
+        while (cordColors.Count > 0 && availableInitialCords.Count > 0 && availableEndCords.Count > 0)
         {
             int colorIndex = Random.Range(0, availableCordColors.Count);
             Color color = availableCordColors[colorIndex];
 
-            int leftIndex = Random.Range(0, availableLeftCords.Count);
-            int rightIndex = Random.Range(0, availableRightCords.Count);
+            int leftIndex = Random.Range(0, availableInitialCords.Count);
+            int rightIndex = Random.Range(0, availableEndCords.Count);
 
-            availableLeftCords[leftIndex].SetColor(color);
-            availableRightCords[rightIndex].SetColor(color);
+            availableInitialCords[leftIndex].Setup(color, this);
+            availableEndCords[rightIndex].Setup(color, this);
 
             availableCordColors.Remove(color);
-            availableLeftCords.RemoveAt(leftIndex);
-            availableRightCords.RemoveAt(rightIndex);
+            availableInitialCords.RemoveAt(leftIndex);
+            availableEndCords.RemoveAt(rightIndex);
         }
     }
 }
