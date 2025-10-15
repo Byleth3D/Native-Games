@@ -5,8 +5,9 @@ using UnityEngine.UI.Extensions;
 
 public class Cord : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    [SerializeField] private RectTransform cordRectTransform;
     [SerializeField] private bool leftCord;
+    private RectTransform cordRectTransform;
+    private RectTransform canvasRectTransform;
 
     private Image image;
     private UILineRenderer lineRenderer;
@@ -22,6 +23,7 @@ public class Cord : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
     {
         image = GetComponent<Image>();
         cordRectTransform = transform as RectTransform;
+        canvasRectTransform = cordRectTransform.GetParentCanvas().transform as RectTransform;
 
         if (leftCord)
         {
@@ -97,16 +99,17 @@ public class Cord : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHand
 
     private void ShowCord()
     {
-        Vector2 lineRendererScreenPointStart = RectTransformUtility.WorldToScreenPoint(null, lineRenderer.transform.position);
-        Vector2 pointerScreenPointRaw = InputManager.Instance.GetPointerPosition();
-        Vector2 pointerScreenPoint = pointerScreenPointRaw / cordRectTransform.GetParentCanvas().scaleFactor;
-        Vector2 lineRendererScreenPointEnd = pointerScreenPoint - lineRendererScreenPointStart;
+        Vector2 pointerScreenPoint = InputManager.Instance.GetPointerPosition();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, pointerScreenPoint, null, out Vector2 local);
+        Vector2 local2 = canvasRectTransform.InverseTransformPoint(transform.position);
 
         lineRenderer.enabled = true;
         lineRenderer.Points[0] = Vector2.zero;
-        lineRenderer.Points[1] = lineRendererScreenPointEnd;
+        lineRenderer.Points[1] = local - local2;
 
         lineRenderer.SetAllDirty();
+
+        Debug.Log($"Pointer Screen: {pointerScreenPoint} | Local Screen: {local} | Transform Positon {cordRectTransform.transform.position}");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
