@@ -11,7 +11,6 @@ public class SaveManager : Singleton<SaveManager>
     {
         base.Awake();
         PreloadSaveFiles();
-        LoadLatestGame();
     }
 
     public void PreloadSaveFiles()
