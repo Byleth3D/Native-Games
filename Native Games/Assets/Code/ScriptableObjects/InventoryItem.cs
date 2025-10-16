@@ -7,6 +7,7 @@ public class InventoryItem : ScriptableObject
     public string itemName;
     public Sprite itemIcon;
     [TextArea] public string itemDescription;
+    public Sprite itemUsageImage;
 
     public bool isStackable = false;
     [EnableField(nameof(isStackable))] public int itemAmount = 1;

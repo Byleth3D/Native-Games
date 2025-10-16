@@ -2,12 +2,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
-    [Header("Item Display")]
-    [SerializeField] private TextMeshProUGUI itemDisplayText;
-
     [Header("Menus")]
     [SerializeField] private GameObject inventoryMenu;
     [SerializeField] private GameObject pauseMenu;
@@ -22,7 +20,10 @@ public class UIManager : Singleton<UIManager>
     private GameObject activePopup;
 
     [Header("Inventory")]
-    [SerializeField] private List<InventoryItemSlot> inventoryItemSlots;
+    [SerializeField] private TextMeshProUGUI InventorySlotName;
+    [SerializeField] private TextMeshProUGUI InventorySlotDescription;
+    [SerializeField] private Image InventorySlotUsageImage;
+    [SerializeField] private List<InventoryItemSlot> inventorySlots;
 
     protected override void Awake()
     {
@@ -57,11 +58,6 @@ public class UIManager : Singleton<UIManager>
                 GameManager.Instance.UnpauseGame();
             }
         }
-    }
-
-    public void UpdateItemDisplay(int count)
-    {
-        itemDisplayText.text = $"{count.ToString()}/3";
     }
 
     #region Popup Methods
@@ -168,7 +164,7 @@ public class UIManager : Singleton<UIManager>
     #region InventoryDisplay Methods
     public void AddInventoryItemToSlot(InventoryItem inventoryItem, int inventoryItemAmount)
     {
-        int inventorySlots = inventoryItemSlots.Count;
+        int inventorySlots = this.inventorySlots.Count;
 
         if (inventorySlots == 0)
         {
@@ -186,13 +182,13 @@ public class UIManager : Singleton<UIManager>
 
         for (int i = 0; i < inventorySlots; i++)
         {
-            if (firstEmptyIndex == -1 && inventoryItemSlots[i].InventoryItem == null)
+            if (firstEmptyIndex == -1 && this.inventorySlots[i].InventoryItem == null)
             {
                 firstEmptyIndex = i;
                 continue;
             }
 
-            if (inventoryItemSlots[i].InventoryItem == inventoryItem)
+            if (this.inventorySlots[i].InventoryItem == inventoryItem)
             {
                 existingItemIndex = i;
             }
@@ -205,19 +201,19 @@ public class UIManager : Singleton<UIManager>
         {
             if (listHasEmptySlot)
             {
-                inventoryItemSlots[firstEmptyIndex].Add(inventoryItem, inventoryItemAmount);
+                this.inventorySlots[firstEmptyIndex].Add(inventoryItem, inventoryItemAmount);
             }
         }
         else
         {
-            inventoryItemSlots[existingItemIndex].UpdateAmount(inventoryItemAmount);
+            this.inventorySlots[existingItemIndex].UpdateAmount(inventoryItemAmount);
         }
     }
 
     public void RemoveInventoryItemFromSlot(InventoryItem inventoryItem, int inventoryItemAmount)
     {
         int index = -1;
-        int inventorySlots = inventoryItemSlots.Count;
+        int inventorySlots = this.inventorySlots.Count;
 
         if (inventoryItem == null || inventoryItemAmount < 0)
         {
@@ -226,7 +222,7 @@ public class UIManager : Singleton<UIManager>
 
         for (int i = 0; i < inventorySlots; i++)
         {
-            if (inventoryItemSlots[i].InventoryItem != inventoryItem)
+            if (this.inventorySlots[i].InventoryItem != inventoryItem)
             {
                 continue;
             }
@@ -241,11 +237,11 @@ public class UIManager : Singleton<UIManager>
 
         if (inventoryItemAmount == 0)
         {
-            inventoryItemSlots[index].Remove();
+            this.inventorySlots[index].Remove();
         }
         else
         {
-            inventoryItemSlots[index].UpdateAmount(inventoryItemAmount);
+            this.inventorySlots[index].UpdateAmount(inventoryItemAmount);
         }
 
         ReorderInventorySlots();
@@ -253,7 +249,7 @@ public class UIManager : Singleton<UIManager>
 
     public void ClearInventorySlots()
     {
-        foreach (InventoryItemSlot inventoryItemSlot in inventoryItemSlots)
+        foreach (InventoryItemSlot inventoryItemSlot in inventorySlots)
         {
             inventoryItemSlot.Remove();
         }
@@ -261,21 +257,21 @@ public class UIManager : Singleton<UIManager>
 
     public void ReorderInventorySlots()
     {
-        int inventorySlots = inventoryItemSlots.Count;
+        int inventorySlots = this.inventorySlots.Count;
 
         for (int i = 0; i < inventorySlots; i++)
         {
-            if (inventoryItemSlots[i].InventoryItem != null || i == inventorySlots - 1)
+            if (this.inventorySlots[i].InventoryItem != null || i == inventorySlots - 1)
             {
                 continue;
             }
 
             if (i + 1 == inventorySlots - 1)
             {
-                if (inventoryItemSlots[i + 1].InventoryItem != null)
+                if (this.inventorySlots[i + 1].InventoryItem != null)
                 {
-                    InventoryItemSlot itemSlot = inventoryItemSlots[i + 1];
-                    inventoryItemSlots[i].Add(itemSlot.InventoryItem, itemSlot.InventoryItemAmount);
+                    InventoryItemSlot itemSlot = this.inventorySlots[i + 1];
+                    this.inventorySlots[i].Add(itemSlot.InventoryItem, itemSlot.InventoryItemAmount);
                     itemSlot.Remove();
                 }
             }
@@ -283,18 +279,40 @@ public class UIManager : Singleton<UIManager>
             {
                 for (int j = i + 1; j < inventorySlots; j++)
                 {
-                    if (inventoryItemSlots[j].InventoryItem == null)
+                    if (this.inventorySlots[j].InventoryItem == null)
                     {
                         continue;
                     }
 
-                    InventoryItemSlot itemSlot = inventoryItemSlots[j];
-                    inventoryItemSlots[i].Add(itemSlot.InventoryItem, itemSlot.InventoryItemAmount);
+                    InventoryItemSlot itemSlot = this.inventorySlots[j];
+                    this.inventorySlots[i].Add(itemSlot.InventoryItem, itemSlot.InventoryItemAmount);
                     itemSlot.Remove();
                     break;
                 }
             }
         }
+    }
+
+    public void ShowInventorySlotInfo(InventoryItem inventoryItem)
+    {
+        InventorySlotName.text = inventoryItem.itemName;
+        InventorySlotDescription.text = inventoryItem.itemDescription;
+        InventorySlotUsageImage.sprite = inventoryItem.itemUsageImage;
+
+        InventorySlotName.gameObject.SetActive(true);
+        InventorySlotDescription.gameObject.SetActive(true);
+        InventorySlotUsageImage.gameObject.SetActive(true);
+    }
+
+    public void HideInventorySlotInfo()
+    {
+        InventorySlotName.text = "";
+        InventorySlotDescription.text = "";
+        InventorySlotUsageImage.sprite = null;
+
+        InventorySlotName.gameObject.SetActive(false);
+        InventorySlotDescription.gameObject.SetActive(false);
+        InventorySlotUsageImage.gameObject.SetActive(false);
     }
     #endregion
 }
