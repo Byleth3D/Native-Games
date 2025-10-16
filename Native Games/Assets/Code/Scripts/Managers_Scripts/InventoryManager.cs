@@ -10,6 +10,7 @@ public class InventoryManager : Singleton<InventoryManager>
     public bool Collect(GameObject collectableItemObject, InventoryItem inventoryItem)
     {
         bool exists = storedItems.ContainsKey(inventoryItem);
+        int amount = 0;
 
         if (exists)
         {
@@ -22,15 +23,16 @@ public class InventoryManager : Singleton<InventoryManager>
             }
 
             storedItems[inventoryItem] = newAmount;
-            UIManager.Instance.UpdateItemDisplay(newAmount);
+            amount = newAmount;
         }
         else
         {
             storedItems.Add(inventoryItem, inventoryItem.itemAmount);
-            UIManager.Instance.UpdateItemDisplay(inventoryItem.itemAmount);
+            amount = inventoryItem.itemAmount;
         }
 
         collectedItems.Add(collectableItemObject);
+        UIManager.Instance.AddInventoryItemToSlot(inventoryItem, amount);
         return true;
     }
 
@@ -59,7 +61,7 @@ public class InventoryManager : Singleton<InventoryManager>
             storedItems[inventoryItem] = newAmount;
         }
 
-        UIManager.Instance.UpdateItemDisplay(newAmount);
+        UIManager.Instance.RemoveInventoryItemFromSlot(inventoryItem, newAmount);
         return true;
     }
 
@@ -145,7 +147,7 @@ public class InventoryManager : Singleton<InventoryManager>
         if (items == "")
         {
             Debug.LogWarning("No Collectable Items Loaded!");
-            
+
             foreach (GameObject itemObject in collectedItems)
             {
                 itemObject.SetActive(true);
@@ -196,18 +198,16 @@ public class InventoryManager : Singleton<InventoryManager>
             storedItems.Clear();
         }
 
+        UIManager.Instance.ClearInventorySlots();
+
         for (int i = 0; i < inventoryItems.Length; i++)
         {
             InventoryItem item = Resources.Load<InventoryItem>("ScriptableObjects/" + inventoryItems[i]);
             int amount = int.Parse(inventoryItemsAmount[i]);
 
             storedItems.Add(item, amount);
+            UIManager.Instance.AddInventoryItemToSlot(item, amount);
             Debug.Log($"{item.name} | {storedItems[item]}");
-
-            if (item.name == "CottonCord")
-            {
-                UIManager.Instance.UpdateItemDisplay(storedItems[item]);
-            }
         }
     }
 }

@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 5339273859494748940}
   - component: {fileID: 3562779595233767536}
   m_Layer: 5
-  m_Name: InventoryItemSlotIcon
+  m_Name: InventoryItemIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1720372990954475178
 RectTransform:
   m_ObjectHideFlags: 0
@@ -92,7 +92,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &464813528500961663
 RectTransform:
   m_ObjectHideFlags: 0
@@ -343,5 +343,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8073cd75029fd24ea64614d77629986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemAmount: {fileID: 0}
-  itemImage: {fileID: 465907743141208730}
+  itemAmountText: {fileID: 7365704993735334763}
+  itemIcon: {fileID: 3562779595233767536}

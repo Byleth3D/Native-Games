@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IUpdateSelectedHandler, IDeselectHandler
+public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
-    [SerializeField] private TextMeshPro itemAmount;
-    [SerializeField] private Image itemImage;
-    private InventoryItem inventoryItem;
+    [SerializeField] private TextMeshProUGUI itemAmountText;
+    [SerializeField] private Image itemIcon;
+    public InventoryItem inventoryItem { get; private set; }
 
     public void OnSelect(BaseEventData eventData)
     {
@@ -15,6 +15,7 @@ public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IUpdateSelectedH
 
         if (inventoryItem == null)
         {
+            Debug.LogWarning("ItemSlot null");
             return;
         }
 
@@ -27,37 +28,33 @@ public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IUpdateSelectedH
 
         if (inventoryItem == null)
         {
+            Debug.LogWarning("ItemSlot null");
             return;
         }
 
+        itemAmountText.gameObject.SetActive(false);
+        itemIcon.gameObject.SetActive(false);
         //Pedir para UIManager remover as informações do Slot Info
     }
 
-    public void Add(int itemAmount)
+    public void UpdateAmount(int itemAmount)
     {
-        this.itemAmount.text = $"{itemAmount}";
+        this.itemAmountText.text = $"{itemAmount}";
     }
 
     public void Add(InventoryItem inventoryItem, int itemAmount)
     {
         this.inventoryItem = inventoryItem;
-        this.itemAmount.text = $"{itemAmount}";
-        itemImage.sprite = inventoryItem.itemIcon;
+        this.itemAmountText.text = $"{itemAmount}";
+        itemIcon.sprite = inventoryItem.itemIcon;
+        itemAmountText.gameObject.SetActive(true);
+        itemIcon.gameObject.SetActive(true);
     }
 
-    public void Remove(int itemAmount)
-    {
-        this.itemAmount.text = $"{itemAmount}";
-    }
-
-    public void RemoveAll()
+    public void Remove()
     {
         inventoryItem = null;
-        this.itemAmount.text = $"{0}";
-        itemImage.sprite = inventoryItem.itemIcon;
-    }
-
-    public void OnUpdateSelected(BaseEventData eventData)
-    {
+        this.itemAmountText.text = $"{0}";
+        itemIcon.sprite = null;
     }
 }
