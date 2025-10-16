@@ -186,13 +186,13 @@ public class UIManager : Singleton<UIManager>
 
         for (int i = 0; i < inventorySlots; i++)
         {
-            if (firstEmptyIndex == -1 && inventoryItemSlots[i].inventoryItem == null)
+            if (firstEmptyIndex == -1 && inventoryItemSlots[i].InventoryItem == null)
             {
                 firstEmptyIndex = i;
                 continue;
             }
 
-            if (inventoryItemSlots[i].inventoryItem == inventoryItem)
+            if (inventoryItemSlots[i].InventoryItem == inventoryItem)
             {
                 existingItemIndex = i;
             }
@@ -219,9 +219,14 @@ public class UIManager : Singleton<UIManager>
         int index = -1;
         int inventorySlots = inventoryItemSlots.Count;
 
+        if (inventoryItem == null || inventoryItemAmount < 0)
+        {
+            return;
+        }
+
         for (int i = 0; i < inventorySlots; i++)
         {
-            if (inventoryItemSlots[i].inventoryItem != inventoryItem)
+            if (inventoryItemSlots[i].InventoryItem != inventoryItem)
             {
                 continue;
             }
@@ -242,6 +247,8 @@ public class UIManager : Singleton<UIManager>
         {
             inventoryItemSlots[index].UpdateAmount(inventoryItemAmount);
         }
+
+        ReorderInventorySlots();
     }
 
     public void ClearInventorySlots()
@@ -249,6 +256,44 @@ public class UIManager : Singleton<UIManager>
         foreach (InventoryItemSlot inventoryItemSlot in inventoryItemSlots)
         {
             inventoryItemSlot.Remove();
+        }
+    }
+
+    public void ReorderInventorySlots()
+    {
+        int inventorySlots = inventoryItemSlots.Count;
+
+        for (int i = 0; i < inventorySlots; i++)
+        {
+            if (inventoryItemSlots[i].InventoryItem != null || i == inventorySlots - 1)
+            {
+                continue;
+            }
+
+            if (i + 1 == inventorySlots - 1)
+            {
+                if (inventoryItemSlots[i + 1].InventoryItem != null)
+                {
+                    InventoryItemSlot itemSlot = inventoryItemSlots[i + 1];
+                    inventoryItemSlots[i].Add(itemSlot.InventoryItem, itemSlot.InventoryItemAmount);
+                    itemSlot.Remove();
+                }
+            }
+            else
+            {
+                for (int j = i + 1; j < inventorySlots; j++)
+                {
+                    if (inventoryItemSlots[j].InventoryItem == null)
+                    {
+                        continue;
+                    }
+
+                    InventoryItemSlot itemSlot = inventoryItemSlots[j];
+                    inventoryItemSlots[i].Add(itemSlot.InventoryItem, itemSlot.InventoryItemAmount);
+                    itemSlot.Remove();
+                    break;
+                }
+            }
         }
     }
     #endregion
