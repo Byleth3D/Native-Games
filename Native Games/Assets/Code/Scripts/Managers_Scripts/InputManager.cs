@@ -21,6 +21,7 @@ public class InputManager : Singleton<InputManager>
 
     private InputAction submitAction;
     private InputAction cancelAction;
+    private InputAction pointAction;
     private InputAction inventoryAction;
 
     public bool CancelPressed { get; private set; }
@@ -41,6 +42,7 @@ public class InputManager : Singleton<InputManager>
         pushAction = gameInputs.Player.Push;
         cancelAction = gameInputs.UI.Cancel;
         inventoryAction = gameInputs.UI.Inventory;
+        pointAction = gameInputs.UI.Point;
     }
 
     private void OnDisable()
@@ -151,6 +153,6 @@ public class InputManager : Singleton<InputManager>
 
     public Vector2 GetPointerPosition()
     {
-        return gameInputs.UI.Point.ReadValue<Vector2>();
+        return pointAction.ReadValue<Vector2>();
     }
 }
