@@ -1780,7 +1780,7 @@ MonoBehaviour:
   horizontalSpeed: 5
   pushingSpeed: 1.3
   airMultiplier: 0.825
-  maxJumpHeight: 3
+  maxJumpHeight: 1.85
   jumpPeakTime: 0.45
   jumpFallTime: 0.35
   coyoteDuration: 0.125
