@@ -20,7 +20,7 @@ public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
             return;
         }
 
-        UIManager.Instance.ShowInventorySlotInfo(InventoryItem);
+        GameplayUIManager.Instance.ShowInventorySlotInfo(InventoryItem);
     }
 
     public void OnDeselect(BaseEventData eventData)
@@ -33,7 +33,7 @@ public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
             return;
         }
 
-        UIManager.Instance.HideInventorySlotInfo();
+        GameplayUIManager.Instance.HideInventorySlotInfo();
     }
 
     public void UpdateAmount(int itemAmount)

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SaveManager : Singleton<SaveManager>
 {
-    private List<SaveData> saveFiles;
-    private int currentSaveIndex = -1;
+    public List<SaveData> SaveFiles {  get; private set; }
+    public int CurrentSaveIndex { get; private set; } = -1;
 
     protected override void Awake()
     {
@@ -15,7 +15,7 @@ public class SaveManager : Singleton<SaveManager>
 
     public void PreloadSaveFiles()
     {
-        saveFiles = new List<SaveData>();
+        SaveFiles = new List<SaveData>();
 
         if (PlayerPrefs.HasKey("SaveDataCount"))
         {
@@ -34,7 +34,7 @@ public class SaveManager : Singleton<SaveManager>
                     activeSceneName = PlayerPrefs.GetString($"Save_{i}_ActiveSceneName")
                 };
 
-                saveFiles.Add(saveData);
+                SaveFiles.Add(saveData);
             }
         }
     }
@@ -52,7 +52,23 @@ public class SaveManager : Singleton<SaveManager>
             activeSceneName = SceneLoader.Instance.GetActiveSceneName()
         };
 
-        currentSaveIndex = SaveGame(saveData);
+        CurrentSaveIndex = SaveGame(saveData);
+    }
+
+    public void NewSaveGameFromMenu()
+    {
+        SaveData saveData = new SaveData()
+        {
+            fileName = "SaveX",
+            fileDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            checkpointIndex = 0,
+            inventoryItems = "",
+            inventoryItemsAmount = "",
+            collectedItems = "",
+            activeSceneName = SceneLoader.Instance.GetNextSceneName()
+        };
+
+        CurrentSaveIndex = SaveGame(saveData);
     }
 
     private int SaveGame(SaveData saveData)
@@ -75,28 +91,28 @@ public class SaveManager : Singleton<SaveManager>
         PlayerPrefs.SetString($"Save_{saveIndex}_CollectedItems", saveData.collectedItems);
         PlayerPrefs.SetString($"Save_{saveIndex}_ActiveSceneName", saveData.activeSceneName);
 
-        saveFiles.Add(saveData);
+        SaveFiles.Add(saveData);
         return saveIndex;
     }
 
     public void LoadGame(int index)
     {
-        if (index >= saveFiles.Count)
+        if (index >= SaveFiles.Count)
         {
             Debug.LogError("Array Out of Bounds");
-            Debug.Log(saveFiles.Count);
+            Debug.Log(SaveFiles.Count);
             return;
         }
 
-        SaveData saveFile = saveFiles[index];
-        currentSaveIndex = index;
+        SaveData saveFile = SaveFiles[index];
+        CurrentSaveIndex = index;
 
         CheckpointManager.Instance.ReloadCheckpointsFrom(saveFile.checkpointIndex);
         InventoryManager.Instance.LoadInventory(saveFile.inventoryItems, saveFile.inventoryItemsAmount);
         InventoryManager.Instance.LoadCollectedItems(saveFile.collectedItems);
     }
 
-    public void LoadLatestGame()
+    public void LoadLastGame()
     {
         if (!PlayerPrefs.HasKey("SaveDataCount"))
         {

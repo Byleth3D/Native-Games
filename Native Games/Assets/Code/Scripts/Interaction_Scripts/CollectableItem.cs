@@ -21,7 +21,7 @@ public class CollectableItem : MonoBehaviour, IInteractable
 
     public void InteractionEnter(InteractionTrigger interactionTrigger, PlayerController playerController)
     {
-        UIManager.Instance.EnableInteractPopUp();
+        GameplayUIManager.Instance.EnableInteractPopUp();
         InteractionTrigger = interactionTrigger;
     }
 
@@ -29,7 +29,7 @@ public class CollectableItem : MonoBehaviour, IInteractable
     {
         if (InventoryManager.Instance.Collect(this.gameObject, inventoryItem))
         {
-            UIManager.Instance.DisableInteractPopUp();
+            GameplayUIManager.Instance.DisableInteractPopUp();
             collectSound?.PlayCollectSound();
             Invoke(nameof(SetDisable), 0.25f);
         }
@@ -46,6 +46,6 @@ public class CollectableItem : MonoBehaviour, IInteractable
 
     public void InteractionExit()
     {
-        UIManager.Instance.DisableInteractPopUp();
+        GameplayUIManager.Instance.DisableInteractPopUp();
     }
 }

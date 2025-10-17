@@ -13,12 +13,12 @@ public class DeliverableObject : MonoBehaviour, IInteractable
     public void InteractionEnter(InteractionTrigger interactionTrigger, PlayerController playerController)
     {
         InteractionTrigger = interactionTrigger;
-        UIManager.Instance.EnableInteractPopUp();
+        GameplayUIManager.Instance.EnableInteractPopUp();
     }
 
     public void Interaction()
     {
-        UIManager.Instance.DisableInteractPopUp();
+        GameplayUIManager.Instance.DisableInteractPopUp();
 
         if (InventoryManager.Instance.Deliver(inventoryItem, requestedItemAmount)) 
         {
@@ -33,13 +33,13 @@ public class DeliverableObject : MonoBehaviour, IInteractable
 
     public void InteractionCancel()
     {
-        UIManager.Instance.EnableInteractFailedPopUp();
+        GameplayUIManager.Instance.EnableInteractFailedPopUp();
         InteractionTrigger.TriggerInteractCancel(false);
     }
 
     public void InteractionExit()
     {
-        UIManager.Instance.DisableInteractPopUp();
-        UIManager.Instance.DisableInteractFailedPopUp();
+        GameplayUIManager.Instance.DisableInteractPopUp();
+        GameplayUIManager.Instance.DisableInteractFailedPopUp();
     }
 }

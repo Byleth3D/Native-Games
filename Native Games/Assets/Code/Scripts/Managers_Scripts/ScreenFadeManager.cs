@@ -74,7 +74,17 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
         fadeColor.a = 0.0f;
         fadeType = FadeType.FadeOut;
         currentColor = fadeColor;
-        Invoke(nameof(StartFade), CurrentFadeDelay);
+
+        if (CurrentFadeDelay > 0.0f)
+        {
+            CancelInvoke(nameof(StartFade));
+            Invoke(nameof(StartFade), CurrentFadeDelay);
+        }
+        else
+        {
+            CancelInvoke(nameof(StartFade));
+            StartFade();
+        }
     }
 
     public void RequestFadeOut(Action callback)
@@ -88,7 +98,17 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
         fadeType = FadeType.FadeOut;
         currentColor = fadeColor;
         onFadeComplete = callback;
-        Invoke(nameof(StartFade), CurrentFadeDelay);
+
+        if (CurrentFadeDelay > 0.0f)
+        {
+            CancelInvoke(nameof(StartFade));
+            Invoke(nameof(StartFade), CurrentFadeDelay);
+        }
+        else
+        {
+            CancelInvoke(nameof(StartFade));
+            StartFade();
+        }
     }
 
     public void RequestFadeIn()
@@ -101,7 +121,17 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
         fadeColor.a = 1.0f;
         fadeType = FadeType.FadeIn;
         currentColor = fadeColor;
-        Invoke(nameof(StartFade), CurrentFadeDelay);
+
+        if (CurrentFadeDelay > 0.0f)
+        {
+            CancelInvoke(nameof(StartFade));
+            Invoke(nameof(StartFade), CurrentFadeDelay);
+        }
+        else
+        {
+            CancelInvoke(nameof(StartFade));
+            StartFade();
+        }
     }
 
     public void RequestFadeIn(Action callback)
@@ -115,7 +145,17 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
         fadeType = FadeType.FadeIn;
         currentColor = fadeColor;
         onFadeComplete = callback;
-        Invoke(nameof(StartFade), CurrentFadeDelay);
+
+        if (CurrentFadeDelay > 0.0f)
+        {
+            CancelInvoke(nameof(StartFade));
+            Invoke(nameof(StartFade), CurrentFadeDelay);
+        }
+        else
+        {
+            CancelInvoke(nameof(StartFade));
+            StartFade();
+        }
     }
 
     private void StartFade()

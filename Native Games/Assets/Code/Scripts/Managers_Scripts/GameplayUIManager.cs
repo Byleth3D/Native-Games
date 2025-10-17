@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class UIManager : Singleton<UIManager>
+public class GameplayUIManager : Singleton<GameplayUIManager>
 {
     [Header("Menus")]
     [SerializeField] private GameObject inventoryMenu;

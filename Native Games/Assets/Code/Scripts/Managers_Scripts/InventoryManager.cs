@@ -32,7 +32,7 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         collectedItems.Add(collectableItemObject);
-        UIManager.Instance.AddInventoryItemToSlot(inventoryItem, amount);
+        GameplayUIManager.Instance.AddInventoryItemToSlot(inventoryItem, amount);
         return true;
     }
 
@@ -61,7 +61,7 @@ public class InventoryManager : Singleton<InventoryManager>
             storedItems[inventoryItem] = newAmount;
         }
 
-        UIManager.Instance.RemoveInventoryItemFromSlot(inventoryItem, newAmount);
+        GameplayUIManager.Instance.RemoveInventoryItemFromSlot(inventoryItem, newAmount);
         return true;
     }
 
@@ -198,7 +198,7 @@ public class InventoryManager : Singleton<InventoryManager>
             storedItems.Clear();
         }
 
-        UIManager.Instance.ClearInventorySlots();
+        GameplayUIManager.Instance.ClearInventorySlots();
 
         for (int i = 0; i < inventoryItems.Length; i++)
         {
@@ -206,7 +206,7 @@ public class InventoryManager : Singleton<InventoryManager>
             int amount = int.Parse(inventoryItemsAmount[i]);
 
             storedItems.Add(item, amount);
-            UIManager.Instance.AddInventoryItemToSlot(item, amount);
+            GameplayUIManager.Instance.AddInventoryItemToSlot(item, amount);
             Debug.Log($"{item.name} | {storedItems[item]}");
         }
     }

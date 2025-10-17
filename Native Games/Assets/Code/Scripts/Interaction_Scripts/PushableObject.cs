@@ -53,14 +53,14 @@ public class PushableObject : MonoBehaviour, IInteractable
     public void InteractionEnter(InteractionTrigger interactionTrigger, PlayerController playerController)
     {
         this.playerController = playerController;
-        UIManager.Instance.EnablePushPopUp();
+        GameplayUIManager.Instance.EnablePushPopUp();
     }
 
     public void Interaction()
     {
         TurnRigidbodyDynamic();
         Push();
-        UIManager.Instance.DisablePushPopUp();
+        GameplayUIManager.Instance.DisablePushPopUp();
     }
 
     public void InteractionCancel()
@@ -73,6 +73,6 @@ public class PushableObject : MonoBehaviour, IInteractable
     {
         rigidBody.AddForce(-rigidBody.linearVelocity, ForceMode.VelocityChange);
         TurnRigidbodyKinematic();
-        UIManager.Instance.DisablePushPopUp();
+        GameplayUIManager.Instance.DisablePushPopUp();
     }
 }
