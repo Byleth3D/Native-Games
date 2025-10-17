@@ -103,7 +103,6 @@ public class SceneLoader : Singleton<SceneLoader>
         ScreenFadeManager.Instance.RequestFadeOut(() =>
         {
             ScreenFadeManager.Instance.ResetValues();
-            Debug.Log("Called Fader");
         });
 
         while (ScreenFadeManager.Instance.IsFading)
@@ -125,13 +124,11 @@ public class SceneLoader : Singleton<SceneLoader>
             if (loadingOperation.progress >= 0.9f)
             {
                 loadingOperation.allowSceneActivation = true;
-                Debug.Log("Loaded");
             }
 
             yield return null;
         }
 
-        Debug.Log("Ended");
         // Tela de loading começa sumir quando o carregamento da cena termina
         ScreenFadeManager.Instance.RequestFadeIn();//Fader
         yield return null;

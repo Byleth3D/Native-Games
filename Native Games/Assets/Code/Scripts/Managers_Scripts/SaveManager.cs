@@ -1,16 +1,22 @@
 ﻿using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : Singleton<SaveManager>
 {
-    public List<SaveData> SaveFiles {  get; private set; }
+    public List<SaveData> SaveFiles { get; private set; }
     public int CurrentSaveIndex { get; private set; } = -1;
 
     protected override void Awake()
     {
         base.Awake();
         PreloadSaveFiles();
+
+        if (SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            LoadLastGame();
+        }
     }
 
     public void PreloadSaveFiles()
