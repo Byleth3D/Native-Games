@@ -30,6 +30,8 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
         base.Awake();
         EnableMovePopUp();
         Invoke(nameof(DisableActivePopup), 5.0f);
+        inventoryMenu.SetActive(false);
+        pauseMenu.SetActive(false);
     }
 
     private void Update()
@@ -39,15 +41,12 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
             if (InputManager.Instance.CancelPressed)
             {
                 EnablePauseMenu();
-                GameManager.Instance.PauseGame();
                 return;
             }
 
             if (InputManager.Instance.InventoryPressed)
             {
                 EnableInventoryMenu();
-
-                return;
             }
         }
         else
@@ -55,7 +54,20 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
             if (InputManager.Instance.CancelPressed)
             {
                 DisableActiveMenu();
-                GameManager.Instance.UnpauseGame();
+                return;
+            }
+
+            if (InputManager.Instance.InventoryPressed)
+            {
+                if (activeMenu == pauseMenu)
+                {
+                    return;
+                }
+
+                if (activeMenu == inventoryMenu)
+                {
+                    DisableInventoryMenu();
+                }
             }
         }
     }
@@ -130,6 +142,7 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
     public void DisablePauseMenu()
     {
         DisableActiveMenu();
+        GameManager.Instance.UnpauseGame();
     }
 
     public void EnableInventoryMenu()
@@ -141,6 +154,7 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
     public void DisableInventoryMenu()
     {
         DisableActiveMenu();
+        GameManager.Instance.UnpauseGame();
     }
 
     private void EnableActiveMenu(GameObject menu)
