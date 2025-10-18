@@ -331,6 +331,7 @@ public class PlayerController : MonoBehaviour
         {
             IsAlive = true;
             animator.SetTrigger("Alive");
+            animator.SetBool("IsGrounded", true);
         }
 
         InputManager.Instance.DisablePlayerActions(inputDisableDuration);
@@ -339,7 +340,6 @@ public class PlayerController : MonoBehaviour
     public void SetAsDead()
     {
         IsAlive = false;
-        canMove = false;
 
         coyoteTimer.Stop();
         jumpBufferTimer.Stop();
@@ -388,16 +388,19 @@ public class PlayerController : MonoBehaviour
         {
             if (InteractionTrigger.GetInteractionType() == InteractionType.Push)
             {
-                if (InputManager.Instance.PushHeld && !IsPushing)
+                if (InputManager.Instance.InteractPressed)
                 {
-                    IsPushing = true;
-                    canMove = false;
-                    animator.SetBool("Push", true);
-                }
-                else if (!InputManager.Instance.PushHeld && IsPushing)
-                {
-                    InteractionCancel();
-                    canMove = true;
+                    if (!IsPushing)
+                    {
+                        IsPushing = true;
+                        canMove = false;
+                        animator.SetBool("Push", true);
+                    }
+                    else
+                    {
+                        InteractionCancel();
+                        canMove = true;
+                    }
                 }
             }
             else
@@ -411,7 +414,6 @@ public class PlayerController : MonoBehaviour
                         animator.SetTrigger("Pick");
                         InputManager.Instance.DisablePlayerActions(2.3f);
                     }
-
                 }
             }
         }
