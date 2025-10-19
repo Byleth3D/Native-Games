@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
-
 public class InputManager : Singleton<InputManager>
 {
     private GameInputs gameInputs;
@@ -11,12 +10,10 @@ public class InputManager : Singleton<InputManager>
     private InputAction interactAction;
     private InputAction jumpAction;
     private InputAction moveAction;
-    private InputAction pushAction;
 
     public Vector2 MotionInput { get; private set; }
     public bool JumpPressed { get; private set; }
     public bool InteractPressed { get; private set; }
-    public bool PushHeld { get; private set; }
     #endregion
 
     private InputAction submitAction;
@@ -39,7 +36,6 @@ public class InputManager : Singleton<InputManager>
         interactAction = gameInputs.Player.Interact;
         jumpAction = gameInputs.Player.Jump;
         moveAction = gameInputs.Player.Move;
-        pushAction = gameInputs.Player.Push;
         cancelAction = gameInputs.UI.Cancel;
         inventoryAction = gameInputs.UI.Inventory;
         pointAction = gameInputs.UI.Point;
@@ -69,15 +65,6 @@ public class InputManager : Singleton<InputManager>
         MotionInput = moveAction.ReadValue<Vector2>();
         JumpPressed = jumpAction.WasPressedThisFrame();
         InteractPressed = interactAction.WasPressedThisFrame();
-
-        if (pushAction.enabled)
-        {
-            PushHeld = pushAction.phase == InputActionPhase.Performed ? true : false;
-        }
-        else
-        {
-            PushHeld = false;
-        }
     }
 
     private void GetUserInterfaceInputs()
@@ -128,6 +115,7 @@ public class InputManager : Singleton<InputManager>
     private void DisableAction(InputAction actionToDisable)
     {
         actionToDisable.Disable();
+        actionToDisable.Reset();
     }
 
     public void EnablePlayerActions()
