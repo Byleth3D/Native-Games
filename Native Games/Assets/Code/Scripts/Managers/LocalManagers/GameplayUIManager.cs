@@ -1,6 +1,8 @@
+using UnityEngine;
 
 public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 {
+    [SerializeField] private GameObject mobileHUD;
     public InGameMenuManager inGameMenuManager;
     public PopupManager popupManager;
     public InventoryMenuManager inventoryMenuManager;
@@ -10,10 +12,27 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
         base.Awake();
         inGameMenuManager.Setup();
         popupManager.Setup();
+
+#if !UNITY_EDITOR
+        if (Application.platform == RuntimePlatform.Android
+    || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            mobileHUD.SetActive(true);
+        }
+        else
+        {
+            mobileHUD.SetActive(false);
+        }
+#endif
     }
 
     private void Update()
     {
+        if (ScreenFadeManager.Instance.IsFading)
+        {
+            return;
+        }
+
         if (InputManager.Instance.CancelPressed)
         {
             if (inGameMenuManager.HasOverlappingMenu || inGameMenuManager.HasActiveMenu)
@@ -48,11 +67,21 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 
     public void EnableInGameMenu(string inGameMenu)
     {
+        if (ScreenFadeManager.Instance.IsFading)
+        {
+            return;
+        }
+
         inGameMenuManager.EnableInGameMenu(inGameMenu);
     }
 
     public void DisableInGameMenu(string inGameMenu)
     {
+        if (ScreenFadeManager.Instance.IsFading)
+        {
+            return;
+        }
+
         inGameMenuManager.DisableInGameMenu(inGameMenu);
     }
 }

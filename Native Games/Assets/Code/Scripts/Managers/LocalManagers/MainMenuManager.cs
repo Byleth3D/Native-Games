@@ -14,12 +14,22 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
 
     public void NewGame()
     {
+        if (ScreenFadeManager.Instance.IsFading)
+        {
+            return;
+        }
+
         DisableMenuButtons();
         SceneLoader.Instance.StartNewGameLoadingChain();
     }
 
     public void ContinueGame()
     {
+        if (ScreenFadeManager.Instance.IsFading)
+        {
+            return;
+        }
+
         DisableMenuButtons();
         SceneLoader.Instance.StartLastGameLoadingChain();
     }
@@ -73,11 +83,21 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
 
     public void EnableInGameMenu(string inGameMenu)
     {
+        if (ScreenFadeManager.Instance.IsFading)
+        {
+            return;
+        }
+
         inGameMenuManager.EnableInGameMenu(inGameMenu);
     }
 
     public void DisableInGameMenu(string inGameMenu)
     {
+        if (ScreenFadeManager.Instance.IsFading)
+        {
+            return;
+        }
+
         inGameMenuManager.DisableInGameMenu(inGameMenu);
     }
 }
