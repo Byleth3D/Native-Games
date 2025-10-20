@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -12,8 +13,30 @@ public class FPSCounter : MonoBehaviour
         fpsCounterText = GetComponent<TextMeshProUGUI>();
     }
 
-    private void Update()
+    private void Start()
     {
-        fpsCounterText.text = $"{1f / Time.deltaTime} | {Application.targetFrameRate}";
+        StartCoroutine(GetAverageFrameRate());
+    }
+
+    private IEnumerator GetAverageFrameRate()
+    {
+        float time = 0;
+        int frames = 0;
+
+        while (true)
+        {
+            time += Time.deltaTime;
+            frames++;
+
+            if (time >= 1.0f)
+            {
+                float average = 1f / (time / frames);
+                fpsCounterText.text = $"{average:F0} | {Application.targetFrameRate}";
+                time = 0;
+                frames = 0;
+            }
+
+            yield return null;
+        }
     }
 }
