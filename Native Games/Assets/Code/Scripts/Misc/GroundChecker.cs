@@ -54,11 +54,10 @@ public class GroundChecker : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Collider Center: {collider3D.center}");
             end = origin + Vector3.down * groundDistance;
         }
 
-        Debug.DrawLine(origin, end);
+        Debug.DrawLine(origin, end, Gizmos.color);
         Gizmos.DrawSphere(end, 0.1f);
     }
 }
