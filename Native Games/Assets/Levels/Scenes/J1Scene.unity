@@ -2035,8 +2035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d105bfa5baaffa409e67603f27c432c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphereRadius: 0.4
-  groundDistance: 0.05
+  groundDistance: 0.9125
   groundLayers:
     serializedVersion: 2
     m_Bits: 65

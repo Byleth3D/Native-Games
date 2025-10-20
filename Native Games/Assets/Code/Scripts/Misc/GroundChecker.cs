@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GroundChecker : MonoBehaviour
 {
-    [SerializeField] private float sphereRadius = 0.5f;
     [SerializeField] private float groundDistance = 0.01f;
     [SerializeField] private LayerMask groundLayers;
 
@@ -17,7 +16,7 @@ public class GroundChecker : MonoBehaviour
     public bool IsGrounded { get; private set; }
     public bool PreviousGrounded { get; private set; }
 
-    private void Update()
+    private void FixedUpdate()
     {
         PreviousGrounded = IsGrounded;
         Check();
@@ -26,18 +25,8 @@ public class GroundChecker : MonoBehaviour
 
     private void Check()
     {
-        Vector3 origin = transform.position + Vector3.up * collider3D.radius;
-
-        bool hit = Physics.SphereCast(origin, sphereRadius, Vector3.down, out hitInfo, 1000f, groundLayers, QueryTriggerInteraction.Ignore);
-
-        if (!hit)
-        {
-            IsGrounded = false;
-        }
-        else
-        {
-            IsGrounded = transform.position.y - hitInfo.point.y <= groundDistance ? true : false;
-        }
+        Vector3 origin = collider3D.transform.TransformPoint(collider3D.center);
+        IsGrounded = Physics.Raycast(origin, Vector3.down, out hitInfo, groundDistance, groundLayers);
     }
 
     private void Respond()
@@ -56,9 +45,20 @@ public class GroundChecker : MonoBehaviour
     {
         Gizmos.color = IsGrounded ? Color.green : Color.red;
 
-        Vector3 origin = transform.position + Vector3.up * sphereRadius;
-        origin = IsGrounded ? origin : origin + Vector3.down * 1000f;
+        Vector3 origin = collider3D.transform.TransformPoint(collider3D.center);
+        Vector3 end = Vector3.zero;
 
-        Gizmos.DrawSphere(origin, sphereRadius);
+        if (IsGrounded)
+        {
+            end = hitInfo.point;
+        }
+        else
+        {
+            Debug.Log($"Collider Center: {collider3D.center}");
+            end = origin + Vector3.down * groundDistance;
+        }
+
+        Debug.DrawLine(origin, end);
+        Gizmos.DrawSphere(end, 0.1f);
     }
 }
