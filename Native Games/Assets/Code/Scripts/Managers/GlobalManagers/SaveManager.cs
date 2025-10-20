@@ -12,7 +12,10 @@ public class SaveManager : Singleton<SaveManager>
     {
         base.Awake();
         PreloadSaveFiles();
+    }
 
+    private void Start()
+    {
         if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             LoadLastGame();

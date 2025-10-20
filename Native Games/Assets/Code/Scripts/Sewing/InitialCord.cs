@@ -50,7 +50,7 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
 
         lineRenderer.SetAllDirty();
 
-        Debug.Log($"Pointer Screen: {pointerScreenPoint} | Local Screen: {pointerCanvasPoint} | Transform Positon {cordRectTransform.transform.position}");
+        //Debug.Log($"Pointer Screen: {pointerScreenPoint} | Local Screen: {pointerCanvasPoint} | Transform Positon {cordRectTransform.transform.position}");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
