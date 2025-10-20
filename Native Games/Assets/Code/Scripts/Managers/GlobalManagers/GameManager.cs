@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -16,5 +17,13 @@ public class GameManager : Singleton<GameManager>
         InputManager.Instance.EnablePlayerActions();
         Time.timeScale = 1f;
         Paused = false;
+    }
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

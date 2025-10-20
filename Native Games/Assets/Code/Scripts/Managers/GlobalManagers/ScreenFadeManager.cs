@@ -1,27 +1,24 @@
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ScreenFadeManager : Singleton<ScreenFadeManager>
 {
     [SerializeField] private bool fadeOnAwake = true;
 
-    [SerializeField] private float defaultFadeInDuration = 1.0f;
-    [SerializeField] private float defaultFadeOutDuration = 1.0f;
-    [SerializeField] private float defaultFadeDelay = 1.0f;
+    [SerializeField] private FadeConfig defaultFadeConfig;
+    [SerializeField] private List<FadeConfig> fadeConfigs;
+    private Color fadeColor;
+    private Color currentColor;
 
     public float CurrentFadeInDuration { get; set; }
     public float CurrentFadeOutDuration { get; set; }
+    public float CurrentCallbackDelay { get; set; }
     public float CurrentFadeDelay { get; set; }
 
-    [SerializeField] private Color fadeColor = Color.white;
-    private Color currentColor;
-
-    [SerializeField] private float defaultCallbackDelay = 1.0f;
-    private Action onFadeComplete;
-    public float CurrentCallbackDelay { get; set; }
-
     private FadeType fadeType = FadeType.FadeIn;
+
+    private Action onFadeComplete;
 
     public bool IsFading { get; private set; } = false;
 
@@ -31,11 +28,13 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
 
         fadeType = fadeOnAwake ? FadeType.FadeIn : FadeType.FadeOut;
 
-        CurrentFadeInDuration = defaultFadeInDuration;
-        CurrentFadeOutDuration = defaultFadeOutDuration;
-        CurrentFadeDelay = defaultFadeDelay;
+        CurrentFadeInDuration = defaultFadeConfig.fadeInDuration;
+        CurrentFadeOutDuration = defaultFadeConfig.fadeOutDuration;
+        CurrentFadeDelay = defaultFadeConfig.fadeDelay;
 
-        CurrentCallbackDelay = defaultCallbackDelay;
+        CurrentCallbackDelay = defaultFadeConfig.callbackDelay;
+
+        fadeColor = defaultFadeConfig.fadeColor;
 
         if (fadeOnAwake)
         {
@@ -198,15 +197,59 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
         onFadeComplete = null;
     }
 
-    public void ResetValues()
+    public void ResetConfig()
     {
-        CurrentFadeInDuration = defaultFadeInDuration;
-        CurrentFadeOutDuration = defaultFadeOutDuration;
-        CurrentFadeDelay = defaultFadeDelay;
+        CurrentFadeInDuration = defaultFadeConfig.fadeInDuration;
+        CurrentFadeOutDuration = defaultFadeConfig.fadeOutDuration;
+        CurrentFadeDelay = defaultFadeConfig.fadeDelay;
+        CurrentCallbackDelay = defaultFadeConfig.callbackDelay;
+        fadeColor = defaultFadeConfig.fadeColor;
+    }
+
+    private FadeConfig FindFadeConfig(string fadeConfigName)
+    {
+        foreach (FadeConfig fadeConfig in fadeConfigs)
+        {
+            if (fadeConfig.fadeConfigName != fadeConfigName)
+            {
+                continue;
+            }
+
+            return fadeConfig;
+        }
+
+        return defaultFadeConfig;
+    }
+
+    public void SetConfig(string fadeConfigName)
+    {
+        if (string.IsNullOrEmpty(fadeConfigName))
+        {
+            return;
+        }
+
+        FadeConfig fadeConfig = FindFadeConfig(fadeConfigName);
+
+        CurrentFadeInDuration = fadeConfig.fadeInDuration;
+        CurrentFadeOutDuration = fadeConfig.fadeOutDuration;
+        CurrentFadeDelay = fadeConfig.fadeDelay;
+        CurrentCallbackDelay = fadeConfig.callbackDelay;
+        fadeColor = fadeConfig.fadeColor;
     }
 }
 
 public enum FadeType
 {
     FadeIn, FadeOut
+}
+
+[Serializable]
+public class FadeConfig
+{
+    public string fadeConfigName;
+    public float fadeInDuration = 1.5f;
+    public float fadeOutDuration = 1.5f;
+    public float fadeDelay = 0.25f;
+    public Color fadeColor = Color.white;
+    public float callbackDelay = 0.25f;
 }

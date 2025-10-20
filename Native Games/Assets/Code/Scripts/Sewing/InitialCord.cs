@@ -90,10 +90,11 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
             return;
         }
 
-        if (sewing.HoveredCord && CordColor == sewing.HoveredCord.CordColor)
+        if (sewing.HoveredCord && CordColor == sewing.HoveredCord.CordColor && Direction == sewing.HoveredCord.Direction)
         {
             IsConnected = true;
             sewing.HoveredCord.IsConnected = true;
+            sewing.CheckCompletition();
         }
         else
         {

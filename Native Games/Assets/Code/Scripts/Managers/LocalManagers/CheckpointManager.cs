@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class CheckpointManager : Singleton<CheckpointManager>
+public class CheckpointManager : LocalSingleton<CheckpointManager>
 {
     [SerializeField] private List<Checkpoint> checkpoints = new();
 

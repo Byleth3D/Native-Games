@@ -434,11 +434,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeOnAwake: 1
-  defaultFadeInDuration: 1.5
-  defaultFadeOutDuration: 1.5
-  defaultFadeDelay: 0.25
-  fadeColor: {r: 1, g: 1, b: 1, a: 1}
-  defaultCallbackDelay: 0.25
+  defaultFadeConfig:
+    fadeConfigName: Default
+    fadeInDuration: 1.5
+    fadeOutDuration: 1.5
+    fadeDelay: 0.25
+    fadeColor: {r: 1, g: 1, b: 1, a: 1}
+    callbackDelay: 0.25
+  fadeConfigs:
+  - fadeConfigName: Loading
+    fadeInDuration: 1.5
+    fadeOutDuration: 1.5
+    fadeDelay: 0
+    fadeColor: {r: 0, g: 0, b: 0, a: 1}
+    callbackDelay: 0
+  - fadeConfigName: Death
+    fadeInDuration: 1.5
+    fadeOutDuration: 2
+    fadeDelay: 0.5
+    fadeColor: {r: 1, g: 1, b: 1, a: 1}
+    callbackDelay: 0.25
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

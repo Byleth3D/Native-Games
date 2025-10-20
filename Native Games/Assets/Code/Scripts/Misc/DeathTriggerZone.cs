@@ -18,15 +18,12 @@ public class DeathTriggerZone : MonoBehaviour
 
         playerController.SetAsDead();
 
-        ScreenFadeManager.Instance.CurrentFadeDelay = 0.25f;
-        ScreenFadeManager.Instance.CurrentCallbackDelay = 0.5f;
-        ScreenFadeManager.Instance.CurrentFadeInDuration = 1.5f;
-        ScreenFadeManager.Instance.CurrentFadeOutDuration = 2.0f;
+        ScreenFadeManager.Instance.SetConfig("Death");
 
         ScreenFadeManager.Instance.RequestFadeOut(() =>
         {
             CheckpointManager.Instance.CheckpointTeleport();
-            ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetValues());
+            ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());
         });
     }
 }

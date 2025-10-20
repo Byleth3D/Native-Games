@@ -12,13 +12,11 @@ public class SceneLoader : Singleton<SceneLoader>
     public void LoadScene(int nextSceneIndex)
     {
         loadingOperation = SceneManager.LoadSceneAsync(nextSceneIndex);
-        loadingOperation.allowSceneActivation = false;
     }
 
     public void LoadScene(string nextSceneName)
     {
         loadingOperation = SceneManager.LoadSceneAsync(nextSceneName);
-        loadingOperation.allowSceneActivation = false;
     }
 
     public void LoadNextScene()
@@ -37,8 +35,12 @@ public class SceneLoader : Singleton<SceneLoader>
             nextSceneIndex = 0;
         }
 
-        ScreenFadeManager.Instance.ResetValues();
-        ScreenFadeManager.Instance.RequestFadeOut(() => LoadScene(nextSceneIndex));
+        ScreenFadeManager.Instance.ResetConfig();
+        ScreenFadeManager.Instance.RequestFadeOut(() =>
+        {
+            LoadScene(nextSceneIndex);
+            ScreenFadeManager.Instance.RequestFadeIn();
+        });
     }
 
     public void ReloadScene()
@@ -52,7 +54,7 @@ public class SceneLoader : Singleton<SceneLoader>
 
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        ScreenFadeManager.Instance.ResetValues();
+        ScreenFadeManager.Instance.ResetConfig();
         ScreenFadeManager.Instance.RequestFadeOut(() => LoadScene(currentSceneIndex));
     }
 
@@ -96,14 +98,10 @@ public class SceneLoader : Singleton<SceneLoader>
     private IEnumerator NewGameLoadingChain()
     {
         Debug.Log("Started");
-        ScreenFadeManager.Instance.CurrentCallbackDelay = 0.0f;
-        ScreenFadeManager.Instance.CurrentFadeDelay = 0.0f;
-        ScreenFadeManager.Instance.CurrentFadeOutDuration = 1.5f;
 
-        ScreenFadeManager.Instance.RequestFadeOut(() =>
-        {
-            ScreenFadeManager.Instance.ResetValues();
-        });
+        ScreenFadeManager.Instance.SetConfig("Loading");
+
+        ScreenFadeManager.Instance.RequestFadeOut();
 
         while (ScreenFadeManager.Instance.IsFading)
         {
@@ -118,6 +116,7 @@ public class SceneLoader : Singleton<SceneLoader>
         string sceneName = saveFiles[currentSaveIndex].activeSceneName;
 
         LoadScene(sceneName);
+        loadingOperation.allowSceneActivation = false;
 
         while (!loadingOperation.isDone)
         {
@@ -130,17 +129,14 @@ public class SceneLoader : Singleton<SceneLoader>
         }
 
         // Tela de loading começa sumir quando o carregamento da cena termina
-        ScreenFadeManager.Instance.RequestFadeIn();//Fader
+        ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());//Fader
         yield return null;
     }
 
     private IEnumerator LastGameLoadingChain()
     {
-        ScreenFadeManager.Instance.CurrentCallbackDelay = 0.0f;
-        ScreenFadeManager.Instance.CurrentFadeDelay = 0.0f;
-        ScreenFadeManager.Instance.CurrentFadeOutDuration = 1.5f;
-
-        ScreenFadeManager.Instance.RequestFadeOut(() => ScreenFadeManager.Instance.ResetValues());
+        ScreenFadeManager.Instance.SetConfig("Loading");
+        ScreenFadeManager.Instance.RequestFadeOut();
 
         while (ScreenFadeManager.Instance.IsFading)
         {
@@ -153,6 +149,7 @@ public class SceneLoader : Singleton<SceneLoader>
         string sceneName = saveFiles[lastSaveIndex].activeSceneName;
 
         LoadScene(sceneName);
+        loadingOperation.allowSceneActivation = false;
 
         while (!loadingOperation.isDone)
         {
@@ -166,16 +163,7 @@ public class SceneLoader : Singleton<SceneLoader>
 
         SaveManager.Instance.LoadLastGame();
         // Tela de loading começa sumir quando o carregamento da cena termina
-        ScreenFadeManager.Instance.RequestFadeIn();//Fader
+        ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());//Fader
         yield return null;
-    }
-
-    public void ExitGame()
-    {
-#if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
     }
 }

@@ -1,14 +1,20 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
+using System.Linq;
 
 public class Sewing : MonoBehaviour
 {
     [SerializeField] private List<Color> cordColors;
     [SerializeField] private List<Cord> cords;
+    [Space]
+    [SerializeField] private UnityEvent OnComplete;
 
     private List<Color> availableCordColors;
-    private List<Cord> availableInitialCords;
-    private List<Cord> availableEndCords;
+    private List<Cord> availableHorizontalInitialCords;
+    private List<Cord> availableHorizontalFinalCords;
+    private List<Cord> availableVerticalInitialCords;
+    private List<Cord> availableVerticalFinalCords;
 
     public InitialCord DraggedCord { get; set; }
     public FinalCord HoveredCord { get; set; }
@@ -17,36 +23,70 @@ public class Sewing : MonoBehaviour
     private void Start()
     {
         availableCordColors = new(cordColors);
-        availableInitialCords = new List<Cord>();
-        availableEndCords = new List<Cord>();
+        availableHorizontalInitialCords = new List<Cord>();
+        availableHorizontalFinalCords = new List<Cord>();
+        availableVerticalInitialCords = new List<Cord>();
+        availableVerticalFinalCords = new List<Cord>();
 
 
         foreach (Cord cord in cords)
         {
             if (cord is InitialCord)
             {
-                availableInitialCords.Add(cord);
+                if (cord.Direction == CordDirection.Horizontal)
+                {
+                    availableHorizontalInitialCords.Add(cord);
+                }
+                else
+                {
+                    availableVerticalInitialCords.Add(cord);
+                }
             }
             else
             {
-                availableEndCords.Add(cord);
+                if (cord.Direction == CordDirection.Horizontal)
+                {
+                    availableHorizontalFinalCords.Add(cord);
+                }
+                else
+                {
+                    availableVerticalFinalCords.Add(cord);
+                }
             }
         }
 
-        while (cordColors.Count > 0 && availableInitialCords.Count > 0 && availableEndCords.Count > 0)
+        while (cordColors.Count > 0 && availableHorizontalInitialCords.Count > 0 && availableHorizontalFinalCords.Count > 0)
         {
             int colorIndex = Random.Range(0, availableCordColors.Count);
             Color color = availableCordColors[colorIndex];
 
-            int leftIndex = Random.Range(0, availableInitialCords.Count);
-            int rightIndex = Random.Range(0, availableEndCords.Count);
+            int initialHorizontalIndex = Random.Range(0, availableHorizontalInitialCords.Count);
+            int finalHorizontalIndex = Random.Range(0, availableHorizontalFinalCords.Count);
 
-            availableInitialCords[leftIndex].Setup(color, this);
-            availableEndCords[rightIndex].Setup(color, this);
+            int initialVerticalIndex = Random.Range(0, availableVerticalInitialCords.Count);
+            int finalVerticalIndex = Random.Range(0, availableVerticalFinalCords.Count);
+
+            availableHorizontalInitialCords[initialHorizontalIndex].Setup(color, this);
+            availableHorizontalFinalCords[finalHorizontalIndex].Setup(color, this);
+
+            availableVerticalInitialCords[initialVerticalIndex].Setup(color, this);
+            availableVerticalFinalCords[finalVerticalIndex].Setup(color, this);
 
             availableCordColors.Remove(color);
-            availableInitialCords.RemoveAt(leftIndex);
-            availableEndCords.RemoveAt(rightIndex);
+
+            availableHorizontalInitialCords.RemoveAt(initialHorizontalIndex);
+            availableHorizontalFinalCords.RemoveAt(finalHorizontalIndex);
+
+            availableVerticalInitialCords.RemoveAt(initialVerticalIndex);
+            availableVerticalFinalCords.RemoveAt(finalVerticalIndex);
+        }
+    }
+
+    public void CheckCompletition()
+    {
+        if (cords.All(cord => cord.IsConnected))
+        {
+            OnComplete?.Invoke();
         }
     }
 }

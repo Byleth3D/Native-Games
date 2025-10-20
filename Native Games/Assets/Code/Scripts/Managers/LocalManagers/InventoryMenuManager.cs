@@ -1,181 +1,17 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class GameplayUIManager : Singleton<GameplayUIManager>
+[Serializable]
+public class InventoryMenuManager
 {
-    [Header("Menus")]
-    [SerializeField] private GameObject inventoryMenu;
-    [SerializeField] private GameObject pauseMenu;
-    private GameObject activeMenu;
-
-    [Header("Popups")]
-    [SerializeField] private GameObject movePopup;
-    [SerializeField] private GameObject interactPopup;
-    [SerializeField] private GameObject interactFailed;
-    [SerializeField] private GameObject pushPopup;
-
-    private GameObject activePopup;
-
-    [Header("Inventory")]
     [SerializeField] private TextMeshProUGUI InventorySlotName;
     [SerializeField] private TextMeshProUGUI InventorySlotDescription;
     [SerializeField] private Image InventorySlotUsageImage;
     [SerializeField] private List<InventoryItemSlot> inventorySlots;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        EnableMovePopUp();
-        Invoke(nameof(DisableActivePopup), 5.0f);
-        inventoryMenu.SetActive(false);
-        pauseMenu.SetActive(false);
-    }
-
-    private void Update()
-    {
-        if (!GameManager.Instance.Paused)
-        {
-            if (InputManager.Instance.CancelPressed)
-            {
-                EnablePauseMenu();
-                return;
-            }
-
-            if (InputManager.Instance.InventoryPressed)
-            {
-                EnableInventoryMenu();
-            }
-        }
-        else
-        {
-            if (InputManager.Instance.CancelPressed)
-            {
-                DisableActiveMenu();
-                return;
-            }
-
-            if (InputManager.Instance.InventoryPressed)
-            {
-                if (activeMenu == pauseMenu)
-                {
-                    return;
-                }
-
-                if (activeMenu == inventoryMenu)
-                {
-                    DisableInventoryMenu();
-                }
-            }
-        }
-    }
-
-    #region Popup Methods
-    public void EnableMovePopUp()
-    {
-        DisableActivePopup();
-        SetActivePopup(movePopup);
-    }
-
-    public void DisableMovePopUp()
-    {
-        DisableActivePopup();
-    }
-
-    public void EnableInteractPopUp()
-    {
-        DisableActivePopup();
-        SetActivePopup(interactPopup);
-    }
-
-    public void DisableInteractPopUp()
-    {
-        DisableActivePopup();
-    }
-
-    public void EnableInteractFailedPopUp()
-    {
-        DisableActivePopup();
-        SetActivePopup(interactFailed);
-    }
-
-    public void DisableInteractFailedPopUp()
-    {
-        DisableActivePopup();
-    }
-
-    public void EnablePushPopUp()
-    {
-        DisableActivePopup();
-        SetActivePopup(pushPopup);
-    }
-
-    public void DisablePushPopUp()
-    {
-        DisableActivePopup();
-    }
-
-    private void SetActivePopup(GameObject gameObject)
-    {
-        gameObject.SetActive(true);
-        activePopup = gameObject;
-    }
-
-    private void DisableActivePopup()
-    {
-        CancelInvoke(nameof(DisableActivePopup));
-        if (activePopup == null) return;
-
-        activePopup.SetActive(false);
-        activePopup = null;
-    }
-    #endregion
-
-    public void EnablePauseMenu()
-    {
-        EnableActiveMenu(pauseMenu);
-        GameManager.Instance.PauseGame();
-    }
-
-    public void DisablePauseMenu()
-    {
-        DisableActiveMenu();
-        GameManager.Instance.UnpauseGame();
-    }
-
-    public void EnableInventoryMenu()
-    {
-        EnableActiveMenu(inventoryMenu);
-        GameManager.Instance.PauseGame();
-    }
-
-    public void DisableInventoryMenu()
-    {
-        DisableActiveMenu();
-        GameManager.Instance.UnpauseGame();
-    }
-
-    private void EnableActiveMenu(GameObject menu)
-    {
-        DisableActiveMenu();
-        activeMenu = menu;
-        activeMenu.SetActive(true);
-    }
-
-    private void DisableActiveMenu()
-    {
-        if (activeMenu == null)
-        {
-            return;
-        }
-
-        activeMenu.SetActive(false);
-        activeMenu = null;
-    }
-
-    #region InventoryDisplay Methods
     public void AddInventoryItemToSlot(InventoryItem inventoryItem, int inventoryItemAmount)
     {
         int inventorySlots = this.inventorySlots.Count;
@@ -328,5 +164,4 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
         InventorySlotDescription.gameObject.SetActive(false);
         InventorySlotUsageImage.gameObject.SetActive(false);
     }
-    #endregion
 }

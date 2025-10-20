@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
+
 public class InputManager : Singleton<InputManager>
 {
     private GameInputs gameInputs;
