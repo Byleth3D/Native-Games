@@ -16,7 +16,8 @@ public class CameraTriggerZone : MonoBehaviour
     [SerializeField] private bool isOneWay = false;
     [SerializeField, Range(0.0f, 180f)] private float backwardsAngleThreshold = 90f;
     [SerializeField, Range(0.0f, 180f)] private float tolerance = 1f;
-    bool isPlayerGoingBackwards;
+    private PlayerController playerController;
+    private bool isPlayerGoingBackwards;
 
     [Header("Position Offset")]
     [SerializeField] private Vector3 cameraOffsetA;
@@ -26,7 +27,7 @@ public class CameraTriggerZone : MonoBehaviour
     [SerializeField] private float offsetTweenDuration = 0.25f;
 
     private Target targetOffset = Target.B;
-    
+
     private Tween offsetTween;
 
     private bool offsetActive = true;
@@ -47,7 +48,7 @@ public class CameraTriggerZone : MonoBehaviour
     private Quaternion rotationB;
 
     private Target targetRotation = Target.B;
-    
+
     private Tween rotationTween;
 
     private bool rotationActive = true;
@@ -62,7 +63,7 @@ public class CameraTriggerZone : MonoBehaviour
     private Target targetDistance = Target.B;
 
     private Tween distanceTween;
-    
+
     private bool distanceActive = true;
 
     private CinemachineCamera gameplayCamera;
@@ -92,41 +93,41 @@ public class CameraTriggerZone : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        Vector3 triggerZoneForward = gameObject.transform.forward;
+
+        playerController = other.gameObject.GetComponent<PlayerController>();
+
+        if (playerController == null)
         {
-            Vector3 triggerZoneForward = gameObject.transform.forward;
-
-            Vector3 playerVelocityDirection = other.attachedRigidbody.linearVelocity;
-            playerVelocityDirection.y = 0.0f;
-            playerVelocityDirection.Normalize();
-
-            float dotProduct = Vector3.Dot(triggerZoneForward, playerVelocityDirection);
-            float x = Vector3.Angle(triggerZoneForward, playerVelocityDirection);
-
-            Debug.Log($"Dot: {dotProduct} | Angle: {x} | AT: {backwardsAngleThreshold} | Backwards: {isPlayerGoingBackwards} |" +
-                $" Trigger Forward: {triggerZoneForward} | Player Velocity Direction: {playerVelocityDirection}");
-
-            if (x >= backwardsAngleThreshold - tolerance)
-            {
-                targetDistance = Target.A;
-                targetOffset = Target.A;
-                targetRotation = Target.A;
-                isPlayerGoingBackwards = true;
-                Debug.Log("TO A");
-            }
-            else
-            {
-                targetDistance = Target.B;
-                targetOffset = Target.B;
-                targetRotation = Target.B;
-                isPlayerGoingBackwards = false;
-                Debug.Log("TO B");
-            }
-
-            DistanceCamera();
-            OffsetCamera();
-            RotateCamera();
+            return;
         }
+
+        Vector3 playerDirection = playerController.Forward;
+
+        float dotProduct = Vector3.Dot(triggerZoneForward, playerDirection);
+        float x = Vector3.Angle(triggerZoneForward, playerDirection);
+
+        //Debug.Log($"Dot: {dotProduct} | Angle: {x} | AT: {backwardsAngleThreshold} | Backwards: {isPlayerGoingBackwards} |" +
+        //$" Trigger Forward: {triggerZoneForward} | Player Velocity Direction: {playerDirection}");
+
+        if (x >= backwardsAngleThreshold - tolerance)
+        {
+            targetDistance = Target.A;
+            targetOffset = Target.A;
+            targetRotation = Target.A;
+            isPlayerGoingBackwards = true;
+        }
+        else
+        {
+            targetDistance = Target.B;
+            targetOffset = Target.B;
+            targetRotation = Target.B;
+            isPlayerGoingBackwards = false;
+        }
+
+        DistanceCamera();
+        OffsetCamera();
+        RotateCamera();
     }
 
     private void OffsetCamera()

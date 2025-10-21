@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour
 
     public bool IsAlive { get; private set; } = true;
 
+    public Vector3 Forward => model.transform.forward;
+
     #region Unity Methods
     private void Awake()
     {

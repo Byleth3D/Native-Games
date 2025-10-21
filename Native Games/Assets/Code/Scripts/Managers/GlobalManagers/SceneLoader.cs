@@ -78,8 +78,6 @@ public class SceneLoader : Singleton<SceneLoader>
         var sceneNameEnd = scenePath.LastIndexOf(".", StringComparison.Ordinal);
         var sceneNameLength = sceneNameEnd - sceneNameStart;
 
-        Debug.Log($"Next Scene: {scenePath.Substring(sceneNameStart, sceneNameLength)}");
-
         return scenePath.Substring(sceneNameStart, sceneNameLength);
     }
 
@@ -97,11 +95,9 @@ public class SceneLoader : Singleton<SceneLoader>
 
     private IEnumerator LoadingChain(LoadingType loadingType, int saveIndex = -1)
     {
-        ScreenFadeManager.Instance.SetConfig("Loading");
+        LoadingScreenManager.Instance.EnableLoadingScreen();
 
-        ScreenFadeManager.Instance.RequestFadeOut();
-
-        while (ScreenFadeManager.Instance.IsFading)
+        while (!LoadingScreenManager.Instance.IsVisible)
         {
             yield return null;
         }
@@ -151,6 +147,7 @@ public class SceneLoader : Singleton<SceneLoader>
         {
             if (loadingOperation.progress >= 0.9f)
             {
+                yield return new WaitForSeconds(2.5f);
                 loadingOperation.allowSceneActivation = true;
             }
 
@@ -166,8 +163,7 @@ public class SceneLoader : Singleton<SceneLoader>
             SaveManager.Instance.LoadGame(saveIndex);
         }
 
-        // Tela de loading começa sumir quando o carregamento da cena termina
-        ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());//Fader
+        LoadingScreenManager.Instance.DisableLoadingScreen();
         yield return null;
     }
 

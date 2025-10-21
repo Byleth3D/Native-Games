@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &53609577
 RectTransform:
   m_ObjectHideFlags: 0
@@ -203,9 +203,9 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 53609576}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &187825285
 GameObject:
@@ -490,13 +490,14 @@ GameObject:
   - component: {fileID: 1818683585}
   - component: {fileID: 1818683584}
   - component: {fileID: 1818683583}
+  - component: {fileID: 1818683586}
   m_Layer: 5
   m_Name: LoadingCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1818683582
 RectTransform:
   m_ObjectHideFlags: 0
@@ -580,6 +581,21 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 10
   m_TargetDisplay: 0
+--- !u!114 &1818683586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818683581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b39e59bca5f4eba4e909578738fa26eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadingBase: {fileID: 53609576}
+  fadeInDuration: 1
+  fadeOutDuration: 0.35
 --- !u!1 &1996936282
 GameObject:
   m_ObjectHideFlags: 0
