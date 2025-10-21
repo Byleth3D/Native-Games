@@ -44,7 +44,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
 
         if (CurrentCheckpointIndex == checkpoints.Count - 1)
         {
-            SceneLoader.Instance.LoadNextScene();
+            SceneLoader.Instance.StartLoading(LoadingType.NextScene);
             return;
         }
 

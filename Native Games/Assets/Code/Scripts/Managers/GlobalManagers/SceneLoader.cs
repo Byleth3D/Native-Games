@@ -169,11 +169,9 @@ public class SceneLoader : Singleton<SceneLoader>
 
     private IEnumerator LoadingChain(string sceneName)
     {
-        ScreenFadeManager.Instance.SetConfig("Loading");
+        LoadingScreenManager.Instance.EnableLoadingScreen();
 
-        ScreenFadeManager.Instance.RequestFadeOut();
-
-        while (ScreenFadeManager.Instance.IsFading)
+        while (!LoadingScreenManager.Instance.IsVisible)
         {
             yield return null;
         }
@@ -185,14 +183,14 @@ public class SceneLoader : Singleton<SceneLoader>
         {
             if (loadingOperation.progress >= 0.9f)
             {
+                yield return new WaitForSeconds(2.5f);
                 loadingOperation.allowSceneActivation = true;
             }
 
             yield return null;
         }
 
-        // Tela de loading começa sumir quando o carregamento da cena termina
-        ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());//Fader
+        LoadingScreenManager.Instance.DisableLoadingScreen();
         yield return null;
     }
 }
