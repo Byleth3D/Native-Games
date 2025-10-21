@@ -165,13 +165,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inGameMenuManager:
     inGameMenus: []
-  menuButtons:
-  - buttonName: Continue
-    button: {fileID: 882909513}
-  - buttonName: NewGame
-    button: {fileID: 694519388}
-  - buttonName: LoadGame
-    button: {fileID: 800056704}
+  menuButtonManager:
+    menuButtons:
+    - buttonName: Continue
+      button: {fileID: 882909513}
+    - buttonName: NewGame
+      button: {fileID: 694519388}
+    - buttonName: LoadGame
+      button: {fileID: 800056704}
 --- !u!1 &694519386
 GameObject:
   m_ObjectHideFlags: 0

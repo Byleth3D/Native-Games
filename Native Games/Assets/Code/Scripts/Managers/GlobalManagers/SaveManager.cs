@@ -16,10 +16,14 @@ public class SaveManager : Singleton<SaveManager>
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().name != "MainMenu")
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        if (currentSceneName == "MainMenu" || currentSceneName.Contains("Credits"))
         {
-            LoadLastGame();
+            return;
         }
+
+        LoadLastGame();
     }
 
     public void PreloadSaveFiles()
