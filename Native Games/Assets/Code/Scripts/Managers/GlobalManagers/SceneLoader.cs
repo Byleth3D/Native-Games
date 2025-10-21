@@ -83,22 +83,14 @@ public class SceneLoader : Singleton<SceneLoader>
         return scenePath.Substring(sceneNameStart, sceneNameLength);
     }
 
-    public void StartNewGameLoadingChain()
+    public void StartLoading(LoadingType loadingType)
     {
-        StopCoroutine(NewGameLoadingChain());
-        StartCoroutine(NewGameLoadingChain());
+        StopCoroutine(LoadingChain(loadingType));
+        StartCoroutine(LoadingChain(loadingType));
     }
 
-    public void StartLastGameLoadingChain()
+    private IEnumerator LoadingChain(LoadingType loadingType, int saveIndex = -1)
     {
-        StopCoroutine(LastGameLoadingChain());
-        StartCoroutine(LastGameLoadingChain());
-    }
-
-    private IEnumerator NewGameLoadingChain()
-    {
-        Debug.Log("Started");
-
         ScreenFadeManager.Instance.SetConfig("Loading");
 
         ScreenFadeManager.Instance.RequestFadeOut();
@@ -108,12 +100,81 @@ public class SceneLoader : Singleton<SceneLoader>
             yield return null;
         }
 
-        SaveManager.Instance.NewSaveGameFromMenu();
-
         List<SaveData> saveFiles = SaveManager.Instance.SaveFiles;
-        int currentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
+        string sceneName = "";
 
-        string sceneName = saveFiles[currentSaveIndex].activeSceneName;
+        switch (loadingType)
+        {
+            case LoadingType.NewGame:
+                SaveManager.Instance.NewSaveGameFromMenu();
+                int currentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
+                sceneName = saveFiles[currentSaveIndex].activeSceneName;
+                break;
+
+            case LoadingType.ContinueGame:
+                int lastSaveIndex = saveFiles.Count - 1;
+                sceneName = saveFiles[lastSaveIndex].activeSceneName;
+                break;
+
+            case LoadingType.LoadGame:
+                if (saveIndex == -1)
+                {
+                    Debug.LogError("Index Out of Bounds");
+                }
+
+                saveFiles = SaveManager.Instance.SaveFiles;
+                sceneName = saveFiles[saveIndex].activeSceneName;
+
+                break;
+
+            case LoadingType.NextScene:
+                sceneName = GetNextSceneName();
+
+                if (sceneName.Contains("Level"))
+                {
+                    goto case LoadingType.NewGame;
+                }
+
+                break;
+        }
+
+        LoadScene(sceneName);
+        loadingOperation.allowSceneActivation = false;
+
+        while (!loadingOperation.isDone)
+        {
+            if (loadingOperation.progress >= 0.9f)
+            {
+                loadingOperation.allowSceneActivation = true;
+            }
+
+            yield return null;
+        }
+
+        if (loadingType == LoadingType.ContinueGame)
+        {
+            SaveManager.Instance.LoadLastGame();
+        }
+        else if (loadingType == LoadingType.LoadGame)
+        {
+            SaveManager.Instance.LoadGame(saveIndex);
+        }
+
+        // Tela de loading começa sumir quando o carregamento da cena termina
+        ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());//Fader
+        yield return null;
+    }
+
+    private IEnumerator LoadingChain(string sceneName)
+    {
+        ScreenFadeManager.Instance.SetConfig("Loading");
+
+        ScreenFadeManager.Instance.RequestFadeOut();
+
+        while (ScreenFadeManager.Instance.IsFading)
+        {
+            yield return null;
+        }
 
         LoadScene(sceneName);
         loadingOperation.allowSceneActivation = false;
@@ -132,38 +193,9 @@ public class SceneLoader : Singleton<SceneLoader>
         ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());//Fader
         yield return null;
     }
+}
 
-    private IEnumerator LastGameLoadingChain()
-    {
-        ScreenFadeManager.Instance.SetConfig("Loading");
-        ScreenFadeManager.Instance.RequestFadeOut();
-
-        while (ScreenFadeManager.Instance.IsFading)
-        {
-            yield return null;
-        }
-
-        List<SaveData> saveFiles = SaveManager.Instance.SaveFiles;
-        int lastSaveIndex = saveFiles.Count - 1;
-
-        string sceneName = saveFiles[lastSaveIndex].activeSceneName;
-
-        LoadScene(sceneName);
-        loadingOperation.allowSceneActivation = false;
-
-        while (!loadingOperation.isDone)
-        {
-            if (loadingOperation.progress >= 0.9f)
-            {
-                loadingOperation.allowSceneActivation = true;
-            }
-
-            yield return null;
-        }
-
-        SaveManager.Instance.LoadLastGame();
-        // Tela de loading começa sumir quando o carregamento da cena termina
-        ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());//Fader
-        yield return null;
-    }
+public enum LoadingType
+{
+    NewGame, ContinueGame, LoadGame, NextScene
 }

@@ -17,7 +17,7 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
         }
 
         menuButtonManager.DisableAllMenuButtons();
-        SceneLoader.Instance.StartNewGameLoadingChain();
+        SceneLoader.Instance.StartLoading(LoadingType.NewGame);
     }
 
     public void ContinueGame()
@@ -28,7 +28,7 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
         }
 
         menuButtonManager.DisableAllMenuButtons();
-        SceneLoader.Instance.StartLastGameLoadingChain();
+        SceneLoader.Instance.StartLoading(LoadingType.ContinueGame);
     }
 
     private void CheckIfCanContinue()
