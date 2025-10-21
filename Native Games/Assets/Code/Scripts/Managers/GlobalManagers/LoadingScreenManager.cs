@@ -5,9 +5,15 @@ using UnityEngine;
 public class LoadingScreenManager : Singleton<LoadingScreenManager>
 {
     [SerializeField] private GameObject loadingBase;
+
     [SerializeField] private float fadeInDuration = 1.0f;
+    [SerializeField] private Ease fadeInEase;
+
     [SerializeField] private float fadeOutDuration = 1.0f;
+    [SerializeField] private Ease fadeOutEase;
+
     private CanvasGroup canvasGroup;
+
     private Tween fadeTween;
 
     public bool IsEnabled => loadingBase.activeInHierarchy;
@@ -33,7 +39,7 @@ public class LoadingScreenManager : Singleton<LoadingScreenManager>
         canvasGroup.blocksRaycasts = true;
 
         fadeTween.Stop();
-        fadeTween = Tween.Alpha(canvasGroup, 1f, duration: fadeInDuration);
+        fadeTween = Tween.Alpha(canvasGroup, 1f, duration: fadeInDuration, ease: fadeInEase);
         fadeTween.OnComplete(() => IsVisible = true);
     }
 
@@ -48,7 +54,7 @@ public class LoadingScreenManager : Singleton<LoadingScreenManager>
         canvasGroup.blocksRaycasts = true;
 
         fadeTween.Stop();
-        fadeTween = Tween.Alpha(canvasGroup, 1f, duration: fadeInDuration);
+        fadeTween = Tween.Alpha(canvasGroup, 1f, duration: fadeInDuration, ease: fadeInEase);
         fadeTween.OnComplete(() =>
         {
             IsVisible = true;
@@ -64,7 +70,7 @@ public class LoadingScreenManager : Singleton<LoadingScreenManager>
         }
 
         fadeTween.Stop();
-        fadeTween = Tween.Alpha(canvasGroup, 0.0f, duration: fadeOutDuration);
+        fadeTween = Tween.Alpha(canvasGroup, 0.0f, duration: fadeOutDuration, ease: fadeInEase);
         fadeTween.OnComplete(() =>
         {
             canvasGroup.blocksRaycasts = false;
@@ -81,7 +87,7 @@ public class LoadingScreenManager : Singleton<LoadingScreenManager>
         }
 
         fadeTween.Stop();
-        fadeTween = Tween.Alpha(canvasGroup, 0.0f, duration: fadeOutDuration);
+        fadeTween = Tween.Alpha(canvasGroup, 0.0f, duration: fadeOutDuration, ease: fadeInEase);
         fadeTween.OnComplete(() =>
         {
             canvasGroup.blocksRaycasts = false;

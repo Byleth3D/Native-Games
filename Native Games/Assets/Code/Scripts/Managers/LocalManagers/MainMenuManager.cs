@@ -62,4 +62,19 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
 
         inGameMenuManager.DisableInGameMenu(inGameMenu);
     }
+
+    public void DisableAllMenuButtons()
+    {
+        menuButtonManager.DisableAllMenuButtons();
+    }
+
+    public void Credits()
+    {
+        SceneLoader.Instance.StartLoading("CreditsScene");
+    }
+
+    public void ExitGame()
+    {
+        GameManager.Instance.ExitGame();
+    }
 }

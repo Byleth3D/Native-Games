@@ -4,7 +4,7 @@ public class CreditsMenuManager : LocalSingleton<CreditsMenuManager>
 {
     public MenuButtonManager menuButtonManager;
 
-    public void DisableAllGameButtons()
+    public void DisableAllMenuButtons()
     {
         menuButtonManager.DisableAllMenuButtons();
     }
@@ -16,7 +16,7 @@ public class CreditsMenuManager : LocalSingleton<CreditsMenuManager>
 
     public void ExitGame()
     {
-        DisableAllGameButtons();
+        DisableAllMenuButtons();
         GameManager.Instance.ExitGame();
     }
 }

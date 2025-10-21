@@ -9,12 +9,12 @@ public class SceneLoader : Singleton<SceneLoader>
 {
     private AsyncOperation loadingOperation;
 
-    public void LoadScene(int nextSceneIndex)
+    private void LoadScene(int nextSceneIndex)
     {
         loadingOperation = SceneManager.LoadSceneAsync(nextSceneIndex);
     }
 
-    public void LoadScene(string nextSceneName)
+    private void LoadScene(string nextSceneName)
     {
         loadingOperation = SceneManager.LoadSceneAsync(nextSceneName);
     }
