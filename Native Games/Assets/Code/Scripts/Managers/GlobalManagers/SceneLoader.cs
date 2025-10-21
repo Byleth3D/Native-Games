@@ -89,6 +89,12 @@ public class SceneLoader : Singleton<SceneLoader>
         StartCoroutine(LoadingChain(loadingType));
     }
 
+    public void StartLoading(string sceneName)
+    {
+        StopCoroutine(LoadingChain(sceneName));
+        StartCoroutine(LoadingChain(sceneName));
+    }
+
     private IEnumerator LoadingChain(LoadingType loadingType, int saveIndex = -1)
     {
         ScreenFadeManager.Instance.SetConfig("Loading");

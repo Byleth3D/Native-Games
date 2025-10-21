@@ -11,7 +11,7 @@ public class CreditsMenuManager : LocalSingleton<CreditsMenuManager>
 
     public void LoadMainMenu()
     {
-
+        SceneLoader.Instance.StartLoading("MainMenu");
     }
 
     public void ExitGame()
