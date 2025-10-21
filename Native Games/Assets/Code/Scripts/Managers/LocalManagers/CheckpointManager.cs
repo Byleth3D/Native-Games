@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class CheckpointManager : LocalSingleton<CheckpointManager>
 {
     [SerializeField] private List<Checkpoint> checkpoints = new();
-
+    [Space]
+    [SerializeField] private UnityEvent OnLastCheckpointReached;
     private Checkpoint currentCheckpoint;
     public int CurrentCheckpointIndex { get; private set; } = 0;
 
@@ -44,7 +46,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
 
         if (CurrentCheckpointIndex == checkpoints.Count - 1)
         {
-            SceneLoader.Instance.StartLoading(LoadingType.NextScene);
+            OnLastCheckpointReached?.Invoke();
             return;
         }
 
