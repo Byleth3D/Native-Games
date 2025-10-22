@@ -3,23 +3,23 @@ using UnityEngine.UI;
 
 public abstract class Cord : MonoBehaviour
 {
+    [SerializeField] protected Color color;
     [SerializeField] protected CordDirection direction = CordDirection.Horizontal;
-    protected Image image;
     protected Sewing sewing;
+    protected Image image;
 
-    public Color CordColor { get; private set; }
+    public Color Color => color;
     public CordDirection Direction => direction;
     public bool IsConnected { get; set; }
 
     protected virtual void Awake()
     {
         image = GetComponent<Image>();
+        image.color = color;
     }
 
-    public virtual void Setup(Color color, Sewing sewing)
+    public virtual void Setup(Sewing sewing)
     {
-        CordColor = color;
-        image.color = color;
         this.sewing = sewing;
     }
 }

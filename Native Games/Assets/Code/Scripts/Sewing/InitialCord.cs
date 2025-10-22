@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI.Extensions;
@@ -12,27 +13,25 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
     protected override void Awake()
     {
         base.Awake();
+
         cordRectTransform = transform as RectTransform;
         canvasRectTransform = cordRectTransform.GetParentCanvas().transform as RectTransform;
-
         lineRenderer = GetComponentInChildren<UILineRenderer>();
-    }
-
-    public override void Setup(Color color, Sewing sewing)
-    {
-        base.Setup(color, sewing);
 
         if (lineRenderer != null)
         {
             lineRenderer.color = color;
+
+            Color transparentImageColor = color;
+            transparentImageColor.a = 0.0f;
+
+            image.color = transparentImageColor;
         }
     }
 
     private void HideCord()
     {
-        lineRenderer.enabled = false;
-        lineRenderer.Points[0] = Vector2.zero;
-        lineRenderer.Points[1] = Vector2.zero;
+        lineRenderer.Points[2] = lineRenderer.Points[1];
         lineRenderer.SetAllDirty();
         return;
     }
@@ -45,16 +44,17 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
         Vector2 offset = cordRectTransform.InverseTransformPoint(lineRenderer.gameObject.transform.position);
 
         lineRenderer.enabled = true;
-        lineRenderer.Points[0] = Vector2.zero;
-        lineRenderer.Points[1] = pointerCanvasPoint - offset;
+
+        lineRenderer.Points[2] = pointerCanvasPoint - offset;
 
         lineRenderer.SetAllDirty();
-
         //Debug.Log($"Pointer Screen: {pointerScreenPoint} | Local Screen: {pointerCanvasPoint} | Transform Positon {cordRectTransform.transform.position}");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Log("OnBeginDrag");
+
         if (IsConnected)
         {
             return;
@@ -65,6 +65,8 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
 
     public void OnDrag(PointerEventData eventData)
     {
+        Debug.Log("OnDrag");
+
         if (IsConnected)
         {
             return;
@@ -75,8 +77,9 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
             return;
         }
 
-        if (lineRenderer.Points.Length < 2)
+        if (lineRenderer.Points.Length < 3)
         {
+            Debug.Log("Less then 3 Point");
             return;
         }
 
@@ -90,7 +93,11 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
             return;
         }
 
-        if (sewing.HoveredCord && CordColor == sewing.HoveredCord.CordColor && Direction == sewing.HoveredCord.Direction)
+        Color32 thisCordColor = color;
+        Color32 otherCordColor = sewing.HoveredCord ? sewing.HoveredCord.Color : Color.black;
+
+        if (sewing.HoveredCord && thisCordColor.Equals(otherCordColor)
+            && Direction == sewing.HoveredCord.Direction)
         {
             IsConnected = true;
             sewing.HoveredCord.IsConnected = true;
