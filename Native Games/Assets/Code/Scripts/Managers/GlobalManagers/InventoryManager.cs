@@ -161,11 +161,11 @@ public class InventoryManager : Singleton<InventoryManager>
 
         if (collectedItems.Count > 0)
         {
-            foreach (GameObject itemObject in collectedItems)
-            {
-                itemObject.SetActive(true);
-                Debug.Log($"{itemObject.name} | {itemObject.activeInHierarchy}");
-            }
+            //foreach (GameObject itemObject in collectedItems)
+            //{
+            //    itemObject.SetActive(true);//
+            //    Debug.Log($"{itemObject.name} | {itemObject.activeInHierarchy}");
+            //}
 
             collectedItems.Clear();
         }

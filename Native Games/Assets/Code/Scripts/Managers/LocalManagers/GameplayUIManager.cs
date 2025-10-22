@@ -67,7 +67,7 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 
     public void EnableInGameMenu(string inGameMenu)
     {
-        if (ScreenFadeManager.Instance.IsFading)
+        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
         {
             return;
         }
@@ -77,11 +77,23 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 
     public void DisableInGameMenu(string inGameMenu)
     {
-        if (ScreenFadeManager.Instance.IsFading)
+        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
         {
             return;
         }
 
         inGameMenuManager.DisableInGameMenu(inGameMenu);
+    }
+
+    public void RestartCheckpoint()
+    {
+        GameManager.Instance.UnpauseGame();
+        InputManager.Instance.DisablePlayerActions();
+        SceneLoader.Instance.StartLoading(LoadingType.ContinueGame);
+    }
+
+    public void ExitGame()
+    {
+        GameManager.Instance.ExitGame();
     }
 }
