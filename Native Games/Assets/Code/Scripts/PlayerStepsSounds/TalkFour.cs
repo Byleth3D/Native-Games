@@ -1,8 +1,10 @@
 using UnityEngine;
 
 public class TalkFour : MonoBehaviour
-{ 
+{
     public AudioClip soundClip;
+    public float volume = 3f;
+    private AudioSource audioSource;
 
     private bool soundPlayed = false;
 
@@ -18,6 +20,20 @@ public class TalkFour : MonoBehaviour
     private void PlaySound()
     {
         if (soundClip == null) return;
-        AudioSource.PlayClipAtPoint(soundClip, transform.position, 3.0f);
+         AudioSource.PlayClipAtPoint(soundClip, transform.position, volume);
+        
+        }
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
     }
+         public void Speak()
+    {
+        if (audioSource != null && !audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+    }
+    
 }

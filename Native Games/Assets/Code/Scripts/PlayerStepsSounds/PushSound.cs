@@ -9,6 +9,8 @@ public class PushSound : MonoBehaviour
 
     public float minVelocityForSound = 0.2f;
 
+    public float volume = 0.2f;
+
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -19,11 +21,12 @@ public class PushSound : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
         }
+         audioSource.volume = volume;
     }
 
     private void Update()
     {
-       
+
         if (rigidBody.linearVelocity.magnitude > 0f && pushSound != null)
         {
             if (!audioSource.isPlaying)
