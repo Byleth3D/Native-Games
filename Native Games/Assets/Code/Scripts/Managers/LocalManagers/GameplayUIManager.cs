@@ -89,7 +89,7 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
     {
         GameManager.Instance.UnpauseGame();
         InputManager.Instance.DisablePlayerActions();
-        SceneLoader.Instance.StartLoading(LoadingType.ContinueGame);
+        SceneLoader.Instance.StartLoading(LoadingType.RestartCheckpoint);
     }
 
     public void ExitGame()

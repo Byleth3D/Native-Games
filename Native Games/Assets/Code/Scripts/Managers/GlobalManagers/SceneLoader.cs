@@ -109,8 +109,8 @@ public class SceneLoader : Singleton<SceneLoader>
         {
             case LoadingType.NewGame:
                 SaveManager.Instance.NewSaveGameFromMenu();
-                int currentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
-                sceneName = saveFiles[currentSaveIndex].activeSceneName;
+                int newSaveIndex = SaveManager.Instance.CurrentSaveIndex;
+                sceneName = saveFiles[newSaveIndex].activeSceneName;
                 break;
 
             case LoadingType.ContinueGame:
@@ -138,6 +138,10 @@ public class SceneLoader : Singleton<SceneLoader>
                 }
 
                 break;
+            case LoadingType.RestartCheckpoint:
+                saveIndex = SaveManager.Instance.CurrentSaveIndex;
+                sceneName = saveFiles[saveIndex].activeSceneName;
+                break;
         }
 
         LoadScene(sceneName);
@@ -158,7 +162,7 @@ public class SceneLoader : Singleton<SceneLoader>
         {
             SaveManager.Instance.LoadLastGame();
         }
-        else if (loadingType == LoadingType.LoadGame)
+        else if (loadingType == LoadingType.LoadGame || loadingType == LoadingType.RestartCheckpoint)
         {
             SaveManager.Instance.LoadGame(saveIndex);
         }
@@ -197,5 +201,5 @@ public class SceneLoader : Singleton<SceneLoader>
 
 public enum LoadingType
 {
-    NewGame, ContinueGame, LoadGame, NextScene
+    NewGame, ContinueGame, LoadGame, NextScene, RestartCheckpoint
 }
