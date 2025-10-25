@@ -6795,7 +6795,19 @@ MonoBehaviour:
   requestedItemAmount: 3
   OnDeliver:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 974208041}
+        m_TargetAssemblyTypeName: GameplayUIManager, Assembly-CSharp
+        m_MethodName: EnableInGameMenu
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Sewing
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!136 &332494597
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10555,12 +10567,16 @@ PrefabInstance:
       value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: cameraOffsetA.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: eulerRotationA.x
-      value: 33
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: eulerRotationA.y
-      value: 270
+      value: 230
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: eulerRotationB.x
@@ -10588,7 +10604,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7334891769770485296, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.42
+      value: -25.07
       objectReference: {fileID: 0}
     - target: {fileID: 7334891769770485296, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -36319,11 +36335,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: cameraDistanceB
-      value: 12.5
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: cameraOffsetA.z
-      value: -7.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: cameraOffsetB.y
@@ -36331,7 +36347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: eulerRotationA.x
-      value: 0
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: eulerRotationA.y

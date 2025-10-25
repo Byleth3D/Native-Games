@@ -81,9 +81,9 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         currentCheckpoint.ResetCameraTriggersAlong();
     }
 
-    public void CheckpointTeleport(int checkPointIndex)
+    public void CheckpointTeleport(int checkpointIndex)
     {
-        if (checkpoints.Count == 0 || checkPointIndex >= checkpoints.Count)
+        if (checkpoints.Count == 0 || checkpointIndex >= checkpoints.Count)
         {
             return;
         }
@@ -103,9 +103,11 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
             return;
         }
 
-        CurrentCheckpointIndex = checkPointIndex;
+        CurrentCheckpointIndex = checkpointIndex;
         playerController.SetAsAlive();
-        playerController.Teleport(checkpoints[checkPointIndex].transform.position);
+        playerController.Teleport(checkpoints[checkpointIndex].transform.position);
+
+        Debug.Log($"Checkpoint Index: {checkpointIndex}");
 
         currentCheckpoint.ResetCameraTriggersAlong();
     }
@@ -126,6 +128,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
             }
         }
 
+        currentCheckpoint = checkpoints[index];
         CheckpointTeleport(index);
     }
 }
