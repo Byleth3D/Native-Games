@@ -269,6 +269,10 @@ public class CameraTriggerZone : MonoBehaviour
             positionComposer.TargetOffset = cameraOffsetA;
             positionComposer.CameraDistance = cameraDistanceA;
             gameplayCamera.transform.localRotation = rotationA;
+
+            Debug.Log($"Camera Offset: {positionComposer.TargetOffset}");
+            Debug.Log($"Camera Distance: {positionComposer.CameraDistance}");
+            Debug.Log($"Camera Rotation: {gameplayCamera.transform.localRotation}");
         }
     }
 }

@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOneWay: 0
-  backwardsAngleThreshold: 46
+  backwardsAngleThreshold: 61
   tolerance: 0.5
   cameraOffsetA: {x: 0, y: 0, z: 0}
   cameraOffsetB: {x: 0, y: 0, z: 0}

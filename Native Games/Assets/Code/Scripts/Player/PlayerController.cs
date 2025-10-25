@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
             Jump();
             Interaction();
             Rotate();
+            animator.SetBool("IsGrounded", groundChecker.IsGrounded);
         }
     }
 
