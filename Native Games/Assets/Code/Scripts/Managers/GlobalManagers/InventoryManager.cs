@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : Singleton<InventoryManager>
@@ -36,18 +37,36 @@ public class InventoryManager : Singleton<InventoryManager>
         return true;
     }
 
-    public bool Deliver(InventoryItem inventoryItem, int requestedAmount)
+    public bool Deliver(List<Deliver> delivers)
     {
-        if (!storedItems.ContainsKey(inventoryItem))
+        if (!Contains(delivers))
         {
             return false;
+        }
+
+        foreach (Deliver deliver in delivers)
+        {
+            Deliver(deliver);
+        }
+
+        return true;
+    }
+
+    private void Deliver(Deliver deliver)
+    {
+        InventoryItem inventoryItem = deliver.inventoryItem;
+        int requestedAmount = deliver.requestedItemAmount;
+
+        if (!storedItems.ContainsKey(inventoryItem))
+        {
+            return;
         }
 
         int currentAmount = storedItems[inventoryItem];
 
         if (requestedAmount > currentAmount)
         {
-            return false;
+            return;
         }
 
         int newAmount = currentAmount - requestedAmount;
@@ -62,7 +81,6 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         GameplayUIManager.Instance.inventoryMenuManager.RemoveInventoryItemFromSlot(inventoryItem, newAmount);
-        return true;
     }
 
     public string SaveInventoryItems()
@@ -154,6 +172,7 @@ public class InventoryManager : Singleton<InventoryManager>
                 Debug.Log($"{itemObject.name} | {itemObject.activeInHierarchy}");
             }
 
+            collectedItems.Clear();
             return;
         }
 
@@ -209,5 +228,23 @@ public class InventoryManager : Singleton<InventoryManager>
             GameplayUIManager.Instance.inventoryMenuManager.AddInventoryItemToSlot(item, amount);
             Debug.Log($"{item.name} | {storedItems[item]}");
         }
+    }
+
+    public bool Contains(List<Deliver> delivers)
+    {
+        if (delivers.Count == 0 || delivers == null)
+        {
+            return false;
+        }
+
+        if (delivers.All(deliver => storedItems.ContainsKey(deliver.inventoryItem)))
+        {
+            if (delivers.All(deliver => storedItems[deliver.inventoryItem] == deliver.requestedItemAmount))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

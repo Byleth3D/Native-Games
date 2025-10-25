@@ -721,7 +721,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &118291182
 Transform:
@@ -4090,7 +4090,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3927922358967735875, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7830917310792340783, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
       propertyPath: m_Enabled
@@ -6791,8 +6791,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f8c360db85f6040939ae6aafafee77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delivers:
+  - inventoryItem: {fileID: 11400000, guid: e1eb0a25c5ac3f7469de930dc15c6d0d, type: 2}
+    requestedItemAmount: 3
+  - inventoryItem: {fileID: 11400000, guid: 0b4002060d18a474184b1d415858ee89, type: 2}
+    requestedItemAmount: 1
   inventoryItem: {fileID: 11400000, guid: e1eb0a25c5ac3f7469de930dc15c6d0d, type: 2}
   requestedItemAmount: 3
+  deliverFailPopupName: CottonCordFail
   OnDeliver:
     m_PersistentCalls:
       m_Calls:
@@ -7641,8 +7647,12 @@ PrefabInstance:
       value: Checkpoint - 5
       objectReference: {fileID: 0}
     - target: {fileID: 3927922358967735875, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3927922358967735875, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7830917310792340783, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
       propertyPath: m_Enabled
@@ -8710,7 +8720,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 716a4a0cfea74ac45b7057f251bb358a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0020792484
+      value: -0.00207901
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: 716a4a0cfea74ac45b7057f251bb358a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9149,19 +9159,7 @@ MonoBehaviour:
           m_StringArgument: Sewing
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DeliverableObject, Assembly-CSharp
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Sewing
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1621548953}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -9171,7 +9169,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Sewing
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!225 &476800632
 CanvasGroup:
@@ -9203,7 +9201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &477208067
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10587,12 +10585,12 @@ PrefabInstance:
       value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
-      propertyPath: rotationTweenDuration
-      value: 1.5
+      propertyPath: distanceTweenDuration
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
-      propertyPath: backwardsAngleThreshold
-      value: 61
+      propertyPath: rotationTweenDuration
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7334891769770485296, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_LocalScale.y
@@ -10823,7 +10821,19 @@ MonoBehaviour:
   - {fileID: 2119439872}
   OnLastCheckpointReached:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 814386670}
+        m_TargetAssemblyTypeName: LevelEndpoint, Assembly-CSharp
+        m_MethodName: TriggerEndpoint
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &730179115
 GameObject:
   m_ObjectHideFlags: 0
@@ -12012,6 +12022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a189b2a0a440ac46bfc93b3b451dce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerOnAwake: 1
 --- !u!65 &814386671
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13130,11 +13141,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4013711059610429820, guid: 709ff234e1c14894580d5cc698e5f6b7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.05194228
+      value: 0.05194226
       objectReference: {fileID: 0}
     - target: {fileID: 4013711059610429820, guid: 709ff234e1c14894580d5cc698e5f6b7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.037538543
+      value: -0.03753853
       objectReference: {fileID: 0}
     - target: {fileID: 4024034273804036639, guid: 709ff234e1c14894580d5cc698e5f6b7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14191,6 +14202,8 @@ PlayableDirector:
     value: {fileID: 741262206}
   - key: {fileID: 8414026472228986113, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
     value: {fileID: 276946591}
+  - key: {fileID: 8598003764443226605, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
+    value: {fileID: 477208066}
   m_ExposedReferences:
     m_References:
     - c4d86a59415b5624baf663bd5807c7d9: {fileID: 833902809}
@@ -17854,7 +17867,7 @@ MonoBehaviour:
     - popupName: Push
       popupMessage: "Pressione [E] para come\xE7ar ou parar de arrastar objetos."
     - popupName: CottonCordFail
-      popupMessage: "Voc\xEA precisa de 3 cord\xF5es!"
+      popupMessage: "Voc\xEA precisa de 3 cord\xF5es e uma agulha!"
   inventoryMenuManager:
     InventorySlotName: {fileID: 33386873}
     InventorySlotDescription: {fileID: 625002228}
@@ -34210,6 +34223,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6830356104792902109, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
+--- !u!1 &1621548953 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3927922358967735875, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
+  m_PrefabInstance: {fileID: 404243473}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1624648980
 GameObject:
   m_ObjectHideFlags: 0
@@ -36369,10 +36387,6 @@ PrefabInstance:
       propertyPath: rotationTweenDuration
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
-      propertyPath: backwardsAngleThreshold
-      value: 61
-      objectReference: {fileID: 0}
     - target: {fileID: 7334891769770485296, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -34.000008
@@ -38453,7 +38467,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7830917310792340783, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
   m_PrefabInstance: {fileID: 404243473}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1621548953}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89828cde2dbc25f4eae03d40b08fa7bb, type: 3}
@@ -38822,7 +38836,7 @@ SceneRoots:
   - {fileID: 134098121}
   - {fileID: 814386672}
   - {fileID: 1691656350}
-  - {fileID: 990778154}
   - {fileID: 2013265040}
   - {fileID: 833902806}
+  - {fileID: 990778154}
   - {fileID: 236803827}

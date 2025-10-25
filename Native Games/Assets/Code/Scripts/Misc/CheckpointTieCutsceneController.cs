@@ -9,7 +9,9 @@ public class CheckpointTieCutsceneController : MonoBehaviour
     {
         if (checkpointIndex > -1)
         {
-            if (CheckpointManager.Instance.CurrentCheckpointIndex != checkpointIndex)
+            int currentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
+            int currentCheckpointIndex = SaveManager.Instance.SaveFiles[currentSaveIndex].checkpointIndex;
+            if (currentCheckpointIndex != checkpointIndex)
             {
                 this.gameObject.SetActive(false);
                 return;

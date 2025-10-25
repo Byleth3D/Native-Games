@@ -19,16 +19,21 @@ public class CameraTriggerZone : MonoBehaviour
     private PlayerController playerController;
     private bool isPlayerGoingBackwards;
 
+    public bool IsOneWay => isOneWay;
+
     [Header("Position Offset")]
     [SerializeField] private Vector3 cameraOffsetA;
     [SerializeField] private Vector3 cameraOffsetB;
+
+    public Vector3 CameraOffsetA => cameraOffsetA;
+    public Vector3 CameraOffsetB => cameraOffsetB;
 
     [SerializeField] private Ease offsetTweenEase = Ease.InOutQuad;
     [SerializeField] private float offsetTweenDuration = 0.25f;
 
     private Target targetOffset = Target.B;
 
-    private Tween offsetTween;
+    public Tween OffsetTween { get; private set; }
 
     private bool offsetActive = true;
 
@@ -44,12 +49,12 @@ public class CameraTriggerZone : MonoBehaviour
     [SerializeField] private Ease rotationTweenEase = Ease.InOutQuad;
     [SerializeField] private float rotationTweenDuration = 2.0f;
 
-    private Quaternion rotationA;
-    private Quaternion rotationB;
+    public Quaternion RotationA { get; private set; }
+    public Quaternion RotationB { get; private set; }
 
     private Target targetRotation = Target.B;
 
-    private Tween rotationTween;
+    public Tween RotationTween { get; private set; }
 
     private bool rotationActive = true;
 
@@ -57,12 +62,15 @@ public class CameraTriggerZone : MonoBehaviour
     [SerializeField] private float cameraDistanceA;
     [SerializeField] private float cameraDistanceB;
 
+    public float CameraDistanceA => cameraDistanceA;
+    public float CameraDistanceB => cameraDistanceB;
+
     [SerializeField] private Ease distanceTweenEase = Ease.InOutQuad;
     [SerializeField] private float distanceTweenDuration = 0.5f;
 
     private Target targetDistance = Target.B;
 
-    private Tween distanceTween;
+    public Tween DistanceTween { get; private set; }
 
     private bool distanceActive = true;
 
@@ -72,8 +80,8 @@ public class CameraTriggerZone : MonoBehaviour
 
     private void Awake()
     {
-        rotationA = Quaternion.Euler(eulerRotationA);
-        rotationB = Quaternion.Euler(eulerRotationB);
+        RotationA = Quaternion.Euler(eulerRotationA);
+        RotationB = Quaternion.Euler(eulerRotationB);
         GetCameraReferences();
     }
 
@@ -87,8 +95,8 @@ public class CameraTriggerZone : MonoBehaviour
 
     private void OnValidate()
     {
-        rotationA = Quaternion.Euler(eulerRotationA);
-        rotationB = Quaternion.Euler(eulerRotationB);
+        RotationA = Quaternion.Euler(eulerRotationA);
+        RotationB = Quaternion.Euler(eulerRotationB);
     }
 
     private void OnTriggerExit(Collider other)
@@ -138,7 +146,7 @@ public class CameraTriggerZone : MonoBehaviour
             return;
         }
 
-        offsetTween.Stop();
+        OffsetTween.Stop();
 
         if (positionComposer)
         {
@@ -156,7 +164,7 @@ public class CameraTriggerZone : MonoBehaviour
                 targetOffset = Target.A;
             }
 
-            offsetTween = Tween.Custom
+            OffsetTween = Tween.Custom
                                     (fromOffset,
                                     toOffset,
                                     duration: offsetTweenDuration,
@@ -178,7 +186,7 @@ public class CameraTriggerZone : MonoBehaviour
             return;
         }
 
-        distanceTween.Stop();
+        DistanceTween.Stop();
 
         if (positionComposer)
         {
@@ -196,7 +204,7 @@ public class CameraTriggerZone : MonoBehaviour
                 targetDistance = Target.A;
             }
 
-            distanceTween = Tween.Custom
+            DistanceTween = Tween.Custom
                                         (fromDistance,
                                             toDistance,
                                             duration: distanceTweenDuration,
@@ -212,29 +220,29 @@ public class CameraTriggerZone : MonoBehaviour
 
     private void RotateCamera()
     {
-        if (!rotationActive || rotationA == rotationB)
+        if (!rotationActive || RotationA == RotationB)
         {
             rotationActive = false;
             return;
         }
 
-        rotationTween.Stop();
+        RotationTween.Stop();
 
         Quaternion fromRotation = gameplayCamera.transform.localRotation;
         Quaternion toRotation = Quaternion.identity;
 
         if (targetRotation == Target.A)
         {
-            toRotation = rotationA;
+            toRotation = RotationA;
             targetRotation = Target.B;
         }
         else
         {
-            toRotation = rotationB;
+            toRotation = RotationB;
             targetRotation = Target.A;
         }
 
-        rotationTween = Tween.LocalRotation
+        RotationTween = Tween.LocalRotation
                                     (gameplayCamera.transform,
                                         fromRotation,
                                         toRotation,
@@ -260,20 +268,15 @@ public class CameraTriggerZone : MonoBehaviour
         targetDistance = Target.B;
         targetRotation = Target.B;
 
-        offsetTween.Stop();
-        rotationTween.Stop();
-        distanceTween.Stop();
+        OffsetTween.Stop();
+        RotationTween.Stop();
+        DistanceTween.Stop();
 
         if (closestToCheckpoint)
         {
             positionComposer.TargetOffset = cameraOffsetA;
             positionComposer.CameraDistance = cameraDistanceA;
-            gameplayCamera.transform.localRotation = rotationA;
-
-            Debug.Log($"Camera Trigger: {this.gameObject.name}");
-            Debug.Log($"Camera Offset: {positionComposer.TargetOffset}");
-            Debug.Log($"Camera Distance: {positionComposer.CameraDistance}");
-            Debug.Log($"Camera Rotation: {gameplayCamera.transform.localRotation.eulerAngles}");
+            gameplayCamera.transform.localRotation = RotationA;
         }
     }
 }

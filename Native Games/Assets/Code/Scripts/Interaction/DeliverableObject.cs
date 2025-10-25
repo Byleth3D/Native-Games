@@ -1,10 +1,12 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class DeliverableObject : MonoBehaviour, IInteractable
 {
-    [SerializeField] public InventoryItem inventoryItem;
-    [SerializeField] public int requestedItemAmount = 3;
+    [SerializeField] private List<Deliver> delivers;
+    [SerializeField] private string deliverFailPopupName;
     [Space]
     [SerializeField] private UnityEvent OnDeliver;
 
@@ -30,7 +32,7 @@ public class DeliverableObject : MonoBehaviour, IInteractable
         GameplayUIManager.Instance.popupManager.DisableActivePopup();
         GameplayUIManager.Instance.popupManager.EnablePopup("Interact");
 
-        if (InventoryManager.Instance.Deliver(inventoryItem, requestedItemAmount))
+        if (InventoryManager.Instance.Deliver(delivers))
         {
             OnDeliver?.Invoke();
             Delivered = true;
@@ -44,7 +46,7 @@ public class DeliverableObject : MonoBehaviour, IInteractable
     public void InteractionCancel()
     {
         GameplayUIManager.Instance.popupManager.DisableActivePopup();
-        GameplayUIManager.Instance.popupManager.EnablePopup($"{inventoryItem.name}Fail");
+        GameplayUIManager.Instance.popupManager.EnablePopup($"{deliverFailPopupName}");
         InteractionTrigger.TriggerInteractCancel(false);
     }
 
@@ -52,4 +54,11 @@ public class DeliverableObject : MonoBehaviour, IInteractable
     {
         GameplayUIManager.Instance.popupManager.DisableActivePopup();
     }
+}
+
+[Serializable]
+public class Deliver
+{
+    public InventoryItem inventoryItem;
+    public int requestedItemAmount;
 }

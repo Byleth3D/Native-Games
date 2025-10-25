@@ -140,6 +140,7 @@ public class SceneLoader : Singleton<SceneLoader>
                 break;
             case LoadingType.RestartCheckpoint:
                 saveIndex = SaveManager.Instance.CurrentSaveIndex;
+                Debug.Log($"Save Index {saveIndex}");
                 sceneName = saveFiles[saveIndex].activeSceneName;
                 break;
         }

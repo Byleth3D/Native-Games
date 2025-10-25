@@ -13,9 +13,15 @@ public class FPSCounter : MonoBehaviour
         fpsCounterText = GetComponent<TextMeshProUGUI>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
+        StopCoroutine(GetAverageFrameRate());
         StartCoroutine(GetAverageFrameRate());
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine(GetAverageFrameRate());
     }
 
     private IEnumerator GetAverageFrameRate()
