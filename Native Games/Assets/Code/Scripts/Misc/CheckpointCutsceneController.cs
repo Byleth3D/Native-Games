@@ -1,19 +1,22 @@
-using EditorAttributes;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class CheckpointCutsceneController : MonoBehaviour
 {
+    [SerializeField] private PlayableDirector playableDirector;
     [SerializeField] private int checkpointIndex = -1;
 
-    private void Update()
+    private IEnumerator Start()
     {
         if (checkpointIndex > -1)
         {
             int currentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
 
-            if (currentSaveIndex == -1)
+            while (currentSaveIndex == -1)
             {
-                return;
+                yield return null;
+                currentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
             }
 
             int currentCheckpointIndex = SaveManager.Instance.SaveFiles[currentSaveIndex].checkpointIndex;
@@ -21,7 +24,10 @@ public class CheckpointCutsceneController : MonoBehaviour
             if (currentCheckpointIndex != checkpointIndex)
             {
                 this.gameObject.SetActive(false);
-                return;
+            }
+            else
+            {
+                playableDirector.enabled = true;
             }
         }
     }

@@ -14164,7 +14164,7 @@ PlayableDirector:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 833902807}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
   m_InitialState: 1
@@ -14220,6 +14220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399fb509f62e4c84e9bc835e979a2a66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playableDirector: {fileID: 833902815}
   checkpointIndex: 0
 --- !u!1 &835417755
 GameObject:
