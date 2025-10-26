@@ -120,7 +120,7 @@ public class SaveManager : Singleton<SaveManager>
         SaveData saveFile = SaveFiles[index];
         CurrentSaveIndex = index;
 
-        CheckpointManager.Instance.ReloadCheckpointsFrom(saveFile.checkpointIndex);
+        CheckpointManager.Instance.ForceSetCheckpoint(saveFile.checkpointIndex);
         InventoryManager.Instance.LoadInventory(saveFile.inventoryItems, saveFile.inventoryItemsAmount);
         InventoryManager.Instance.LoadCollectedItems(saveFile.collectedItems);
     }

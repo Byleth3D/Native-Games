@@ -769,8 +769,8 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
-      propertyPath: isOneWay
-      value: 0
+      propertyPath: innerIndex
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: cameraDistanceA
@@ -862,7 +862,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7512097910488214257, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_Name
-      value: CameraTriggerZone - 1
+      value: CameraTrigger - 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512097910488214257, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10551,6 +10555,14 @@ PrefabInstance:
       value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: innerIndex
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: outerIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: angleThresholdB
       value: 33
       objectReference: {fileID: 0}
@@ -10640,7 +10652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7512097910488214257, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_Name
-      value: CameraTriggerZone - 5
+      value: CameraTrigger - 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14591,6 +14603,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: isOneWay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: innerIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: outerIndex
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
@@ -14691,7 +14711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7512097910488214257, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_Name
-      value: CameraTriggerZone - 2
+      value: CameraTrigger - 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18799,7 +18819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7512097910488214257, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_Name
-      value: CameraTriggerZone - 0
+      value: CameraTrigger - 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19062,7 +19082,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1776464611054996444, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -35.3
+      value: -37.3
       objectReference: {fileID: 0}
     - target: {fileID: 1776464611054996444, guid: 033de7959f9016b44845454b2ee270ae, type: 3}
       propertyPath: m_LocalPosition.y
@@ -28291,6 +28311,113 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1525341465}
   m_CullTransparentMesh: 1
+--- !u!1 &1529272934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1529272935}
+  - component: {fileID: 1529272936}
+  m_Layer: 0
+  m_Name: CameraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1529272935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529272934}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1803620523}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1529272936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529272934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a90dffd519989a4ea3789586230828b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameplayCamera: {fileID: 1941460353}
+  positionComposer: {fileID: 1941460352}
+  cameraParameters:
+  - offset: {x: -1, y: 2.5, z: 0}
+    offsetTweenDuration: 0.25
+    offsetTweenEase: 7
+    eulerRotation: {x: 30, y: 0, z: 0}
+    rotationTweenDuration: 1.5
+    rotationTweenEase: 7
+    distance: 12.75
+    distanceTweenDuration: 0.5
+    distanceTweenEase: 7
+    checkpointTie: {fileID: 2129390285}
+  - offset: {x: -0.5, y: 0, z: 0}
+    offsetTweenDuration: 2
+    offsetTweenEase: 7
+    eulerRotation: {x: 30, y: 0, z: 0}
+    rotationTweenDuration: 1.5
+    rotationTweenEase: 7
+    distance: 10.5
+    distanceTweenDuration: 2
+    distanceTweenEase: 7
+    checkpointTie: {fileID: 472414013}
+  - offset: {x: -0.5, y: -3, z: -3}
+    offsetTweenDuration: 2
+    offsetTweenEase: 7
+    eulerRotation: {x: 30, y: 270, z: 0}
+    rotationTweenDuration: 1.5
+    rotationTweenEase: 7
+    distance: 20
+    distanceTweenDuration: 4
+    distanceTweenEase: 7
+    checkpointTie: {fileID: 1157789109}
+  - offset: {x: 0, y: -0.5, z: -2.5}
+    offsetTweenDuration: 1.5
+    offsetTweenEase: 7
+    eulerRotation: {x: 33, y: 270, z: 0}
+    rotationTweenDuration: 1.5
+    rotationTweenEase: 7
+    distance: 12.5
+    distanceTweenDuration: 1.5
+    distanceTweenEase: 7
+    checkpointTie: {fileID: 54933240}
+  - offset: {x: 0, y: -0.5, z: 0}
+    offsetTweenDuration: 2.5
+    offsetTweenEase: 7
+    eulerRotation: {x: 25, y: 230, z: 0}
+    rotationTweenDuration: 1
+    rotationTweenEase: 7
+    distance: 12
+    distanceTweenDuration: 0.5
+    distanceTweenEase: 7
+    checkpointTie: {fileID: 0}
+  - offset: {x: 0, y: 0, z: 0}
+    offsetTweenDuration: 0.25
+    offsetTweenEase: 7
+    eulerRotation: {x: 33, y: 180, z: 0}
+    rotationTweenDuration: 0.5
+    rotationTweenEase: 7
+    distance: 14
+    distanceTweenDuration: 0.5
+    distanceTweenEase: 7
+    checkpointTie: {fileID: 0}
 --- !u!82 &1530223926
 AudioSource:
   m_ObjectHideFlags: 0
@@ -35699,7 +35826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1780299345}
   m_Layer: 0
-  m_Name: CameraTriggerZones
+  m_Name: CameraTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35877,6 +36004,26 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: innerIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: outerIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: cameraOffsetA.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: cameraOffsetA.y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: cameraOffsetA.z
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 7334891769770485296, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -35.00411
@@ -35919,7 +36066,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7512097910488214257, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_Name
-      value: CameraTriggerZone - 3
+      value: CameraTrigger - 3
       objectReference: {fileID: 0}
     - target: {fileID: 7512097910488214257, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_IsActive
@@ -36026,6 +36173,7 @@ Transform:
   m_Children:
   - {fileID: 974208040}
   - {fileID: 709248545}
+  - {fileID: 1529272935}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1807420139
@@ -36344,7 +36492,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: isOneWay
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: innerIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
+      propertyPath: outerIndex
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6872532379264656563, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: cameraDistanceA
@@ -36428,7 +36584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7512097910488214257, guid: fa9fa3f1b19d92f488c47fe7955d88a7, type: 3}
       propertyPath: m_Name
-      value: CameraTriggerZone - 4
+      value: CameraTrigger - 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37124,6 +37280,8 @@ GameObject:
   - component: {fileID: 1941460351}
   - component: {fileID: 1941460353}
   - component: {fileID: 1941460352}
+  - component: {fileID: 1941460354}
+  - component: {fileID: 1941460355}
   m_Layer: 0
   m_Name: GameplayCamera
   m_TagString: GameplayCamera
@@ -37220,6 +37378,75 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &1941460354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941460350}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca7de3aefa901374ba29464584a3109a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraRadius: 0.4
+  Decollision:
+    Enabled: 1
+    ObstacleLayers:
+      serializedVersion: 2
+      m_Bits: 1
+    UseFollowTarget:
+      Enabled: 1
+      YOffset: 0
+    Damping: 0.5
+    SmoothingTime: 0
+  TerrainResolution:
+    Enabled: 0
+    TerrainLayers:
+      serializedVersion: 2
+      m_Bits: 1
+    MaximumRaycast: 10
+    Damping: 0.5
+--- !u!114 &1941460355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941460350}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: 
+  TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  MinimumDistanceFromTarget: 0.3
+  AvoidObstacles:
+    Enabled: 1
+    DistanceLimit: 0
+    MinimumOcclusionTime: 0
+    CameraRadius: 0.4
+    UseFollowTarget:
+      Enabled: 0
+      YOffset: 0
+    Strategy: 0
+    MaximumEffort: 4
+    SmoothingTime: 0.5
+    Damping: 0
+    DampingWhenOccluded: 0.5
+  ShotQualityEvaluation:
+    Enabled: 0
+    OptimalDistance: 10
+    NearLimit: 5
+    FarLimit: 30
+    MaxQualityBoost: 0.2
 --- !u!64 &1956314967
 MeshCollider:
   m_ObjectHideFlags: 0

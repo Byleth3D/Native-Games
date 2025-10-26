@@ -17,6 +17,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         if (checkpoints.Count > 0)
         {
             currentCheckpoint = checkpoints[0];
+            CameraManager.Instance.ResetParameters(currentCheckpoint);
         }
     }
 
@@ -77,8 +78,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
 
         playerController.SetAsAlive();
         playerController.Teleport(currentCheckpoint.transform.position);
-
-        currentCheckpoint.ResetCameraTriggersAlong();
+        CameraManager.Instance.ResetParameters(currentCheckpoint);
     }
 
     public void CheckpointTeleport(int checkpointIndex)
@@ -106,28 +106,18 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         CurrentCheckpointIndex = checkpointIndex;
         playerController.SetAsAlive();
         playerController.Teleport(checkpoints[checkpointIndex].transform.position);
-        Debug.Log(checkpoints[checkpointIndex].transform.position);
-        currentCheckpoint.ResetCameraTriggersAlong();
+        CameraManager.Instance.ResetParameters(currentCheckpoint);
     }
 
-    public void ReloadCheckpointsFrom(int index)
+    public void ForceSetCheckpoint(int index)
     {
-        if (index >= checkpoints.Count)
+        if (index >= checkpoints.Count || checkpoints.Count == 0)
         {
             Debug.LogError("Array Out of Bounds!");
             return;
         }
 
-        if (index < checkpoints.Count - 1)
-        {
-            for (int i = index + 1; i < checkpoints.Count; i++)
-            {
-                checkpoints[i].ResetCameraTriggersAlong();
-            }
-        }
-
         currentCheckpoint = checkpoints[index];
-        Debug.Log($"Checkpoint Index: {index}");
         CheckpointTeleport(index);
     }
 }

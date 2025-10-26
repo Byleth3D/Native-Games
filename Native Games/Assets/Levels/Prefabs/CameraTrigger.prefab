@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 691441914157760545}
   - component: {fileID: 6872532379264656563}
   m_Layer: 10
-  m_Name: CameraTriggerZone
+  m_Name: CameraTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,17 +67,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOneWay: 0
-  backwardsAngleThreshold: 61
-  tolerance: 0.5
-  cameraOffsetA: {x: 0, y: 0, z: 0}
-  cameraOffsetB: {x: 0, y: 0, z: 0}
-  offsetTweenEase: 7
-  offsetTweenDuration: 0.25
-  eulerRotationA: {x: 0, y: 0, z: 0}
-  eulerRotationB: {x: 0, y: 0, z: 0}
-  rotationTweenEase: 7
-  rotationTweenDuration: 2
-  cameraDistanceA: 0
-  cameraDistanceB: 0
-  distanceTweenEase: 7
-  distanceTweenDuration: 0.5
+  innerIndex: 0
+  outerIndex: 0
