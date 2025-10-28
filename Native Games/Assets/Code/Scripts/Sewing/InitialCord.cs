@@ -53,8 +53,6 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("OnBeginDrag");
-
         if (IsConnected)
         {
             return;
@@ -65,8 +63,6 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("OnDrag");
-
         if (IsConnected)
         {
             return;
@@ -79,7 +75,6 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
 
         if (lineRenderer.Points.Length < 3)
         {
-            Debug.Log("Less then 3 Point");
             return;
         }
 

@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CollectableItem : MonoBehaviour, IInteractable
 {
     [SerializeField] private InventoryItem inventoryItem;
     [SerializeField] private CollectSound collectSound;
+    [Space]
+    [SerializeField] private UnityEvent OnCollect;
 
     public InteractionTrigger InteractionTrigger { get; set; }
     public InteractionType InteractionType { get; } = InteractionType.Collect;
@@ -32,6 +35,7 @@ public class CollectableItem : MonoBehaviour, IInteractable
         {
             GameplayUIManager.Instance.popupManager.DisablePopup("Interact");
             collectSound?.PlayCollectSound();
+            OnCollect?.Invoke();
             Invoke(nameof(SetDisable), 0.25f);
         }
         else

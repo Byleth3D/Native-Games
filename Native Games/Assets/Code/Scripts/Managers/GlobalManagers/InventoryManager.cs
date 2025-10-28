@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
+    [SerializeField] private int inventorySlots = 9;
     private Dictionary<InventoryItem, int> storedItems = new();
     private List<GameObject> collectedItems = new();
 
@@ -28,6 +29,11 @@ public class InventoryManager : Singleton<InventoryManager>
         }
         else
         {
+            if (storedItems.Count == inventorySlots)
+            {
+                return false;
+            }
+
             storedItems.Add(inventoryItem, inventoryItem.itemAmount);
             amount = inventoryItem.itemAmount;
         }

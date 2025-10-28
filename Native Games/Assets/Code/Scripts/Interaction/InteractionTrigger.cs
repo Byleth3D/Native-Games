@@ -40,7 +40,10 @@ public class InteractionTrigger : MonoBehaviour
 
         ActiveTrigger = null;
 
-        PlayerController.InteractionExit();
+        if (PlayerController && PlayerController.InteractionTrigger == this)
+        {
+            PlayerController.InteractionExit();
+        }
     }
 
     public InteractionType GetInteractionType()
