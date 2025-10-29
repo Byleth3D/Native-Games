@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Needle
   m_EditorClassIdentifier: 
   itemName: "Agulha de Fil\xE9"
-  itemIcon: {fileID: 21300000, guid: 51ba8f9f6d89f69439e94a0d973ebd57, type: 3}
+  itemIcon: {fileID: 21300000, guid: e4ddae0a819ce4c4fa9f2050ec69d17e, type: 3}
   itemDescription: "Descri\xE7\xE3o Agulha de Fil\xE9."
+  itemUsageImage: {fileID: 0}
   isStackable: 0
   itemAmount: 1
   itemStackLimit: 1
