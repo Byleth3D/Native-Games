@@ -12,11 +12,8 @@ public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        Debug.Log("ItemSlot Selected");
-
         if (InventoryItem == null)
         {
-            Debug.LogWarning("ItemSlot null");
             return;
         }
 
@@ -25,11 +22,8 @@ public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnDeselect(BaseEventData eventData)
     {
-        Debug.Log("ItemSlot Deselected");
-
         if (InventoryItem == null)
         {
-            Debug.LogWarning("ItemSlot null");
             return;
         }
 

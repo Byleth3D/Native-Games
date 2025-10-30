@@ -23,6 +23,11 @@ public class SaveManager : Singleton<SaveManager>
             return;
         }
 
+        if (SaveFiles.Count == 0)
+        {
+            NewSaveGame(onCurrentScene: true);
+        }
+
         LoadLastGame();
     }
 
@@ -52,7 +57,7 @@ public class SaveManager : Singleton<SaveManager>
         }
     }
 
-    public void NewSaveGame()
+    public void NewSaveGameFromCheckpoint()
     {
         SaveData saveData = new SaveData()
         {
@@ -68,7 +73,7 @@ public class SaveManager : Singleton<SaveManager>
         CurrentSaveIndex = SaveGame(saveData);
     }
 
-    public void NewSaveGameFromMenu()
+    public void NewSaveGame(bool onCurrentScene = false)
     {
         SaveData saveData = new SaveData()
         {
@@ -78,7 +83,8 @@ public class SaveManager : Singleton<SaveManager>
             inventoryItems = "",
             inventoryItemsAmount = "",
             collectedItems = "",
-            activeSceneName = SceneLoader.Instance.GetNextSceneName()
+            activeSceneName = onCurrentScene ?
+            SceneLoader.Instance.GetCurrentSceneName() : SceneLoader.Instance.GetNextSceneName()
         };
 
         CurrentSaveIndex = SaveGame(saveData);
@@ -120,7 +126,6 @@ public class SaveManager : Singleton<SaveManager>
         SaveData saveFile = SaveFiles[index];
         CurrentSaveIndex = index;
 
-        CheckpointManager.Instance.ForceSetCheckpoint(saveFile.checkpointIndex);
         InventoryManager.Instance.LoadInventory(saveFile.inventoryItems, saveFile.inventoryItemsAmount);
         InventoryManager.Instance.LoadCollectedItems(saveFile.collectedItems);
     }

@@ -80,6 +80,11 @@ public class SceneLoader : Singleton<SceneLoader>
         return scenePath.Substring(sceneNameStart, sceneNameLength);
     }
 
+    public string GetCurrentSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
+    }
+
     public void StartLoading(LoadingType loadingType)
     {
         StopCoroutine(LoadingChain(loadingType));
@@ -107,25 +112,19 @@ public class SceneLoader : Singleton<SceneLoader>
         switch (loadingType)
         {
             case LoadingType.NewGame:
-                SaveManager.Instance.NewSaveGameFromMenu();
-                int newSaveIndex = SaveManager.Instance.CurrentSaveIndex;
-                sceneName = saveFiles[newSaveIndex].activeSceneName;
+                SaveManager.Instance.NewSaveGame();
+                saveIndex = SaveManager.Instance.CurrentSaveIndex;
+                sceneName = saveFiles[saveIndex].activeSceneName;
                 break;
 
             case LoadingType.ContinueGame:
-                int lastSaveIndex = saveFiles.Count - 1;
-                sceneName = saveFiles[lastSaveIndex].activeSceneName;
+                saveIndex = saveFiles.Count - 1;
+                sceneName = saveFiles[saveIndex].activeSceneName;
                 break;
 
             case LoadingType.LoadGame:
-                if (saveIndex == -1)
-                {
-                    Debug.LogError("Index Out of Bounds");
-                }
-
                 saveFiles = SaveManager.Instance.SaveFiles;
                 sceneName = saveFiles[saveIndex].activeSceneName;
-
                 break;
 
             case LoadingType.NextScene:
@@ -137,9 +136,9 @@ public class SceneLoader : Singleton<SceneLoader>
                 }
 
                 break;
+
             case LoadingType.RestartCheckpoint:
                 saveIndex = SaveManager.Instance.CurrentSaveIndex;
-                Debug.Log($"Save Index {saveIndex}");
                 sceneName = saveFiles[saveIndex].activeSceneName;
                 break;
         }
@@ -158,11 +157,17 @@ public class SceneLoader : Singleton<SceneLoader>
             yield return null;
         }
 
+        while (!GetCurrentSceneName().Equals(sceneName))
+        {
+            yield return null;
+        }
+
         if (loadingType == LoadingType.ContinueGame)
         {
             SaveManager.Instance.LoadLastGame();
         }
-        else if (loadingType == LoadingType.LoadGame || loadingType == LoadingType.RestartCheckpoint)
+        else if (loadingType == LoadingType.LoadGame
+            || loadingType == LoadingType.RestartCheckpoint)
         {
             SaveManager.Instance.LoadGame(saveIndex);
         }

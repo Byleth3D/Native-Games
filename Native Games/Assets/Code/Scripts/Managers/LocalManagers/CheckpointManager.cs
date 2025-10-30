@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Collections;
 
 public class CheckpointManager : LocalSingleton<CheckpointManager>
 {
@@ -8,17 +9,23 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
     [Space]
     [SerializeField] private UnityEvent OnLastCheckpointReached;
     private Checkpoint currentCheckpoint;
-    public int CurrentCheckpointIndex { get; private set; } = 0;
+    public int CurrentCheckpointIndex { get; private set; } = -1;
 
-    protected override void Awake()
+    private IEnumerator Start()
     {
-        base.Awake();
-
-        if (checkpoints.Count > 0)
+        while (SaveManager.Instance == null)
         {
-            currentCheckpoint = checkpoints[0];
-            CameraManager.Instance.ResetParameters(currentCheckpoint);
+            yield return null;
         }
+
+        while (SaveManager.Instance.SaveFiles == null || SaveManager.Instance.CurrentSaveIndex == -1)
+        {
+            yield return null;
+        }
+
+        int curentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
+        int currentCheckpointIndex = SaveManager.Instance.SaveFiles[curentSaveIndex].checkpointIndex;
+        ForceSetCheckpoint(currentCheckpointIndex);
     }
 
     public void SetActiveCheckpoint(Checkpoint checkpoint)
@@ -51,7 +58,12 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
             return;
         }
 
-        SaveManager.Instance.NewSaveGame();
+        if (checkpointIndex == 0)
+        {
+            return;
+        }
+
+        SaveManager.Instance.NewSaveGameFromCheckpoint();
     }
 
     public void CheckpointTeleport()
@@ -109,7 +121,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         CameraManager.Instance.ResetParameters(currentCheckpoint);
     }
 
-    public void ForceSetCheckpoint(int index)
+    public void ForceSetCheckpoint(int index, bool teleport = true)
     {
         if (index >= checkpoints.Count || checkpoints.Count == 0)
         {
@@ -118,6 +130,11 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         }
 
         currentCheckpoint = checkpoints[index];
-        CheckpointTeleport(index);
+        CurrentCheckpointIndex = index;
+
+        if (teleport)
+        {
+            CheckpointTeleport(index);
+        }
     }
 }
