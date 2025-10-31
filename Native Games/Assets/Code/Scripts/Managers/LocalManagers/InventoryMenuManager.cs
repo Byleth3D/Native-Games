@@ -164,4 +164,21 @@ public class InventoryMenuManager
         InventorySlotDescription.gameObject.SetActive(false);
         InventorySlotUsageImage.gameObject.SetActive(false);
     }
+
+    public void Setup()
+    {
+        GameplayUIManager.Instance.inventoryMenuManager.ClearInventorySlots();
+
+        Dictionary<InventoryItem, int> storeItems = InventoryManager.Instance.GetStoredItems();
+
+        if (storeItems == null || storeItems.Count == 0)
+        {
+            return;
+        }
+
+        foreach (InventoryItem item in storeItems.Keys)
+        {
+            AddInventoryItemToSlot(item, storeItems[item]);
+        }
+    }
 }

@@ -7,9 +7,8 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
     public PopupManager popupManager;
     public InventoryMenuManager inventoryMenuManager;
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
         inGameMenuManager.Setup();
         popupManager.Setup();
 
@@ -24,6 +23,8 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
             mobileHUD.SetActive(false);
         }
 #endif
+
+        inventoryMenuManager.Setup();
     }
 
     private void Update()

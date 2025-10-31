@@ -1,6 +1,4 @@
 ﻿
-using System.Runtime.CompilerServices;
-
 public class MainMenuManager : LocalSingleton<MainMenuManager>
 {
     public InGameMenuManager inGameMenuManager;

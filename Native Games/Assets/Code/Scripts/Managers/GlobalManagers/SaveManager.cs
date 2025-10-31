@@ -14,22 +14,22 @@ public class SaveManager : Singleton<SaveManager>
         PreloadSaveFiles();
     }
 
-    private void Start()
-    {
-        string currentSceneName = SceneManager.GetActiveScene().name;
+    //private void Start()
+    //{
+    //    string currentSceneName = SceneManager.GetActiveScene().name;
 
-        if (currentSceneName == "MainMenu" || currentSceneName.Contains("Credits"))
-        {
-            return;
-        }
+    //    if (currentSceneName == "MainMenu" || currentSceneName.Contains("Credits"))
+    //    {
+    //        return;
+    //    }
 
-        if (SaveFiles.Count == 0)
-        {
-            NewSaveGame(onCurrentScene: true);
-        }
+    //    if (SaveFiles.Count == 0)
+    //    {
+    //        NewSaveGame(onCurrentScene: true);
+    //    }
 
-        LoadLastGame();
-    }
+    //    LoadLastGame();
+    //}
 
     public void PreloadSaveFiles()
     {

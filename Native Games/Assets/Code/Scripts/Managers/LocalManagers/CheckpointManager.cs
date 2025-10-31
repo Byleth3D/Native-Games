@@ -11,18 +11,8 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
     private Checkpoint currentCheckpoint;
     public int CurrentCheckpointIndex { get; private set; } = -1;
 
-    private IEnumerator Start()
+    private void Start()
     {
-        while (SaveManager.Instance == null)
-        {
-            yield return null;
-        }
-
-        while (SaveManager.Instance.SaveFiles == null || SaveManager.Instance.CurrentSaveIndex == -1)
-        {
-            yield return null;
-        }
-
         int curentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
         int currentCheckpointIndex = SaveManager.Instance.SaveFiles[curentSaveIndex].checkpointIndex;
         ForceSetCheckpoint(currentCheckpointIndex);
@@ -52,18 +42,19 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         currentCheckpoint = checkpoint;
         CurrentCheckpointIndex = checkpointIndex;
 
+        if (checkpointIndex == 0)
+        {
+            return;
+        }
+
         if (CurrentCheckpointIndex == checkpoints.Count - 1)
         {
             OnLastCheckpointReached?.Invoke();
             return;
         }
 
-        if (checkpointIndex == 0)
-        {
-            return;
-        }
-
         SaveManager.Instance.NewSaveGameFromCheckpoint();
+        CutsceneManager.Instance.PlayeCheckpointTieCutscene(checkpointIndex);
     }
 
     public void CheckpointTeleport()

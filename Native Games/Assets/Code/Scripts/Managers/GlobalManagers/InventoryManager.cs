@@ -223,17 +223,19 @@ public class InventoryManager : Singleton<InventoryManager>
             storedItems.Clear();
         }
 
-        GameplayUIManager.Instance.inventoryMenuManager.ClearInventorySlots();
-
         for (int i = 0; i < inventoryItems.Length; i++)
         {
             InventoryItem item = Resources.Load<InventoryItem>("ScriptableObjects/" + inventoryItems[i]);
             int amount = int.Parse(inventoryItemsAmount[i]);
 
             storedItems.Add(item, amount);
-            GameplayUIManager.Instance.inventoryMenuManager.AddInventoryItemToSlot(item, amount);
             Debug.Log($"{item.name} | {storedItems[item]}");
         }
+    }
+
+    public Dictionary<InventoryItem, int> GetStoredItems()
+    {
+        return storedItems;
     }
 
     public bool Contains(List<Deliver> delivers)

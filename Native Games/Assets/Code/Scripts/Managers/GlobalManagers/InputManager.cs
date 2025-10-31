@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class InputManager : Singleton<InputManager>
 {
     private GameInputs gameInputs;
+    private bool inputEnabled;
 
     #region Gameplay Fields
     private InputAction interactAction;
@@ -76,6 +77,11 @@ public class InputManager : Singleton<InputManager>
 
     public void EnableAction(string actionToEnable)
     {
+        if (!inputEnabled)
+        {
+            return;
+        }
+
         InputAction action = gameInputs.FindAction(actionToEnable);
 
         if (action == null) return;
@@ -85,11 +91,21 @@ public class InputManager : Singleton<InputManager>
 
     private void EnableAction(InputAction actionToEnable)
     {
+        if (!inputEnabled)
+        {
+            return;
+        }
+
         actionToEnable.Enable();
     }
 
     public void DisableAction(string actionToDisable)
     {
+        if (!inputEnabled)
+        {
+            return;
+        }
+
         InputAction action = gameInputs.FindAction(actionToDisable);
 
         if (action == null) return;
@@ -99,6 +115,11 @@ public class InputManager : Singleton<InputManager>
 
     public void DisableAction(string actionToDisable, float duration)
     {
+        if (!inputEnabled)
+        {
+            return;
+        }
+
         InputAction action = gameInputs.FindAction(actionToDisable);
 
         if (action == null) return;
@@ -115,22 +136,42 @@ public class InputManager : Singleton<InputManager>
 
     private void DisableAction(InputAction actionToDisable)
     {
+        if (!inputEnabled)
+        {
+            return;
+        }
+
         actionToDisable.Disable();
         actionToDisable.Reset();
     }
 
     public void EnablePlayerActions()
     {
+        if (!inputEnabled)
+        {
+            return;
+        }
+
         gameInputs.Player.Enable();
     }
 
     public void DisablePlayerActions()
     {
+        if (!inputEnabled)
+        {
+            return;
+        }
+
         gameInputs.Player.Disable();
     }
 
     public void DisablePlayerActions(float duration)
     {
+        if (!inputEnabled)
+        {
+            return;
+        }
+
         gameInputs.Player.Disable();
         CountdownTimer timer = new CountdownTimer(duration);
 
@@ -138,6 +179,29 @@ public class InputManager : Singleton<InputManager>
         timer.Start();
 
         disabledActionsTimers.Add(timer);
+    }
+
+    public void EnableGameInputs()
+    {
+        gameInputs.Player.Enable();
+        inputEnabled = true;
+    }
+
+    public void DisableGameInputs(float duration)
+    {
+        DisableGameInputs();
+        CountdownTimer timer = new CountdownTimer(duration);
+
+        timer.OnTimerExpired += () => EnableGameInputs();
+        timer.Start();
+
+        disabledActionsTimers.Add(timer);
+    }
+
+    public void DisableGameInputs()
+    {
+        gameInputs.Player.Disable();
+        inputEnabled = false;
     }
 
     public Vector2 GetPointerPosition()

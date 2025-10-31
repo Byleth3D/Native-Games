@@ -8,6 +8,27 @@ public class SceneLoader : Singleton<SceneLoader>
 {
     private AsyncOperation loadingOperation;
 
+    private void Start()
+    {
+        string sceneName = "";
+
+#if UNITY_EDITOR
+        if (PlayerPrefs.HasKey("ActiveEditorScene"))
+        {
+            sceneName = PlayerPrefs.GetString("ActiveEditorScene");
+            PlayerPrefs.DeleteKey("ActiveEditorScene");
+        }
+        else
+        {
+            sceneName = GetNextSceneName();
+        }
+#else
+        sceneName = GetNextSceneName();
+#endif
+        StopCoroutine(DirectLoadingChain(sceneName));
+        StartCoroutine(DirectLoadingChain(sceneName));
+    }
+
     private void LoadScene(int nextSceneIndex)
     {
         loadingOperation = SceneManager.LoadSceneAsync(nextSceneIndex);
@@ -146,21 +167,12 @@ public class SceneLoader : Singleton<SceneLoader>
         LoadScene(sceneName);
         loadingOperation.allowSceneActivation = false;
 
-        while (!loadingOperation.isDone)
-        {
-            if (loadingOperation.progress >= 0.9f)
-            {
-                yield return new WaitForSeconds(2.5f);
-                loadingOperation.allowSceneActivation = true;
-            }
-
-            yield return null;
-        }
-
-        while (!GetCurrentSceneName().Equals(sceneName))
+        while (loadingOperation.progress < 0.9f)
         {
             yield return null;
         }
+
+        yield return new WaitForSeconds(2.5f);
 
         if (loadingType == LoadingType.ContinueGame)
         {
@@ -172,6 +184,7 @@ public class SceneLoader : Singleton<SceneLoader>
             SaveManager.Instance.LoadGame(saveIndex);
         }
 
+        loadingOperation.allowSceneActivation = true;
         LoadingScreenManager.Instance.DisableLoadingScreen();
         yield return null;
     }
@@ -200,6 +213,30 @@ public class SceneLoader : Singleton<SceneLoader>
         }
 
         LoadingScreenManager.Instance.DisableLoadingScreen();
+        yield return null;
+    }
+
+    private IEnumerator DirectLoadingChain(string sceneName)
+    {
+        LoadScene(sceneName);
+        loadingOperation.allowSceneActivation = false;
+
+        while (loadingOperation.progress >= 0.9f)
+        {
+            yield return null;
+        }
+
+        if (sceneName.Contains("Level"))
+        {
+            if (SaveManager.Instance.SaveFiles.Count == 0)
+            {
+                SaveManager.Instance.NewSaveGame();
+            }
+
+            SaveManager.Instance.LoadLastGame();
+        }
+
+        loadingOperation.allowSceneActivation = true;
         yield return null;
     }
 }
