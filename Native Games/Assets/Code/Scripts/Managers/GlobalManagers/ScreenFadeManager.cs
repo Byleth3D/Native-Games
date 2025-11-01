@@ -170,9 +170,18 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
         }
         else
         {
+            //Debug.Log("Callingback FadeIn");
             IsFading = false;
             fadeType = FadeType.FadeOut;
-            Invoke(nameof(OnFadeComplete), CurrentCallbackDelay);
+
+            if (CurrentCallbackDelay < 0.0f)
+            {
+                OnFadeComplete();
+            }
+            else
+            {
+                Invoke(nameof(OnFadeComplete), CurrentCallbackDelay);
+            }
         }
     }
 
@@ -186,14 +195,26 @@ public class ScreenFadeManager : Singleton<ScreenFadeManager>
         {
             IsFading = false;
             fadeType = FadeType.FadeIn;
-            Invoke(nameof(OnFadeComplete), CurrentCallbackDelay);
+
+            if (CurrentCallbackDelay < 0.0f)
+            {
+                OnFadeComplete();
+            }
+            else
+            {
+                Invoke(nameof(OnFadeComplete), CurrentCallbackDelay);
+            }
         }
     }
 
     private void OnFadeComplete()
     {
-        onFadeComplete?.Invoke();
-        onFadeComplete = null;
+        //Debug.Log($"Has Callback: {onFadeComplete != null}");
+
+        if (onFadeComplete != null)
+        {
+            onFadeComplete();
+        }
     }
 
     public void ResetConfig()

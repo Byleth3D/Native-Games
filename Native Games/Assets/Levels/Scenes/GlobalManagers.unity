@@ -452,7 +452,7 @@ MonoBehaviour:
     callbackDelay: 0.25
   - fadeConfigName: CutsceneStop
     fadeInDuration: 0.75
-    fadeOutDuration: 1.25
+    fadeOutDuration: 0.75
     fadeDelay: 0
     fadeColor: {r: 1, g: 1, b: 1, a: 1}
     callbackDelay: 0

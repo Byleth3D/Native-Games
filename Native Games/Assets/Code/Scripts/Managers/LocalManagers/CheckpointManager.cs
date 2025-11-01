@@ -47,6 +47,8 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
             return;
         }
 
+        CutsceneManager.Instance.PlayeCheckpointTieCutscene(checkpointIndex);
+
         if (CurrentCheckpointIndex == checkpoints.Count - 1)
         {
             OnLastCheckpointReached?.Invoke();
@@ -54,7 +56,6 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         }
 
         SaveManager.Instance.NewSaveGameFromCheckpoint();
-        CutsceneManager.Instance.PlayeCheckpointTieCutscene(checkpointIndex);
     }
 
     public void CheckpointTeleport()
