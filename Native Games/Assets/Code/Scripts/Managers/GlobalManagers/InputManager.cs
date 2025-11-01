@@ -184,6 +184,7 @@ public class InputManager : Singleton<InputManager>
     public void EnableGameInputs()
     {
         gameInputs.Player.Enable();
+        gameInputs.UI.Enable();
         inputEnabled = true;
     }
 
@@ -201,6 +202,7 @@ public class InputManager : Singleton<InputManager>
     public void DisableGameInputs()
     {
         gameInputs.Player.Disable();
+        gameInputs.UI.Disable();
         inputEnabled = false;
     }
 
