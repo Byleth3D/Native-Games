@@ -127,7 +127,7 @@ public class SaveManager : Singleton<SaveManager>
         CurrentSaveIndex = index;
 
         InventoryManager.Instance.LoadInventory(saveFile.inventoryItems, saveFile.inventoryItemsAmount);
-        InventoryManager.Instance.LoadCollectedItems(saveFile.collectedItems);
+        //InventoryManager.Instance.LoadCollectedItems(saveFile.collectedItems);
     }
 
     public void LoadLastGame()

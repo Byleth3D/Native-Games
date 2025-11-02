@@ -9,6 +9,16 @@ public class InventoryManager : Singleton<InventoryManager>
     private Dictionary<InventoryItem, int> storedItems = new();
     private List<GameObject> collectedItems = new();
 
+    private void OnEnable()
+    {
+        SceneLoader.Instance.onSceneLoaded += LoadCollectedItems;
+    }
+
+    private void OnDisable()
+    {
+        SceneLoader.Instance.onSceneLoaded -= LoadCollectedItems;
+    }
+
     public bool Collect(GameObject collectableItemObject, InventoryItem inventoryItem)
     {
         bool exists = storedItems.ContainsKey(inventoryItem);
@@ -166,9 +176,17 @@ public class InventoryManager : Singleton<InventoryManager>
         return collectedItemsNames;
     }
 
-    public void LoadCollectedItems(string items)
+    public void LoadCollectedItems()
     {
-        if (items == "")
+        if (!SceneLoader.Instance.GetActiveSceneName().Contains("Level"))
+        {
+            return;
+        }
+
+        int index = SaveManager.Instance.CurrentSaveIndex;
+        string items = SaveManager.Instance.SaveFiles[index].collectedItems;
+
+        if (string.IsNullOrEmpty(items))
         {
             Debug.LogWarning("No Collectable Items Loaded!");
 
@@ -188,7 +206,7 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             //foreach (GameObject itemObject in collectedItems)
             //{
-            //    itemObject.SetActive(true);//
+            //    itemObject.SetActive(true);
             //    Debug.Log($"{itemObject.name} | {itemObject.activeInHierarchy}");
             //}
 
@@ -197,8 +215,9 @@ public class InventoryManager : Singleton<InventoryManager>
 
         foreach (string item in collectedItemsNames)
         {
+            Debug.Log("Entered ForEach");
             GameObject itemObject = GameObject.Find(item);
-
+            Debug.Log($"Has Item: {itemObject != null}");
             if (itemObject != null)
             {
                 collectedItems.Add(itemObject);

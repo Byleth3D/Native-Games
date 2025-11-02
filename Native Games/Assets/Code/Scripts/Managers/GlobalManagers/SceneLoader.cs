@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : Singleton<SceneLoader>
 {
     private AsyncOperation loadingOperation;
+    public event Action onSceneLoaded;
 
     private void Start()
     {
@@ -166,6 +167,7 @@ public class SceneLoader : Singleton<SceneLoader>
 
         LoadScene(sceneName);
         loadingOperation.allowSceneActivation = false;
+        InputManager.Instance.DisableGameInputs();
 
         while (loadingOperation.progress < 0.9f)
         {
@@ -185,7 +187,15 @@ public class SceneLoader : Singleton<SceneLoader>
         }
 
         loadingOperation.allowSceneActivation = true;
+        InputManager.Instance.EnableGameInputs();
+
+        while (GetCurrentSceneName() != sceneName)
+        {
+            yield return null;
+        }
+
         LoadingScreenManager.Instance.DisableLoadingScreen();
+        onSceneLoaded?.Invoke();
         yield return null;
     }
 
@@ -200,19 +210,23 @@ public class SceneLoader : Singleton<SceneLoader>
 
         LoadScene(sceneName);
         loadingOperation.allowSceneActivation = false;
+        InputManager.Instance.DisableGameInputs();
 
-        while (!loadingOperation.isDone)
+        while (loadingOperation.progress < 0.9f)
         {
-            if (loadingOperation.progress >= 0.9f)
-            {
-                yield return new WaitForSeconds(2.5f);
-                loadingOperation.allowSceneActivation = true;
-            }
+            yield return null;
+        }
 
+        loadingOperation.allowSceneActivation = true;
+        InputManager.Instance.EnableGameInputs();
+
+        while (GetCurrentSceneName() != sceneName)
+        {
             yield return null;
         }
 
         LoadingScreenManager.Instance.DisableLoadingScreen();
+        onSceneLoaded?.Invoke();
         yield return null;
     }
 
@@ -237,6 +251,13 @@ public class SceneLoader : Singleton<SceneLoader>
         }
 
         loadingOperation.allowSceneActivation = true;
+
+        while (GetCurrentSceneName() != sceneName)
+        {
+            yield return null;
+        }
+
+        onSceneLoaded?.Invoke();
         yield return null;
     }
 }
