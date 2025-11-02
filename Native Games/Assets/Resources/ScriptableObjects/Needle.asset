@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: "Agulha de Fil\xE9"
   itemIcon: {fileID: 21300000, guid: e4ddae0a819ce4c4fa9f2050ec69d17e, type: 3}
-  itemDescription: "Instrumento do Patrim\xF4nio Cultural Imaterial de Alagoas. Esta
-    agulha espec\xEDfica, mais larga e de ponta arredondada, \xE9 usada para entrela\xE7ar
-    linhas na rede de base, uma t\xE9cnica que remonta ao per\xEDodo colonial e \xE9
-    a alma do Bordado Fil\xE9 das Lagoas Munda\xFA-Manguaba."
+  itemDescription: "As agulhas de madeira s\xE3o ferramentas na cria\xE7\xE3o das
+    rendas de fil\xE9, refletindo a simplicidade e a beleza do artesanato tradicional.
+    Cada agulha, feita \xE0 m\xE3o com precis\xE3o, desempenha um papel crucial na
+    tecelagem das redes que formam a base do bordado fil\xE9."
   itemUsageImage: {fileID: 21300000, guid: c02c3a64290139e44b200df181d08601, type: 3}
   isStackable: 0
   itemAmount: 1
