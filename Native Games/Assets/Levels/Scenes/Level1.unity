@@ -15870,6 +15870,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 9d5ecc4e8f323634ea6875b167bcef9a, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 7040e4a70908cfb48b3eff81c5b34ed5, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 7040e4a70908cfb48b3eff81c5b34ed5, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6011666621918690213, guid: 7040e4a70908cfb48b3eff81c5b34ed5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0.00013468279
@@ -26927,6 +26935,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 9d5ecc4e8f323634ea6875b167bcef9a, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 7040e4a70908cfb48b3eff81c5b34ed5, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6011666621918690213, guid: 7040e4a70908cfb48b3eff81c5b34ed5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0.00013326407
