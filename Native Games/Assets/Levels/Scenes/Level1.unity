@@ -2450,7 +2450,11 @@ PrefabInstance:
     - {fileID: 2365444261432919110, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
     - {fileID: -2012736038863818119, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
     - {fileID: 7026994528967986087, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
-    m_AddedGameObjects: []
+    - {fileID: 2619658359206779358, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
+      insertIndex: 173
+      addedObject: {fileID: 793411165}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1024137460118928761, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
       insertIndex: -1
@@ -2968,9 +2972,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3387540412518008386, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1570570736}
-    - targetCorrespondingSourceObject: {fileID: 2619658359206779358, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1267094955}
     - targetCorrespondingSourceObject: {fileID: 2886321273632843580, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1548793892}
@@ -3039,11 +3040,6 @@ GameObject:
 --- !u!1 &191263498 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2886321273632843580, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
-  m_PrefabInstance: {fileID: 191263485}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &191263499 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2619658359206779358, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
   m_PrefabInstance: {fileID: 191263485}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &191263500 stripped
@@ -12329,6 +12325,73 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -9021086348037964837, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
+--- !u!1001 &793411163
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 191263486}
+    m_Modifications:
+    - target: {fileID: 4102997022632734104, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_Name
+      value: "Tabua de Fil\xE9 (1)"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -15.49663
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.0179794
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -58.400696
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9964839
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.08378471
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+--- !u!95 &793411164 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3128938495825075609, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+  m_PrefabInstance: {fileID: 793411163}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &793411165 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+  m_PrefabInstance: {fileID: 793411163}
+  m_PrefabAsset: {fileID: 0}
 --- !u!64 &805150251
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25719,28 +25782,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
---- !u!64 &1267094955
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 191263499}
-  m_Material: {fileID: 13400000, guid: c9a3f81ef3c6dc84dbf2a7ecbc0204f8, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -888150304232355978, guid: 2c05683dff0a38e4ab195bd9e31d7376, type: 3}
 --- !u!64 &1268496220
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -30098,6 +30139,8 @@ PlayableDirector:
     value: {fileID: 814386669}
   - key: {fileID: -2685956511386321986, guid: 828c84a0098e8694797085e319ee6855, type: 2}
     value: {fileID: 276946591}
+  - key: {fileID: 4349665932921743950, guid: 828c84a0098e8694797085e319ee6855, type: 2}
+    value: {fileID: 793411164}
   m_ExposedReferences:
     m_References:
     - c4d86a59415b5624baf663bd5807c7d9: {fileID: 200402999}

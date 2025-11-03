@@ -21,8 +21,8 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
-    importConstraints: 1
-    animationCompression: 1
+    importConstraints: 0
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -80,7 +80,522 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: Boneca Cutscene Finalizada(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Boneca
+      parentName: Boneca Cutscene Finalizada(Clone)
+      position: {x: 3.8643892, y: 9.846109, z: 12.816367}
+      rotation: {x: -0.00000014611095, y: 0.70710665, z: 0.7071069, w: 0.00000008429367}
+      scale: {x: 100, y: 100, z: 100}
+    - name: Rig Boneca
+      parentName: Boneca Cutscene Finalizada(Clone)
+      position: {x: 3.8643892, y: 3.0483086, z: 12.816367}
+      rotation: {x: -0.00000009415696, y: 0.7071068, z: 0.7071067, w: 0.00000009415697}
+      scale: {x: 100, y: 100, z: 100}
+    - name: root
+      parentName: Rig Boneca
+      position: {x: 0.038643926, y: -0.12627944, z: -0.035629548}
+      rotation: {x: 0.70851076, y: -0.00000008412594, z: -0.00000008446102, w: 0.7057001}
+      scale: {x: 1, y: 0.9999999, z: 0.9999999}
+    - name: perna.Pole.l
+      parentName: root
+      position: {x: -0.0020539379, y: 0.0028910139, z: 0.0030586931}
+      rotation: {x: -0.021366045, y: 0.0023238137, z: 0.9996452, w: 0.01573748}
+      scale: {x: 1.0000002, y: 1, z: 0.99999994}
+    - name: perna.Pole.l_end
+      parentName: perna.Pole.l
+      position: {x: -0, y: 0.00090656144, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: barriga
+      parentName: root
+      position: {x: -4.4114135e-12, y: 0.0046545807, z: -0.000018502846}
+      rotation: {x: 4.656613e-10, y: -5.689286e-14, z: -2.3291738e-16, w: 1}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: peito
+      parentName: barriga
+      position: {x: 1.110223e-18, y: 0.0035924162, z: 7.4505804e-11}
+      rotation: {x: -0.007037859, y: -1.070739e-14, z: 0.0000000016779561, w: 0.99997526}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: "pesco\xE7o"
+      parentName: peito
+      position: {x: 1.4432899e-17, y: 0.0033962205, z: 3.7252906e-11}
+      rotation: {x: 0.005050303, y: 7.229276e-15, z: -0.0000000012040856, w: 0.99998724}
+      scale: {x: 1, y: 1, z: 1}
+    - name: rosto
+      parentName: "pesco\xE7o"
+      position: {x: -2.8940066e-18, y: 0.0010805608, z: -5.4044443e-11}
+      rotation: {x: -0.9832549, y: -8.695149e-14, z: 0.0000004962828, w: 0.18223561}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tranca.1.r
+      parentName: rosto
+      position: {x: 0.0018742606, y: -0.00019025263, z: -0.0011863245}
+      rotation: {x: 0.6049583, y: 0.111945316, z: 0.7617463, w: -0.20306732}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: tranca.2.r
+      parentName: tranca.1.r
+      position: {x: 0.0000000010803342, y: 0.0012160188, z: -1.11758706e-10}
+      rotation: {x: 0.3851684, y: 0.04546417, z: 0.26369986, w: 0.88319916}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: tranca.3.r
+      parentName: tranca.2.r
+      position: {x: -0.0000000037252903, y: 0.0007998056, z: 0.0000000016391277}
+      rotation: {x: 0.3124638, y: -0.18444195, z: 0.21412615, w: 0.9069165}
+      scale: {x: 0.99999994, y: 1, z: 0.9999999}
+    - name: tranca.3.r_end
+      parentName: tranca.3.r
+      position: {x: -0, y: 0.0010948913, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: tranca.1.l
+      parentName: rosto
+      position: {x: -0.0018742612, y: -0.00019025263, z: -0.0011863237}
+      rotation: {x: -0.60495824, y: 0.11194534, z: 0.76174635, w: 0.20306723}
+      scale: {x: 0.9999996, y: 1, z: 0.99999994}
+    - name: tranca.2.l
+      parentName: tranca.1.l
+      position: {x: -0.0000000016018747, y: 0.0012160095, z: -0.0000000018253922}
+      rotation: {x: 0.3851684, y: -0.045464262, z: -0.26369992, w: 0.88319916}
+      scale: {x: 1, y: 1, z: 1.0000001}
+    - name: tranca.3.l
+      parentName: tranca.2.l
+      position: {x: 0.0000000036507843, y: 0.00079980446, z: -0.0000000036507843}
+      rotation: {x: 0.3124636, y: 0.18444213, z: -0.2141261, w: 0.90691656}
+      scale: {x: 0.9999999, y: 1, z: 1}
+    - name: tranca.3.l_end
+      parentName: tranca.3.l
+      position: {x: -0, y: 0.0010948913, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chapeu
+      parentName: rosto
+      position: {x: -2.2270652e-10, y: 0.0026968056, z: -0.0010024585}
+      rotation: {x: -0.46377817, y: 9.320809e-15, z: 0.00000011057331, w: 0.88595134}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chapeu_end
+      parentName: Chapeu
+      position: {x: -0, y: 0.003669396, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: cabelo1
+      parentName: rosto
+      position: {x: -0.0005386622, y: 0.0048978846, z: 0.0018129421}
+      rotation: {x: 0.5474717, y: -0.6283567, z: 0.27907264, w: 0.47703364}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: cabelo2
+      parentName: cabelo1
+      position: {x: 0.0000000013597309, y: 0.0015017973, z: 0.0000000018253922}
+      rotation: {x: 0.5575013, y: -0.1030405, z: 0.13184471, w: 0.8131371}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: cabelo2_end
+      parentName: cabelo2
+      position: {x: -0, y: 0.0014808784, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ombro.l
+      parentName: peito
+      position: {x: -0.0014362984, y: 0.0029794555, z: -0.00023793023}
+      rotation: {x: -0.13765027, y: -0.1376507, z: 0.69357944, w: -0.6935793}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "antebra\xE7o.l"
+      parentName: ombro.l
+      position: {x: -8.475035e-10, y: 0.0025791335, z: -2.0489097e-10}
+      rotation: {x: 0.035398085, y: -0.0011660691, z: 0.0018872123, w: 0.9993708}
+      scale: {x: 0.99999994, y: 1.0000001, z: 0.99999994}
+    - name: "bra\xE7o.l"
+      parentName: "antebra\xE7o.l"
+      position: {x: 1.2805686e-10, y: 0.0022764092, z: -1.1525116e-10}
+      rotation: {x: 0.0032931336, y: 0.0010026944, z: -0.017376387, w: 0.9998431}
+      scale: {x: 1, y: 1, z: 0.9999999}
+    - name: dedo.l
+      parentName: "bra\xE7o.l"
+      position: {x: -0.0001252901, y: 0.00049563736, z: 0.00063175714}
+      rotation: {x: 0.008512576, y: 0.13518912, z: 0.03733872, w: 0.99007946}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: dedo.2.l
+      parentName: dedo.l
+      position: {x: -0.0000000016763806, y: 0.00074409426, z: -8.5681673e-10}
+      rotation: {x: 0.027281394, y: 0.00000065565104, z: -0.018458052, w: 0.9994574}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
+    - name: dedo.2.l_end
+      parentName: dedo.2.l
+      position: {x: -0, y: 0.0010096417, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: finger.l
+      parentName: "bra\xE7o.l"
+      position: {x: 4.400499e-10, y: 0.0016381674, z: 2.4214386e-10}
+      rotation: {x: -0.023322033, y: 0.0007017357, z: 0.09648049, w: 0.99506146}
+      scale: {x: 1, y: 0.99999994, z: 0.9999999}
+    - name: finger.l_end
+      parentName: finger.l
+      position: {x: -0, y: 0.0011961451, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ombro.r
+      parentName: peito
+      position: {x: 0.0014362984, y: 0.0029794555, z: -0.0002379309}
+      rotation: {x: -0.030364003, y: 0.013818053, z: -0.8092022, w: 0.5865824}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: "antebra\xE7o.r"
+      parentName: ombro.r
+      position: {x: 9.150244e-10, y: 0.0025791358, z: -1.11758706e-10}
+      rotation: {x: 0.03539809, y: 0.0011660723, z: -0.0018872197, w: 0.9993708}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: "bra\xE7o.r"
+      parentName: "antebra\xE7o.r"
+      position: {x: -2.8172506e-10, y: 0.0022764097, z: -3.2479874e-10}
+      rotation: {x: 0.007936737, y: -0.00080962083, z: -0.01671977, w: 0.9998284}
+      scale: {x: 0.9999999, y: 0.9999998, z: 0.99999994}
+    - name: finger.r
+      parentName: "bra\xE7o.r"
+      position: {x: 0.0000000015064142, y: 0.0013322396, z: 4.4703483e-10}
+      rotation: {x: -0.01842939, y: -0.0021180618, z: -0.0422664, w: 0.99893415}
+      scale: {x: 0.99999994, y: 0.9999999, z: 1}
+    - name: finger.r_end
+      parentName: finger.r
+      position: {x: -0, y: 0.001354868, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: dedo.r
+      parentName: "bra\xE7o.r"
+      position: {x: 0.00009102037, y: 0.00050882867, z: 0.0006271219}
+      rotation: {x: 0.4778208, y: -0.11225868, z: -0.26407236, w: 0.83027166}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: dedo.2.r
+      parentName: dedo.r
+      position: {x: -0.0000000032410026, y: 0.00074409187, z: -0.0000000049918887}
+      rotation: {x: 0.17335492, y: -0.00000069437743, z: 0.11728386, w: 0.977851}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: dedo.2.r_end
+      parentName: dedo.2.r
+      position: {x: -0, y: 0.0010096417, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: coxa.l
+      parentName: barriga
+      position: {x: -0.0017990259, y: 0.0007739012, z: -0.000090101996}
+      rotation: {x: -0.013243158, y: 0.0072697774, z: 0.9986617, w: 0.049463447}
+      scale: {x: 1.0000736, y: 0.9999999, z: 1.0000011}
+    - name: perna.l
+      parentName: coxa.l
+      position: {x: -0.0000000013946555, y: 0.0025627883, z: -9.778887e-11}
+      rotation: {x: -0.0060342234, y: -0.044475198, z: 0.033639573, w: 0.9984257}
+      scale: {x: 1.0000005, y: 1.0000005, z: 0.99999976}
+    - name: perna.l_end
+      parentName: perna.l
+      position: {x: -0, y: 0.0023475278, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: coxa.r
+      parentName: barriga
+      position: {x: 0.0017990259, y: 0.0007739012, z: -0.00009010285}
+      rotation: {x: 0.013243005, y: 0.0072673173, z: 0.9986617, w: -0.04946341}
+      scale: {x: 1.0000734, y: 0.9999998, z: 1.0000011}
+    - name: perna.r
+      parentName: coxa.r
+      position: {x: 0.0000000011618249, y: 0.0025627904, z: -1.3969838e-11}
+      rotation: {x: -0.006031117, y: 0.044475254, z: -0.03363971, w: 0.9984257}
+      scale: {x: 1.0000007, y: 1.0000004, z: 0.9999997}
+    - name: perna.r_end
+      parentName: perna.r
+      position: {x: -0, y: 0.0023475278, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: laco
+      parentName: barriga
+      position: {x: -7.25902e-10, y: 0.0031523358, z: 0.0018869875}
+      rotation: {x: 0.0000006145606, y: 0.70851064, z: 0.70570016, w: -0.00000051552206}
+      scale: {x: 1, y: 0.9999998, z: 0.99999994}
+    - name: laco_end
+      parentName: laco
+      position: {x: -0, y: 0.00035823003, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido3.1.l
+      parentName: barriga
+      position: {x: -0.0025160492, y: 0.0032440303, z: -0.00025507933}
+      rotation: {x: -0.061057404, y: 0.01661983, z: 0.9699157, w: 0.23507303}
+      scale: {x: 1.0000002, y: 0.99999994, z: 0.99999994}
+    - name: Vestido3.2.l
+      parentName: Vestido3.1.l
+      position: {x: 0.0000000013038516, y: 0.0006776192, z: -1.11758706e-10}
+      rotation: {x: -0.009656476, y: 0.002071488, z: 0.061803993, w: 0.9980395}
+      scale: {x: 0.9999999, y: 1, z: 1}
+    - name: Vestido3.3.l
+      parentName: Vestido3.2.l
+      position: {x: -0.0000000041630117, y: 0.0014752827, z: -2.9802322e-10}
+      rotation: {x: -0.0004201596, y: 0.0006108795, z: 0.026088577, w: 0.99965936}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: Vestido3.3.l_end
+      parentName: Vestido3.3.l
+      position: {x: -0, y: 0.0021530853, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido2.1.l
+      parentName: barriga
+      position: {x: -0.001825896, y: 0.0031996656, z: 0.0012579013}
+      rotation: {x: -0.046715796, y: 0.121692516, z: 0.97808224, w: 0.16236898}
+      scale: {x: 1.0000013, y: 1.0000002, z: 1.0000006}
+    - name: Vestido2.2.l
+      parentName: Vestido2.1.l
+      position: {x: 0.0000000010058283, y: 0.00064263213, z: -2.8871e-10}
+      rotation: {x: -0.002622788, y: -0.0038650534, z: -0.015593477, w: 0.99986756}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: Vestido2.3.l
+      parentName: Vestido2.2.l
+      position: {x: -0.0000000032410026, y: 0.0016116905, z: -0.0000000013690441}
+      rotation: {x: -0.10648011, y: 0.0042673806, z: 0.031750854, w: 0.9937986}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: Vestido2.3.l_end
+      parentName: Vestido2.3.l
+      position: {x: -0, y: 0.0022037877, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido1.1.l
+      parentName: barriga
+      position: {x: -0.0005338032, y: 0.0031633377, z: 0.0018716572}
+      rotation: {x: -0.05845944, y: 0.100121036, z: 0.99212325, w: 0.04743326}
+      scale: {x: 0.99999887, y: 0.9999997, z: 0.99999696}
+    - name: Vestido1.2.l
+      parentName: Vestido1.1.l
+      position: {x: 6.705522e-10, y: 0.0007820921, z: 7.636845e-10}
+      rotation: {x: 0.01914941, y: -0.0007904303, z: -0.0030848142, w: 0.9998116}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Vestido1.3.l
+      parentName: Vestido1.2.l
+      position: {x: -0, y: 0.0016479377, z: 0.0000000015366822}
+      rotation: {x: -0.09882035, y: 0.8965356, z: -0.19953844, w: 0.38294002}
+      scale: {x: 1, y: 0.9999998, z: 0.9999999}
+    - name: Vestido1.3.l_end
+      parentName: Vestido1.3.l
+      position: {x: -0, y: 0.002056068, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido4.1.l
+      parentName: barriga
+      position: {x: -0.0015924851, y: 0.0032180923, z: -0.0014062085}
+      rotation: {x: -0.089933924, y: -0.14139365, z: 0.97309977, w: 0.15810312}
+      scale: {x: 1.0000008, y: 1.0000001, z: 1.0000008}
+    - name: Vestido4.2.l
+      parentName: Vestido4.1.l
+      position: {x: -6.1467287e-10, y: 0.0006943217, z: 2.2351741e-10}
+      rotation: {x: 0.052269347, y: -0.0015467206, z: 0.0064216494, w: 0.9986112}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1.0000001}
+    - name: Vestido4.3.l
+      parentName: Vestido4.2.l
+      position: {x: 3.72529e-10, y: 0.0014894148, z: -1.4901161e-10}
+      rotation: {x: -0.037635602, y: -0.0109855505, z: 0.04872314, w: 0.9980426}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Vestido4.3.l_end
+      parentName: Vestido4.3.l
+      position: {x: -0, y: 0.0021282067, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido5.1.l
+      parentName: barriga
+      position: {x: -0.00046529024, y: 0.0031582804, z: -0.001785552}
+      rotation: {x: -0.0797194, y: -0.18563667, z: 0.9773126, w: 0.06359184}
+      scale: {x: 0.9999999, y: 0.99999976, z: 0.99999845}
+    - name: Vestido5.2.l
+      parentName: Vestido5.1.l
+      position: {x: 5.587935e-10, y: 0.0006955298, z: 0.0000000010896474}
+      rotation: {x: -0.0076567433, y: 0.0041819364, z: -0.010017663, w: 0.9999118}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Vestido5.3.l
+      parentName: Vestido5.2.l
+      position: {x: -4.4703483e-10, y: 0.0016908121, z: -0.0000000015459954}
+      rotation: {x: 0.052221946, y: -0.015016413, z: 0.041032754, w: 0.9976792}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+    - name: Vestido5.3.l_end
+      parentName: Vestido5.3.l
+      position: {x: -0, y: 0.0020906138, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: perna_referencia1.l
+      parentName: barriga
+      position: {x: -0.0017990255, y: 0.00077389635, z: -0.00009010663}
+      rotation: {x: -0.0132491, y: 0.0072686956, z: 0.99866146, w: 0.049466655}
+      scale: {x: 1.0000247, y: 1, z: 1}
+    - name: perna_referencia2.l
+      parentName: perna_referencia1.l
+      position: {x: 7.5669956e-11, y: 0.0024506426, z: 5.122274e-11}
+      rotation: {x: -0.0000000112922836, y: -0.000000090192756, z: 0.0000001965818, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
+    - name: perna_referencia2.l_end
+      parentName: perna_referencia2.l
+      position: {x: -0, y: 0.0008203547, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: perna_rotation2.l
+      parentName: barriga
+      position: {x: -0.0020427846, y: -0.0016644801, z: -0.00006675718}
+      rotation: {x: -0.0657682, y: 0.008038522, z: 0.9965803, w: 0.049372476}
+      scale: {x: 1.0000246, y: 0.99999994, z: 1.0000002}
+    - name: perna_rotation2.l_end
+      parentName: perna_rotation2.l
+      position: {x: -0, y: 0.00032636392, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "perna_rota\xE7ao1.l"
+      parentName: barriga
+      position: {x: -0.0017990255, y: 0.00077389635, z: -0.00009010663}
+      rotation: {x: -0.06576808, y: 0.008038676, z: 0.9965803, w: 0.049373284}
+      scale: {x: 1.0000246, y: 0.9999999, z: 1.0000002}
+    - name: "perna_rota\xE7ao1.l_end"
+      parentName: "perna_rota\xE7ao1.l"
+      position: {x: -0, y: 0.00034235555, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido3.1.r
+      parentName: barriga
+      position: {x: 0.0025160492, y: 0.0032440303, z: -0.00025508052}
+      rotation: {x: 0.061057627, y: 0.016619774, z: 0.9699157, w: -0.23507313}
+      scale: {x: 1.0000002, y: 1, z: 1}
+    - name: Vestido3.2.r
+      parentName: Vestido3.1.r
+      position: {x: -0.0000000011082738, y: 0.000677619, z: 5.2154064e-10}
+      rotation: {x: -0.009656469, y: -0.0020713801, z: -0.061803974, w: 0.9980395}
+      scale: {x: 1, y: 1, z: 0.99999994}
+    - name: Vestido3.3.r
+      parentName: Vestido3.2.r
+      position: {x: 0.0000000028871, y: 0.0014752779, z: -4.4703483e-10}
+      rotation: {x: -0.00042015125, y: -0.00061099377, z: -0.0260886, w: 0.99965936}
+      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+    - name: Vestido3.3.r_end
+      parentName: Vestido3.3.r
+      position: {x: -0, y: 0.0021530853, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido2.1.r
+      parentName: barriga
+      position: {x: 0.0018258966, y: 0.0031996656, z: 0.0012579004}
+      rotation: {x: 0.04671602, y: 0.12169258, z: 0.97808224, w: -0.16236901}
+      scale: {x: 1.0000013, y: 1.0000002, z: 1.0000006}
+    - name: Vestido2.2.r
+      parentName: Vestido2.1.r
+      position: {x: -6.705522e-10, y: 0.000642632, z: 8.5681673e-10}
+      rotation: {x: -0.0026228488, y: 0.003865215, z: 0.015593527, w: 0.99986756}
+      scale: {x: 0.9999998, y: 0.9999999, z: 0.99999994}
+    - name: Vestido2.3.r
+      parentName: Vestido2.2.r
+      position: {x: 4.2840836e-10, y: 0.0016116953, z: -6.426126e-10}
+      rotation: {x: -0.10648015, y: -0.0042674984, z: -0.031750876, w: 0.9937986}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Vestido2.3.r_end
+      parentName: Vestido2.3.r
+      position: {x: -0, y: 0.0022037877, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido1.1.r
+      parentName: barriga
+      position: {x: 0.00053380406, y: 0.0031633377, z: 0.0018716569}
+      rotation: {x: 0.058459565, y: 0.1001211, z: 0.9921232, w: -0.047433157}
+      scale: {x: 0.9999993, y: 0.99999976, z: 0.99999803}
+    - name: Vestido1.2.r
+      parentName: Vestido1.1.r
+      position: {x: -5.7742e-10, y: 0.0007820878, z: -8.521601e-10}
+      rotation: {x: 0.019149369, y: 0.00079025136, z: 0.0030847911, w: 0.9998116}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: Vestido1.3.r
+      parentName: Vestido1.2.r
+      position: {x: 0.0000000010803342, y: 0.001647938, z: 0.000000002235174}
+      rotation: {x: -0.09881999, y: -0.8965356, z: 0.19953848, w: 0.38294005}
+      scale: {x: 0.99999994, y: 0.9999998, z: 1}
+    - name: Vestido1.3.r_end
+      parentName: Vestido1.3.r
+      position: {x: -0, y: 0.002056068, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido4.1.r
+      parentName: barriga
+      position: {x: 0.0015924845, y: 0.0032180923, z: -0.0014062094}
+      rotation: {x: 0.08993404, y: -0.1413936, z: 0.97309977, w: -0.15810297}
+      scale: {x: 1.0000001, y: 1, z: 1.0000001}
+    - name: Vestido4.2.r
+      parentName: Vestido4.1.r
+      position: {x: 0.0000000027567149, y: 0.0006943163, z: 0.0000000023841857}
+      rotation: {x: 0.052269343, y: 0.0015467374, z: -0.006421436, w: 0.9986112}
+      scale: {x: 0.99999994, y: 1, z: 1.0000001}
+    - name: Vestido4.3.r
+      parentName: Vestido4.2.r
+      position: {x: 0.0000000019371509, y: 0.0014894104, z: -0.0000000020116566}
+      rotation: {x: -0.037635628, y: 0.010985388, z: -0.048723206, w: 0.9980426}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: Vestido4.3.r_end
+      parentName: Vestido4.3.r
+      position: {x: -0, y: 0.0021282067, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Vestido5.1.r
+      parentName: barriga
+      position: {x: 0.00046528943, y: 0.0031582804, z: -0.0017855524}
+      rotation: {x: 0.07971978, y: -0.18563685, z: 0.97731256, w: -0.063591614}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.000001}
+    - name: Vestido5.2.r
+      parentName: Vestido5.1.r
+      position: {x: 0.0000000015646219, y: 0.00069552136, z: -5.494803e-10}
+      rotation: {x: -0.0076567507, y: -0.0041821413, z: 0.0100176865, w: 0.9999118}
+      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999998}
+    - name: Vestido5.3.r
+      parentName: Vestido5.2.r
+      position: {x: 0.0000000010430813, y: 0.0016908088, z: 5.122274e-10}
+      rotation: {x: 0.052221812, y: 0.01501646, z: -0.04103281, w: 0.9976792}
+      scale: {x: 0.9999999, y: 1, z: 1}
+    - name: Vestido5.3.r_end
+      parentName: Vestido5.3.r
+      position: {x: -0, y: 0.0020906138, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: perna_referencia1.r
+      parentName: barriga
+      position: {x: 0.0017990255, y: 0.0007738964, z: -0.00009009795}
+      rotation: {x: 0.013248925, y: 0.007266272, z: 0.99866146, w: -0.04946662}
+      scale: {x: 1.0000247, y: 1, z: 1.0000001}
+    - name: perna_referencia2.r
+      parentName: perna_referencia1.r
+      position: {x: -0.0000000011734664, y: 0.00245064, z: -5.5879353e-11}
+      rotation: {x: -0.000000012689269, y: 0.00000009019278, z: -0.00000019842264, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: perna_referencia2.r_end
+      parentName: perna_referencia2.r
+      position: {x: -0, y: 0.0008203547, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: perna_rotation2.r
+      parentName: barriga
+      position: {x: 0.0020427846, y: -0.0016644801, z: -0.00006674862}
+      rotation: {x: 0.065768406, y: 0.008038505, z: 0.9965803, w: -0.049372476}
+      scale: {x: 1.0000246, y: 0.99999994, z: 1.0000002}
+    - name: perna_rotation2.r_end
+      parentName: perna_rotation2.r
+      position: {x: -0, y: 0.00032636392, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: "perna_rota\xE7ao1.r"
+      parentName: barriga
+      position: {x: 0.0017990255, y: 0.0007738964, z: -0.00009009795}
+      rotation: {x: 0.06576837, y: 0.008038631, z: 0.99658024, w: -0.049373277}
+      scale: {x: 1.0000246, y: 0.9999999, z: 1.0000002}
+    - name: "perna_rota\xE7ao1.r_end"
+      parentName: "perna_rota\xE7ao1.r"
+      position: {x: -0, y: 0.00034235555, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: perna.Pole.r
+      parentName: root
+      position: {x: 0.0020539393, y: 0.0028910139, z: 0.0030586922}
+      rotation: {x: 0.021366281, y: 0.0023238177, z: 0.9996452, w: -0.015737481}
+      scale: {x: 1.0000002, y: 1, z: 0.99999994}
+    - name: perna.Pole.r_end
+      parentName: perna.Pole.r
+      position: {x: -0, y: 0.00090656144, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -91,13 +606,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
