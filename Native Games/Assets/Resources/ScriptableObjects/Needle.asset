@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Needle
   m_EditorClassIdentifier: 
   itemName: "Agulha de Fil\xE9"
-  itemIcon: {fileID: 21300000, guid: e4ddae0a819ce4c4fa9f2050ec69d17e, type: 3}
+  itemIcon: {fileID: 2094486431, guid: eeda9bfd8562cab4681430bbe18b4707, type: 3}
   itemDescription: "As agulhas de madeira s\xE3o ferramentas na cria\xE7\xE3o das
     rendas de fil\xE9, refletindo a simplicidade e a beleza do artesanato tradicional.
     Cada agulha, feita \xE0 m\xE3o com precis\xE3o, desempenha um papel crucial na
     tecelagem das redes que formam a base do bordado fil\xE9."
-  itemUsageImage: {fileID: 21300000, guid: c02c3a64290139e44b200df181d08601, type: 3}
+  itemUsageImage: {fileID: 206230227, guid: 28d6f7f9872eb1340b59bbdda1cd0bbb, type: 3}
   isStackable: 0
   itemAmount: 1
   itemStackLimit: 1

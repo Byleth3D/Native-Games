@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Lace
   m_EditorClassIdentifier: 
   itemName: "Renda Renascen\xE7a"
-  itemIcon: {fileID: 21300000, guid: 51b14659ea1691a409caf87304e22f85, type: 3}
+  itemIcon: {fileID: 832520698, guid: 9bc07c7e9715edb4dacb84158883d872, type: 3}
   itemDescription: "Feita com agulha, linha e \u2018lac\xEA\u2019 de algod\xE3o,
     a Renda Renascen\xE7a \xE9 um patrim\xF4nio passado de m\xE3e para filha. Sua
     confec\xE7\xE3o exige paci\xEAncia, destreza e carrega nas tramas as mem\xF3rias,
     cren\xE7as e cultura das rendeiras do Cariri Paraibano, sendo para muitas a principal
     fonte de sustento de suas fam\xEDlias."
-  itemUsageImage: {fileID: 21300000, guid: 18b0d082d4353bb45a67c47157e0e6b8, type: 3}
+  itemUsageImage: {fileID: 1082300234, guid: 554ea61b409910740aa6656791d8af97, type: 3}
   isStackable: 0
   itemAmount: 1
   itemStackLimit: 1

@@ -13,27 +13,27 @@ public class TalkFour : MonoBehaviour
         if (!soundPlayed && other.CompareTag("Player"))
         {
             soundPlayed = true;
-            PlaySound();
+            Speak();
         }
     }
 
     private void PlaySound()
     {
         if (soundClip == null) return;
-         AudioSource.PlayClipAtPoint(soundClip, transform.position, volume);
-        
-        }
+        AudioSource.PlayClipAtPoint(soundClip, transform.position, volume);
+
+    }
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
-         public void Speak()
+    public void Speak()
     {
         if (audioSource != null && !audioSource.isPlaying)
         {
             audioSource.Play();
         }
     }
-    
+
 }

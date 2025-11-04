@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: CottonCord
   m_EditorClassIdentifier: 
   itemName: "Cord\xE3o de Algod\xE3o"
-  itemIcon: {fileID: 21300000, guid: fb92cb72ed816684a9281a669a5734ca, type: 3}
+  itemIcon: {fileID: 1211438655, guid: 9ff35f735aa202a44ac61dabcaf7ff6c, type: 3}
   itemDescription: "O fio que transforma rede em arte. Usado pelas 'filezeiras' para
     dar vida \xE0 base de linhas de pesca, este cord\xE3o de algod\xE3o \xE9 o elo
     entre a heran\xE7a colonial e a express\xE3o cultural contempor\xE2nea de Alagoas"
-  itemUsageImage: {fileID: 21300000, guid: 53cfa77dc293b1b4eab40cbd0d77e599, type: 3}
+  itemUsageImage: {fileID: 84843918, guid: 26e9ab345bd2ed2499ebbd75860d0706, type: 3}
   isStackable: 1
   itemAmount: 1
   itemStackLimit: 3
