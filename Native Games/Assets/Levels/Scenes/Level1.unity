@@ -4592,7 +4592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &276946593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6671,7 +6671,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &342358530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8789,7 +8789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &477208067
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12092,7 +12092,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 650839926}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74c82763d01651349b9e0a7c1aeeae29, type: 3}
   m_Name: 
@@ -16808,16 +16808,16 @@ MonoBehaviour:
   checkpointTieCutscenes:
   - cutsceneObject: {fileID: 833902807}
     cutscenePlayableDirector: {fileID: 833902815}
-    cutsceneDuration: 57
+    cutsceneDuration: 58.1
     checkpointIndex: 0
   - cutsceneObject: {fileID: 1531657415}
     cutscenePlayableDirector: {fileID: 1531657416}
-    cutsceneDuration: 18
+    cutsceneDuration: 20.1
     checkpointIndex: 5
   onDemandCutscenes:
   - cutsceneObject: {fileID: 990778152}
     cutscenePlayableDirector: {fileID: 990778153}
-    cutsceneDuration: 16.8
+    cutsceneDuration: 12.8
 --- !u!1001 &871605492
 PrefabInstance:
   m_ObjectHideFlags: 0
