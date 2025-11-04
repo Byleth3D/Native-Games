@@ -103,5 +103,5 @@ AssetOrigin:
   productId: 167903
   packageName: PlayerPrefs Editor
   packageVersion: 1.2.4
-  assetPath: Assets/PlayerPrefsEditor/Editor Resources/os_win_icon.png
+  assetPath: Assets/Plugins/PlayerPrefsEditor/Editor Resources/os_win_icon.png
   uploadId: 782444

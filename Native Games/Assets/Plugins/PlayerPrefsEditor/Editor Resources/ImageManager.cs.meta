@@ -15,5 +15,5 @@ AssetOrigin:
   productId: 167903
   packageName: PlayerPrefs Editor
   packageVersion: 1.2.4
-  assetPath: Assets/PlayerPrefsEditor/Editor Resources/ImageManager.cs
+  assetPath: Assets/Plugins/PlayerPrefsEditor/Editor Resources/ImageManager.cs
   uploadId: 782444

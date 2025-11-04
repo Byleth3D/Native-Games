@@ -103,5 +103,5 @@ AssetOrigin:
   productId: 167903
   packageName: PlayerPrefs Editor
   packageVersion: 1.2.4
-  assetPath: Assets/PlayerPrefsEditor/Editor Resources/refresh.png
+  assetPath: Assets/Plugins/PlayerPrefsEditor/Editor Resources/refresh.png
   uploadId: 782444
