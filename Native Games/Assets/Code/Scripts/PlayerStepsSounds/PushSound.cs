@@ -21,7 +21,7 @@ public class PushSound : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
         }
-         audioSource.volume = volume;
+        audioSource.volume = volume;
     }
 
     private void Update()

@@ -1,7 +1,7 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CustomButton : MonoBehaviour, IPointerClickHandler
 {
@@ -15,7 +15,7 @@ public class CustomButton : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             button.OnDeselect(eventData);
             return;

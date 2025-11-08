@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI.Extensions;
@@ -38,7 +37,7 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
 
     private void ShowCord()
     {
-        Vector2 pointerScreenPoint = InputManager.Instance.GetPointerPosition();
+        Vector2 pointerScreenPoint = InputManager.Instance.UI.PointerPosition;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(cordRectTransform, pointerScreenPoint, null, out Vector2 pointerCanvasPoint);
 
         Vector2 offset = cordRectTransform.InverseTransformPoint(lineRenderer.gameObject.transform.position);

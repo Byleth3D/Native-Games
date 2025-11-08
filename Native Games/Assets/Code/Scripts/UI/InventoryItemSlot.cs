@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
 {

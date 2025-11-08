@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class LevelEndpoint : MonoBehaviour
 {
@@ -15,7 +14,7 @@ public class LevelEndpoint : MonoBehaviour
 
     public void TriggerEndpoint()
     {
-        SceneLoader.Instance.StartLoading(LoadingType.NextScene);
+        SceneLoader.Instance.Load(LoadingType.NextScene);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -1,12 +1,12 @@
-﻿
-public class MainMenuManager : LocalSingleton<MainMenuManager>
+﻿using UnityEngine;
+
+public class MainMenuManager : MonoBehaviour
 {
     public InGameMenuManager inGameMenuManager;
     public MenuButtonManager menuButtonManager;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         inGameMenuManager.Setup();
     }
 
@@ -17,7 +17,7 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
 
     private void Update()
     {
-        if (InputManager.Instance.CancelPressed)
+        if (InputManager.Instance.UI.CancelPressed)
         {
             if (!inGameMenuManager.HasOverlappingMenu)
             {
@@ -31,29 +31,29 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
 
     public void NewGame()
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
 
         menuButtonManager.DisableAllMenuButtons();
-        SceneLoader.Instance.StartLoading(LoadingType.NewGame);
+        SceneLoader.Instance.Load(LoadingType.NewGame);
     }
 
     public void ContinueGame()
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
 
         menuButtonManager.DisableAllMenuButtons();
-        SceneLoader.Instance.StartLoading(LoadingType.ContinueGame);
+        SceneLoader.Instance.Load(LoadingType.ContinueGame);
     }
 
     private void CheckIfCanContinue()
     {
-        if (SaveManager.Instance.SaveFiles.Count == 0)
+        if (SaveManager.Instance.Saves.Count == 0)
         {
             menuButtonManager.DisableMenuButton("Continue");
         }
@@ -65,7 +65,7 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
 
     public void EnableInGameMenu(string inGameMenu)
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
@@ -75,7 +75,7 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
 
     public void DisableInGameMenu(string inGameMenu)
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
@@ -90,21 +90,21 @@ public class MainMenuManager : LocalSingleton<MainMenuManager>
 
     public void Credits()
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
 
-        SceneLoader.Instance.StartLoading("CreditsScene");
+        SceneLoader.Instance.Load("CreditsScene");
     }
 
     public void ExitGame()
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
 
-        GameManager.Instance.ExitGame();
+        GameManager.Instance.SwitchState(GameState.Exiting);
     }
 }

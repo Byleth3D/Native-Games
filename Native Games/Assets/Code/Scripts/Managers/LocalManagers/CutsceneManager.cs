@@ -1,10 +1,8 @@
-using UnityEngine;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Playables;
-using System.Collections;
-using UnityEngine.Events;
-using UnityEngine.UI.Extensions.Tweens;
 
 public class CutsceneManager : LocalSingleton<CutsceneManager>
 {
@@ -16,8 +14,8 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
     protected override void Awake()
     {
         base.Awake();
-        DisableAllOnDemandCutscenes();
-        DisableAllCheckpointTieCutscenes();
+        DisableCutsceneInList(onDemandCutscenes);
+        DisableCutsceneInList(checkpointTieCutscenes);
     }
 
     private void Start()
@@ -26,19 +24,12 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
         PlayeCheckpointTieCutscene(currentCheckpointIndex);
     }
 
-    private void DisableAllOnDemandCutscenes()
+    private void DisableCutsceneInList<T>(List<T> cutscenes) where T : Cutscene
     {
-        foreach (OnDemandCutscene onDemandCutscene in onDemandCutscenes)
+        foreach (Cutscene cutscene in cutscenes)
         {
-            onDemandCutscene.cutsceneObject.SetActive(false);
-        }
-    }
-
-    private void DisableAllCheckpointTieCutscenes()
-    {
-        foreach (CheckpointTieCutscene checkpointTieCutscene in checkpointTieCutscenes)
-        {
-            checkpointTieCutscene.cutsceneObject.SetActive(false);
+            cutscene.cutsceneObject.SetActive(false);
+            cutscene.cutscenePlayableDirector.time = 10000.0;
         }
     }
 
@@ -56,10 +47,9 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
             return;
         }
 
-        if (!ScreenFadeManager.Instance.IsFading)
+        if (!ScreenFader.Instance.IsFading && cutscene.checkpointIndex > 0)
         {
-            ScreenFadeManager.Instance.ResetConfig();
-            ScreenFadeManager.Instance.RequestFadeIn();
+            ScreenFader.Instance.Fade("Cutscene", FadeType.FadeIn).Forget();
         }
 
         PlayCurrentCutscene(cutscene);
@@ -115,6 +105,7 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
     public void PlayCurrentCutscene(Cutscene cutscene)
     {
         currentCutscene = cutscene;
+        currentCutscene.cutscenePlayableDirector.time = 0.0;
         currentCutscene.cutsceneObject.SetActive(true);
         currentCutscene.cutscenePlayableDirector.Play();
 
@@ -126,7 +117,7 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
 
     public void SkipCutscene()
     {
-        if (ScreenFadeManager.Instance.IsFading)
+        if (ScreenFader.Instance.IsFading)
         {
             return;
         }
@@ -138,11 +129,10 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
 
         CancelInvoke(nameof(SkipCutscene));
 
-        StopCoroutine(StopCurrentCutsceneAsync());
-        StartCoroutine(StopCurrentCutsceneAsync());
+        StopCurrentCutsceneAsync().Forget();
     }
 
-    public IEnumerator StopCurrentCutsceneAsync()
+    public async UniTask StopCurrentCutsceneAsync()
     {
         float arbitraryValue = 10000f;
 
@@ -160,18 +150,12 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
             }
             else
             {
-                ScreenFadeManager.Instance.SetConfig("CutsceneStop");
-                ScreenFadeManager.Instance.RequestFadeOut();
-
-                while (ScreenFadeManager.Instance.IsFading)
-                {
-                    yield return null;
-                }
+                await ScreenFader.Instance.Fade("Cutscene", FadeType.FadeOut);
 
                 DisableCutscene(cutscene, arbitraryValue);
                 CheckpointManager.Instance.CheckpointTeleport();
 
-                ScreenFadeManager.Instance.RequestFadeIn();
+                ScreenFader.Instance.Fade("Cutscene", FadeType.FadeIn).Forget();
             }
         }
         else
@@ -182,7 +166,6 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
 
     private void DisableCutscene(Cutscene cutscene, float arbitraryValue)
     {
-        Debug.Log("Disabled Cutscene");
         InputManager.Instance.EnableGameInputs();
         cutscene.cutscenePlayableDirector.time = arbitraryValue;
         cutscene.cutsceneObject.SetActive(false);

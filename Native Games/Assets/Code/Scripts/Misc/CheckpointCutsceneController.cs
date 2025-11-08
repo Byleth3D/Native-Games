@@ -19,7 +19,7 @@ public class CheckpointCutsceneController : MonoBehaviour
                 currentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
             }
 
-            int currentCheckpointIndex = SaveManager.Instance.SaveFiles[currentSaveIndex].checkpointIndex;
+            int currentCheckpointIndex = SaveManager.Instance.Saves[currentSaveIndex].checkpointIndex;
 
             if (currentCheckpointIndex != checkpointIndex)
             {

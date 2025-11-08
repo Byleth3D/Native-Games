@@ -1,191 +1,58 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
-
 
 public class InputManager : Singleton<InputManager>
 {
     private GameInputs gameInputs;
-    private bool inputEnabled;
+    public bool Enabled { get; private set; }
+    private List<CountdownTimer> timers = new();
 
-    #region Gameplay Fields
-    private InputAction interactAction;
-    private InputAction jumpAction;
-    private InputAction moveAction;
+    public PlayerInputController Player { get; private set; }
+    public UserInterfaceInputController UI { get; private set; }
 
-    public Vector2 MotionInput { get; private set; }
-    public bool JumpPressed { get; private set; }
-    public bool InteractPressed { get; private set; }
-    #endregion
-
-    private InputAction submitAction;
-    private InputAction cancelAction;
-    private InputAction pointAction;
-    private InputAction inventoryAction;
-
-    public bool CancelPressed { get; private set; }
-    public bool InventoryPressed { get; private set; }
-
-    private List<CountdownTimer> disabledActionsTimers = new();
-
-    private void OnEnable()
+    protected override void Awake()
     {
-        if (this != Instance) return;
+        base.Awake();
+        gameInputs = new GameInputs();
+        EnableGameInputs();
 
-        gameInputs ??= new GameInputs();
-        gameInputs.Player.Enable();
-        gameInputs.UI.Enable();
-        interactAction = gameInputs.Player.Interact;
-        jumpAction = gameInputs.Player.Jump;
-        moveAction = gameInputs.Player.Move;
-        cancelAction = gameInputs.UI.Cancel;
-        inventoryAction = gameInputs.UI.Inventory;
-        pointAction = gameInputs.UI.Point;
+        Player = new PlayerInputController(gameInputs);
+        UI = new UserInterfaceInputController(gameInputs);
     }
 
-    private void OnDisable()
+    //private void Update()
+    //{
+    //    foreach (CountdownTimer timer in timers)
+    //    {
+    //        timer.Tick(Time.deltaTime);
+    //        //Talvez vou fazer TimerManager
+    //    }
+    //}
+
+    public void DisableAction(string actionToDisable, float duration)
     {
-        if (this != Instance) return;
-
-        gameInputs.Player.Disable();
-        gameInputs.UI.Disable();
-    }
-
-    private void Update()
-    {
-        foreach (CountdownTimer timer in disabledActionsTimers)
-        {
-            timer.Tick(Time.deltaTime);
-        }
-
-        GetPlayerInputs();
-        GetUserInterfaceInputs();
-    }
-
-    private void GetPlayerInputs()
-    {
-        MotionInput = moveAction.ReadValue<Vector2>();
-        JumpPressed = jumpAction.WasPressedThisFrame();
-        InteractPressed = interactAction.WasPressedThisFrame();
-    }
-
-    private void GetUserInterfaceInputs()
-    {
-        CancelPressed = cancelAction.WasPressedThisFrame();
-        InventoryPressed = inventoryAction.WasPressedThisFrame();
-    }
-
-    public void EnableAction(string actionToEnable)
-    {
-        if (!inputEnabled)
+        if (!Enabled)
         {
             return;
         }
 
-        InputAction action = gameInputs.FindAction(actionToEnable);
+        DisableAction(actionToDisable);
 
-        if (action == null) return;
+        CountdownTimer timer = new CountdownTimer(duration);
 
-        EnableAction(action);
-    }
+        timer.OnTimerExpired += () => EnableAction(actionToDisable);
+        timer.Start();
 
-    private void EnableAction(InputAction actionToEnable)
-    {
-        if (!inputEnabled)
-        {
-            return;
-        }
-
-        actionToEnable.Enable();
+        timers.Add(timer);
+        Clock.QueueToAdd(timer);
     }
 
     public void DisableAction(string actionToDisable)
     {
-        if (!inputEnabled)
-        {
-            return;
-        }
-
         InputAction action = gameInputs.FindAction(actionToDisable);
 
         if (action == null) return;
-
-        DisableAction(action);
-    }
-
-    public void DisableAction(string actionToDisable, float duration)
-    {
-        if (!inputEnabled)
-        {
-            return;
-        }
-
-        InputAction action = gameInputs.FindAction(actionToDisable);
-
-        if (action == null) return;
-
-        DisableAction(action);
-
-        CountdownTimer timer = new CountdownTimer(duration);
-
-        timer.OnTimerExpired += () => EnableAction(action);
-        timer.Start();
-
-        disabledActionsTimers.Add(timer);
-    }
-
-    private void DisableAction(InputAction actionToDisable)
-    {
-        if (!inputEnabled)
-        {
-            return;
-        }
-
-        actionToDisable.Disable();
-        actionToDisable.Reset();
-    }
-
-    public void EnablePlayerActions()
-    {
-        if (!inputEnabled)
-        {
-            return;
-        }
-
-        gameInputs.Player.Enable();
-    }
-
-    public void DisablePlayerActions()
-    {
-        if (!inputEnabled)
-        {
-            return;
-        }
-
-        gameInputs.Player.Disable();
-    }
-
-    public void DisablePlayerActions(float duration)
-    {
-        if (!inputEnabled)
-        {
-            return;
-        }
-
-        gameInputs.Player.Disable();
-        CountdownTimer timer = new CountdownTimer(duration);
-
-        timer.OnTimerExpired += () => EnablePlayerActions();
-        timer.Start();
-
-        disabledActionsTimers.Add(timer);
-    }
-
-    public void EnableGameInputs()
-    {
-        gameInputs.Player.Enable();
-        gameInputs.UI.Enable();
-        inputEnabled = true;
     }
 
     public void DisableGameInputs(float duration)
@@ -196,18 +63,92 @@ public class InputManager : Singleton<InputManager>
         timer.OnTimerExpired += () => EnableGameInputs();
         timer.Start();
 
-        disabledActionsTimers.Add(timer);
+        timers.Add(timer);
+        Clock.QueueToAdd(timer);
     }
 
     public void DisableGameInputs()
     {
         gameInputs.Player.Disable();
         gameInputs.UI.Disable();
-        inputEnabled = false;
+        Enabled = false;
     }
 
-    public Vector2 GetPointerPosition()
+    public void DisableInputActions(InputControllerType inputControllerType, float duration)
     {
-        return pointAction.ReadValue<Vector2>();
+        if (!Enabled)
+        {
+            return;
+        }
+
+        DisableInputActions(inputControllerType);
+        CountdownTimer timer = new CountdownTimer(duration);
+
+        timer.OnTimerExpired += () => EnableInputActions(inputControllerType);
+        timer.Start();
+
+        timers.Add(timer);
+        Clock.QueueToAdd(timer);
     }
+
+    public void DisableInputActions(InputControllerType inputControllerType)
+    {
+        if (!Enabled)
+        {
+            return;
+        }
+
+        if (inputControllerType is InputControllerType.UI)
+        {
+            gameInputs.UI.Disable();
+            return;
+        }
+
+        gameInputs.Player.Disable();
+    }
+
+    public void EnableAction(string actionToEnable)
+    {
+        if (!Enabled)
+        {
+            return;
+        }
+
+        InputAction action = gameInputs.FindAction(actionToEnable);
+
+        if (action == null)
+        {
+            return;
+        }
+
+        action.Enable();
+    }
+
+    public void EnableGameInputs()
+    {
+        gameInputs.Player.Enable();
+        gameInputs.UI.Enable();
+        Enabled = true;
+    }
+
+    public void EnableInputActions(InputControllerType inputControllerType)
+    {
+        if (!Enabled)
+        {
+            return;
+        }
+
+        if (inputControllerType is InputControllerType.UI)
+        {
+            gameInputs.UI.Enable();
+            return;
+        }
+
+        gameInputs.Player.Enable();
+    }
+}
+
+public enum InputControllerType
+{
+    Player, UI
 }

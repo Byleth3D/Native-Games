@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-
 public static class GameStarter
 {
-
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void SetupGame()
     {
@@ -19,7 +17,12 @@ public static class GameStarter
             QualitySettings.vSyncCount = 1;
         }
 #else
-        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("GlobalManagers");
+        if (SceneManagerWrapper.GetActiveSceneName().Equals("Boot"))
+        {
+            return;
+        }
+
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("Boot");
 #endif
     }
 }

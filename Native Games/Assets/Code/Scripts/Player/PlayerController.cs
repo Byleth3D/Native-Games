@@ -1,5 +1,4 @@
 using EditorAttributes;
-using PrimeTween;
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider))]
@@ -135,7 +134,7 @@ public class PlayerController : MonoBehaviour
         float rotationStep = angularSpeed * Time.deltaTime;
 
 
-        if (InteractionTrigger && (InputManager.Instance.InteractPressed || IsPushing))
+        if (InteractionTrigger && (InputManager.Instance.Player.InteractPressed || IsPushing))
         {
             interactableDirection = interactableGameObject.transform.position - transform.position;
             interactableDirection.y = 0.0f;
@@ -167,7 +166,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (InputManager.Instance.JumpPressed)
+        if (InputManager.Instance.Player.JumpPressed)
         {
             if (groundChecker.IsGrounded)
             {
@@ -225,7 +224,7 @@ public class PlayerController : MonoBehaviour
 
     private void MoveHorizontally()
     {
-        Vector2 motionInput = InputManager.Instance.MotionInput;
+        Vector2 motionInput = InputManager.Instance.Player.MotionInput;
         Vector3 previousMoveDirection = moveDirectionRaw;
         moveDirectionRaw = new Vector3(motionInput.x, 0.0f, motionInput.y);
 
@@ -337,7 +336,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsGrounded", true);
         }
 
-        InputManager.Instance.DisablePlayerActions(inputDisableDuration);
+        InputManager.Instance.DisableInputActions(InputControllerType.Player, inputDisableDuration);
     }
 
     public void SetAsDead()
@@ -391,7 +390,7 @@ public class PlayerController : MonoBehaviour
         {
             if (InteractionTrigger.GetInteractionType() == InteractionType.Push)
             {
-                if (InputManager.Instance.InteractPressed)
+                if (InputManager.Instance.Player.InteractPressed)
                 {
                     if (!IsPushing)
                     {
@@ -408,14 +407,14 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if (InputManager.Instance.InteractPressed)
+                if (InputManager.Instance.Player.InteractPressed)
                 {
                     InteractionTrigger.TriggerInteract();
 
                     if (InteractionTrigger.GetInteractionType() == InteractionType.Collect && InteractionTrigger.HasInteraction)
                     {
                         animator.SetTrigger("Pick");
-                        InputManager.Instance.DisablePlayerActions(2.3f);
+                        InputManager.Instance.DisableInputActions(InputControllerType.Player, 2.3f);
                     }
                 }
             }

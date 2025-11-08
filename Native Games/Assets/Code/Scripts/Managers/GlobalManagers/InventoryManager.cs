@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,12 +10,34 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void OnEnable()
     {
-        SceneLoader.Instance.onSceneLoaded += LoadCollectedItems;
+        SceneLoader.Instance.OnSceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        SceneLoader.Instance.onSceneLoaded -= LoadCollectedItems;
+        SceneLoader.Instance.OnSceneLoaded -= OnSceneLoaded;
+    }
+
+    public void OnSceneLoaded(string sceneName)
+    {
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            return;
+        }
+
+        if (sceneName.Contains("Level"))
+        {
+            SaveData save = SaveManager.Instance.GetCurrentSave();
+            LoadCollectedItems(save.collectedItems);
+            LoadInventory(save.inventoryItems, save.inventoryItemsAmount);
+            return;
+        }
+
+        if (storedItems.Count > 0 || collectedItems.Count > 0)
+        {
+            storedItems.Clear();
+            collectedItems.Clear();
+        }
     }
 
     public bool Collect(GameObject collectableItemObject, InventoryItem inventoryItem)
@@ -52,6 +73,23 @@ public class InventoryManager : Singleton<InventoryManager>
         GameplayUIManager.Instance.inventoryMenuManager.AddInventoryItemToSlot(inventoryItem, amount);
         return true;
     }
+    public bool Contains(List<Deliver> delivers)
+    {
+        if (delivers.Count == 0 || delivers == null)
+        {
+            return false;
+        }
+
+        if (delivers.All(deliver => storedItems.ContainsKey(deliver.inventoryItem)))
+        {
+            if (delivers.All(deliver => storedItems[deliver.inventoryItem] == deliver.requestedItemAmount))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public bool Deliver(List<Deliver> delivers)
     {
@@ -68,7 +106,7 @@ public class InventoryManager : Singleton<InventoryManager>
         return true;
     }
 
-    private void Deliver(Deliver deliver)
+    public void Deliver(Deliver deliver)
     {
         InventoryItem inventoryItem = deliver.inventoryItem;
         int requestedAmount = deliver.requestedItemAmount;
@@ -97,6 +135,97 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         GameplayUIManager.Instance.inventoryMenuManager.RemoveInventoryItemFromSlot(inventoryItem, newAmount);
+    }
+
+    public Dictionary<InventoryItem, int> GetStoredItems()
+    {
+        return storedItems;
+    }
+
+    public void LoadCollectedItems(string items)
+    {
+        if (string.IsNullOrEmpty(items))
+        {
+            Debug.LogWarning("No Collectable Items Loaded!");
+
+            foreach (GameObject itemObject in collectedItems)
+            {
+                itemObject.SetActive(true);
+                Debug.Log($"{itemObject.name} | {itemObject.activeInHierarchy}");
+            }
+
+            collectedItems.Clear();
+            return;
+        }
+
+        string[] collectedItemsNames = items.Split("|");
+
+        if (collectedItems.Count > 0)
+        {
+            collectedItems.Clear();
+        }
+
+        foreach (string item in collectedItemsNames)
+        {
+            GameObject itemObject = GameObject.Find(item);
+
+            if (itemObject != null)
+            {
+                collectedItems.Add(itemObject);
+                itemObject.SetActive(false);
+            }
+        }
+    }
+
+    public void LoadInventory(string items, string itemsAmount)
+    {
+        if (items == "" || itemsAmount == "")
+        {
+            Debug.LogWarning("No Inventory Items Were Loaded!");
+            return;
+        }
+
+        string[] inventoryItems = items.Split("|");
+        string[] inventoryItemsAmount = itemsAmount.Split("|");
+
+        if (storedItems.Count > 0)
+        {
+            storedItems.Clear();
+        }
+
+        for (int i = 0; i < inventoryItems.Length; i++)
+        {
+            InventoryItem item = Resources.Load<InventoryItem>("ScriptableObjects/" + inventoryItems[i]);
+            int amount = int.Parse(inventoryItemsAmount[i]);
+
+            storedItems.Add(item, amount);
+            Debug.Log($"{item.name} | {storedItems[item]}");
+        }
+    }
+
+    public string SaveCollectedItems()
+    {
+        int collectedItemsCount = collectedItems.Count;
+        int index = 0;
+        string collectedItemsNames = "";
+
+        if (collectedItemsCount > 0)
+        {
+            foreach (GameObject item in collectedItems)
+            {
+                if (index == collectedItemsCount - 1)
+                {
+                    collectedItemsNames += $"{item.name}";
+                }
+                else
+                {
+                    collectedItemsNames += $"{item.name}|";
+                    index++;
+                }
+            }
+        }
+
+        return collectedItemsNames;
     }
 
     public string SaveInventoryItems()
@@ -149,129 +278,5 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         return inventoryItemsAmountInString;
-    }
-
-    public string SaveCollectedItems()
-    {
-        int collectedItemsCount = collectedItems.Count;
-        int index = 0;
-        string collectedItemsNames = "";
-
-        if (collectedItemsCount > 0)
-        {
-            foreach (GameObject item in collectedItems)
-            {
-                if (index == collectedItemsCount - 1)
-                {
-                    collectedItemsNames += $"{item.name}";
-                }
-                else
-                {
-                    collectedItemsNames += $"{item.name}|";
-                    index++;
-                }
-            }
-        }
-
-        return collectedItemsNames;
-    }
-
-    public void LoadCollectedItems()
-    {
-        if (!SceneLoader.Instance.GetActiveSceneName().Contains("Level"))
-        {
-            return;
-        }
-
-        int index = SaveManager.Instance.CurrentSaveIndex;
-        string items = SaveManager.Instance.SaveFiles[index].collectedItems;
-
-        if (string.IsNullOrEmpty(items))
-        {
-            Debug.LogWarning("No Collectable Items Loaded!");
-
-            foreach (GameObject itemObject in collectedItems)
-            {
-                itemObject.SetActive(true);
-                Debug.Log($"{itemObject.name} | {itemObject.activeInHierarchy}");
-            }
-
-            collectedItems.Clear();
-            return;
-        }
-
-        string[] collectedItemsNames = items.Split("|");
-
-        if (collectedItems.Count > 0)
-        {
-            //foreach (GameObject itemObject in collectedItems)
-            //{
-            //    itemObject.SetActive(true);
-            //    Debug.Log($"{itemObject.name} | {itemObject.activeInHierarchy}");
-            //}
-
-            collectedItems.Clear();
-        }
-
-        foreach (string item in collectedItemsNames)
-        {
-            Debug.Log("Entered ForEach");
-            GameObject itemObject = GameObject.Find(item);
-            Debug.Log($"Has Item: {itemObject != null}");
-            if (itemObject != null)
-            {
-                collectedItems.Add(itemObject);
-                itemObject.SetActive(false);
-            }
-        }
-    }
-
-    public void LoadInventory(string items, string itemsAmount)
-    {
-        if (items == "" || itemsAmount == "")
-        {
-            Debug.LogWarning("No Inventory Items Were Loaded!");
-            return;
-        }
-
-        string[] inventoryItems = items.Split("|");
-        string[] inventoryItemsAmount = itemsAmount.Split("|");
-
-        if (storedItems.Count > 0)
-        {
-            storedItems.Clear();
-        }
-
-        for (int i = 0; i < inventoryItems.Length; i++)
-        {
-            InventoryItem item = Resources.Load<InventoryItem>("ScriptableObjects/" + inventoryItems[i]);
-            int amount = int.Parse(inventoryItemsAmount[i]);
-
-            storedItems.Add(item, amount);
-            Debug.Log($"{item.name} | {storedItems[item]}");
-        }
-    }
-
-    public Dictionary<InventoryItem, int> GetStoredItems()
-    {
-        return storedItems;
-    }
-
-    public bool Contains(List<Deliver> delivers)
-    {
-        if (delivers.Count == 0 || delivers == null)
-        {
-            return false;
-        }
-
-        if (delivers.All(deliver => storedItems.ContainsKey(deliver.inventoryItem)))
-        {
-            if (delivers.All(deliver => storedItems[deliver.inventoryItem] == deliver.requestedItemAmount))
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

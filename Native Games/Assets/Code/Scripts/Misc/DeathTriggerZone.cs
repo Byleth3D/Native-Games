@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 public class DeathTriggerZone : MonoBehaviour
@@ -11,19 +13,21 @@ public class DeathTriggerZone : MonoBehaviour
             return;
         }
 
-        if (ScreenFadeManager.Instance.IsFading)
+        if (ScreenFader.Instance.IsFading)
         {
             return;
         }
 
         playerController.SetAsDead();
 
-        ScreenFadeManager.Instance.SetConfig("Death");
+        GameplayUIManager.Instance.DisableActiveInGameMenu();
 
-        ScreenFadeManager.Instance.RequestFadeOut(() =>
-        {
-            CheckpointManager.Instance.CheckpointTeleport();
-            ScreenFadeManager.Instance.RequestFadeIn(() => ScreenFadeManager.Instance.ResetConfig());
-        });
+        TeleportPlayer(this.GetCancellationTokenOnDestroy()).Forget();
+    }
+
+    private async UniTask TeleportPlayer(CancellationToken cancellationToken)
+    {
+        await ScreenFader.Instance.Fade("Death", FadeType.FadeOut, cancellationToken, callback: () => CheckpointManager.Instance.CheckpointTeleport());
+        await ScreenFader.Instance.Fade("Death", FadeType.FadeIn, cancellationToken);
     }
 }

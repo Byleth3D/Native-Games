@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CreditsMenuManager : LocalSingleton<CreditsMenuManager>
+public class CreditsMenuManager : MonoBehaviour
 {
     public MenuButtonManager menuButtonManager;
 
@@ -11,12 +11,6 @@ public class CreditsMenuManager : LocalSingleton<CreditsMenuManager>
 
     public void LoadMainMenu()
     {
-        SceneLoader.Instance.StartLoading("MainMenu");
-    }
-
-    public void ExitGame()
-    {
-        DisableAllMenuButtons();
-        GameManager.Instance.ExitGame();
+        SceneLoader.Instance.Load("MainMenu");
     }
 }

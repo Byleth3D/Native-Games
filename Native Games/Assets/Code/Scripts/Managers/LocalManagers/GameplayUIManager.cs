@@ -29,12 +29,12 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 
     private void Update()
     {
-        if (ScreenFadeManager.Instance.IsFading)
+        if (ScreenFader.Instance.IsFading)
         {
             return;
         }
 
-        if (InputManager.Instance.CancelPressed)
+        if (InputManager.Instance.UI.CancelPressed)
         {
             if (inGameMenuManager.HasOverlappingMenu || inGameMenuManager.HasActiveMenu)
             {
@@ -48,7 +48,7 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
             }
         }
 
-        if (InputManager.Instance.InventoryPressed)
+        if (InputManager.Instance.UI.InventoryPressed)
         {
             if (inGameMenuManager.HasOverlappingMenu)
             {
@@ -68,7 +68,7 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 
     public void EnableInGameMenu(string inGameMenu)
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
@@ -78,7 +78,7 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 
     public void DisableInGameMenu(string inGameMenu)
     {
-        if (ScreenFadeManager.Instance.IsFading || LoadingScreenManager.Instance.IsVisible)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
@@ -86,15 +86,20 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
         inGameMenuManager.DisableInGameMenu(inGameMenu);
     }
 
+    public void DisableActiveInGameMenu()
+    {
+        inGameMenuManager.DisableActiveMenu();
+    }
+
     public void RestartCheckpoint()
     {
-        GameManager.Instance.UnpauseGame();
-        InputManager.Instance.DisablePlayerActions();
-        SceneLoader.Instance.StartLoading(LoadingType.RestartCheckpoint);
+        GameManager.Instance.SwitchState(GameState.Running);
+        InputManager.Instance.DisableInputActions(InputControllerType.Player);
+        SceneLoader.Instance.Load(LoadingType.RestartCheckpoint);
     }
 
     public void ExitGame()
     {
-        GameManager.Instance.ExitGame();
+        GameManager.Instance.SwitchState(GameState.Exiting);
     }
 }

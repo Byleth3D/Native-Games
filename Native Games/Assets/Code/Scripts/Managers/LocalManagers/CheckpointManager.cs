@@ -1,7 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
 
 public class CheckpointManager : LocalSingleton<CheckpointManager>
 {
@@ -9,12 +8,12 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
     [Space]
     [SerializeField] private UnityEvent OnLastCheckpointReached;
     private Checkpoint currentCheckpoint;
+
     public int CurrentCheckpointIndex { get; private set; } = -1;
 
     private void Start()
     {
-        int curentSaveIndex = SaveManager.Instance.CurrentSaveIndex;
-        int currentCheckpointIndex = SaveManager.Instance.SaveFiles[curentSaveIndex].checkpointIndex;
+        int currentCheckpointIndex = SaveManager.Instance.GetCurrentSave().checkpointIndex;
         ForceSetCheckpoint(currentCheckpointIndex);
     }
 
@@ -55,7 +54,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
             return;
         }
 
-        SaveManager.Instance.NewSaveGameFromCheckpoint();
+        SaveManager.Instance.CreateSaveGame(fromCheckpoint: true, onActiveScene: true);
     }
 
     public void CheckpointTeleport()

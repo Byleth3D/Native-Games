@@ -1,40 +1,49 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SaveManager : Singleton<SaveManager>
 {
-    public List<SaveData> SaveFiles { get; private set; }
+    public List<SaveData> Saves { get; private set; }
     public int CurrentSaveIndex { get; private set; } = -1;
+    public event Action<SaveData> OnDataLoaded;
+    public event Action OnDataClear;
 
     protected override void Awake()
     {
         base.Awake();
-        PreloadSaveFiles();
+        Saves = new List<SaveData>();
+        PreloadSaves();
     }
 
-    //private void Start()
-    //{
-    //    string currentSceneName = SceneManager.GetActiveScene().name;
-
-    //    if (currentSceneName == "MainMenu" || currentSceneName.Contains("Credits"))
-    //    {
-    //        return;
-    //    }
-
-    //    if (SaveFiles.Count == 0)
-    //    {
-    //        NewSaveGame(onCurrentScene: true);
-    //    }
-
-    //    LoadLastGame();
-    //}
-
-    public void PreloadSaveFiles()
+    public void LoadGame(int index)
     {
-        SaveFiles = new List<SaveData>();
+        if (index >= Saves.Count)
+        {
+            Debug.LogError($"Save index returns 'Array Out of Bounds'; index: {index}");
+            return;
+        }
 
+        SaveData save = Saves[index];
+        CurrentSaveIndex = index;
+
+        OnDataLoaded?.Invoke(save);
+    }
+
+    public void LoadGame()
+    {
+        if (Saves == null || Saves.Count == 0)
+        {
+            Debug.LogError("No Saves Found!");
+            return;
+        }
+
+        int index = Saves.Count - 1;
+        LoadGame(index);
+    }
+
+    public void PreloadSaves()
+    {
         if (PlayerPrefs.HasKey("SaveDataCount"))
         {
             int saveDataCount = PlayerPrefs.GetInt("SaveDataCount");
@@ -52,45 +61,51 @@ public class SaveManager : Singleton<SaveManager>
                     activeSceneName = PlayerPrefs.GetString($"Save_{i}_ActiveSceneName")
                 };
 
-                SaveFiles.Add(saveData);
+                Saves.Add(saveData);
             }
         }
     }
 
-    public void NewSaveGameFromCheckpoint()
+    public void CreateSaveGame(bool fromCheckpoint, bool onActiveScene)
     {
-        SaveData saveData = new SaveData()
-        {
-            fileName = "SaveX",
-            fileDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-            checkpointIndex = CheckpointManager.Instance.CurrentCheckpointIndex,
-            inventoryItems = InventoryManager.Instance.SaveInventoryItems(),
-            inventoryItemsAmount = InventoryManager.Instance.SaveInventoryItemsAmount(),
-            collectedItems = InventoryManager.Instance.SaveCollectedItems(),
-            activeSceneName = SceneLoader.Instance.GetActiveSceneName()
-        };
+        string sceneName = onActiveScene ?
+        SceneManagerWrapper.GetActiveSceneName() : SceneManagerWrapper.GetNextSceneName();
 
-        CurrentSaveIndex = SaveGame(saveData);
+        SaveData save = null;
+
+        if (!fromCheckpoint)
+        {
+            save = new SaveData()
+            {
+                fileName = "SaveX",
+                fileDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                checkpointIndex = 0,
+                inventoryItems = "",
+                inventoryItemsAmount = "",
+                collectedItems = "",
+                activeSceneName = sceneName
+            };
+        }
+        else
+        {
+            save = new SaveData()
+            {
+                fileName = "SaveX",
+                fileDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                checkpointIndex = CheckpointManager.Instance.CurrentCheckpointIndex,
+                inventoryItems = InventoryManager.Instance.SaveInventoryItems(),
+                inventoryItemsAmount = InventoryManager.Instance.SaveInventoryItemsAmount(),
+                collectedItems = InventoryManager.Instance.SaveCollectedItems(),
+                activeSceneName = sceneName
+            };
+        }
+
+
+        CurrentSaveIndex = SaveGame(save);
+        Saves.Add(save);
     }
 
-    public void NewSaveGame(bool onCurrentScene = false)
-    {
-        SaveData saveData = new SaveData()
-        {
-            fileName = "SaveX",
-            fileDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-            checkpointIndex = 0,
-            inventoryItems = "",
-            inventoryItemsAmount = "",
-            collectedItems = "",
-            activeSceneName = onCurrentScene ?
-            SceneLoader.Instance.GetCurrentSceneName() : SceneLoader.Instance.GetNextSceneName()
-        };
-
-        CurrentSaveIndex = SaveGame(saveData);
-    }
-
-    private int SaveGame(SaveData saveData)
+    private int SaveGame(SaveData save)
     {
         int saveIndex = 0;
 
@@ -102,44 +117,72 @@ public class SaveManager : Singleton<SaveManager>
         saveIndex = PlayerPrefs.GetInt("SaveDataCount");
         PlayerPrefs.SetInt("SaveDataCount", saveIndex + 1);
 
-        PlayerPrefs.SetString($"Save_{saveIndex}_FileName", saveData.fileName);
-        PlayerPrefs.SetString($"Save_{saveIndex}_FileDate", saveData.fileDate);
-        PlayerPrefs.SetInt($"Save_{saveIndex}_CheckpointIndex", saveData.checkpointIndex);
-        PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItems", saveData.inventoryItems);
-        PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItemsAmount", saveData.inventoryItemsAmount);
-        PlayerPrefs.SetString($"Save_{saveIndex}_CollectedItems", saveData.collectedItems);
-        PlayerPrefs.SetString($"Save_{saveIndex}_ActiveSceneName", saveData.activeSceneName);
+        PlayerPrefs.SetString($"Save_{saveIndex}_FileName", save.fileName);
+        PlayerPrefs.SetString($"Save_{saveIndex}_FileDate", save.fileDate);
+        PlayerPrefs.SetInt($"Save_{saveIndex}_CheckpointIndex", save.checkpointIndex);
+        PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItems", save.inventoryItems);
+        PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItemsAmount", save.inventoryItemsAmount);
+        PlayerPrefs.SetString($"Save_{saveIndex}_CollectedItems", save.collectedItems);
+        PlayerPrefs.SetString($"Save_{saveIndex}_ActiveSceneName", save.activeSceneName);
 
-        SaveFiles.Add(saveData);
         return saveIndex;
     }
 
-    public void LoadGame(int index)
+    public SaveData GetCurrentSave()
     {
-        if (index >= SaveFiles.Count)
-        {
-            Debug.LogError("Array Out of Bounds");
-            Debug.Log(SaveFiles.Count);
-            return;
-        }
-
-        SaveData saveFile = SaveFiles[index];
-        CurrentSaveIndex = index;
-
-        InventoryManager.Instance.LoadInventory(saveFile.inventoryItems, saveFile.inventoryItemsAmount);
-        //InventoryManager.Instance.LoadCollectedItems(saveFile.collectedItems);
+        return Saves[CurrentSaveIndex];
     }
 
-    public void LoadLastGame()
+    public void ClearLoadedData()
     {
-        if (!PlayerPrefs.HasKey("SaveDataCount"))
+        CurrentSaveIndex = -1;
+        OnDataClear?.Invoke();
+    }
+
+    public SaveData GetSaveForLoading(LoadingType loadingType, int saveIndex)
+    {
+        SaveData save = null;
+
+        switch (loadingType)
         {
-            Debug.Log("No SaveData Found!");
-            return;
+            case LoadingType.NewGame:
+                CreateSaveGame(fromCheckpoint: false, onActiveScene: false);
+                break;
+
+            case LoadingType.ContinueGame:
+                save = Saves[Saves.Count - 1];
+                break;
+
+            case LoadingType.LoadGame:
+                save = Saves[saveIndex];
+                break;
+
+            case LoadingType.NextScene:
+                string nextSceneName = SceneManagerWrapper.GetNextSceneName();
+
+                if (nextSceneName.Contains("Level"))
+                {
+                    goto case LoadingType.NewGame;
+                }
+
+                break;
+
+            case LoadingType.RestartCheckpoint:
+                save = Saves[CurrentSaveIndex];
+                break;
         }
 
-        int index = PlayerPrefs.GetInt("SaveDataCount") - 1;
-        LoadGame(index);
+        return save;
+    }
+
+    public int GetSaveIndex(SaveData save)
+    {
+        if (save == null || !Saves.Contains(save))
+        {
+            return -1;
+        }
+
+        return Saves.IndexOf(save);
     }
 }
 

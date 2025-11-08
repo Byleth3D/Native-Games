@@ -3,27 +3,41 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public bool Paused { get; private set; } = false;
+    public GameState State { get; protected set; } = GameState.Running;
 
-    public void PauseGame()
+    public void SwitchState(GameState state)
     {
-        InputManager.Instance.DisablePlayerActions();
-        Time.timeScale = 0.0f;
-        Paused = true;
-    }
+        State = state;
 
-    public void UnpauseGame()
-    {
-        InputManager.Instance.EnablePlayerActions();
-        Time.timeScale = 1f;
-        Paused = false;
-    }
-    public void ExitGame()
-    {
+        switch (state)
+        {
+            case GameState.Running:
+                Time.timeScale = 1f;
+                break;
+
+            case GameState.Paused:
+                Time.timeScale = 0.0f;
+                break;
+
+            case GameState.Exiting:
 #if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
+                EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+                Application.Quit();
 #endif
+                break;
+
+            default:
+                break;
+        }
+
+        State = state;
     }
+}
+
+public enum GameState
+{
+    Running,
+    Paused,
+    Exiting
 }

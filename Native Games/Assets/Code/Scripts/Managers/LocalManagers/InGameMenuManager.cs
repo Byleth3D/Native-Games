@@ -136,10 +136,10 @@ public class InGameMenuManager
 
         if (inGameMenu.pauseGame)
         {
-            GameManager.Instance.PauseGame();
+            GameManager.Instance.SwitchState(GameState.Paused);
         }
 
-        InputManager.Instance.DisablePlayerActions();
+        InputManager.Instance.DisableInputActions(InputControllerType.Player);
     }
 
     public bool DisableActiveMenu(InGameMenu inGameMenu, bool overlaps)
@@ -176,10 +176,10 @@ public class InGameMenuManager
 
         if (inGameMenu.pauseGame)
         {
-            GameManager.Instance.UnpauseGame();
+            GameManager.Instance.SwitchState(GameState.Running);
         }
 
-        InputManager.Instance.EnablePlayerActions();
+        InputManager.Instance.EnableInputActions(InputControllerType.Player);
         return true;
     }
 }
