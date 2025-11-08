@@ -10,6 +10,7 @@ public class InputManager : Singleton<InputManager>
 
     public PlayerInputController Player { get; private set; }
     public UserInterfaceInputController UI { get; private set; }
+    public CheatsInputController Cheats { get; private set; }
 
     protected override void Awake()
     {
@@ -19,6 +20,7 @@ public class InputManager : Singleton<InputManager>
 
         Player = new PlayerInputController(gameInputs);
         UI = new UserInterfaceInputController(gameInputs);
+        Cheats = new CheatsInputController(gameInputs);
     }
 
     //private void Update()
@@ -71,6 +73,7 @@ public class InputManager : Singleton<InputManager>
     {
         gameInputs.Player.Disable();
         gameInputs.UI.Disable();
+        gameInputs.Cheats.Disable();
         Enabled = false;
     }
 
@@ -128,6 +131,7 @@ public class InputManager : Singleton<InputManager>
     {
         gameInputs.Player.Enable();
         gameInputs.UI.Enable();
+        gameInputs.Cheats.Enable();
         Enabled = true;
     }
 

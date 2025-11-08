@@ -640,6 +640,74 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Cheats"",
+            ""id"": ""4fdfae37-d32d-4fa2-a1b4-c997a30744ff"",
+            ""actions"": [
+                {
+                    ""name"": ""CheatModifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""81a41bfe-c7bb-4ed8-b1c7-940cce330682"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TeleportNext"",
+                    ""type"": ""Button"",
+                    ""id"": ""1eb8db19-69bb-41a2-a705-4c28b30bf36b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TeleportPrevious"",
+                    ""type"": ""Button"",
+                    ""id"": ""cca8f5f9-9680-45f2-9ad6-98c547f815f4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6e3f6704-6648-4940-81fc-01c27a3e720c"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CheatModifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11194547-3f82-4321-a403-8476f6616667"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TeleportNext"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb9d0048-2431-4edc-a9c5-71dcaaabd05d"",
+                    ""path"": ""<Keyboard>/delete"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TeleportPrevious"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -660,12 +728,18 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         m_UI_Inventory = m_UI.FindAction("Inventory", throwIfNotFound: true);
+        // Cheats
+        m_Cheats = asset.FindActionMap("Cheats", throwIfNotFound: true);
+        m_Cheats_CheatModifier = m_Cheats.FindAction("CheatModifier", throwIfNotFound: true);
+        m_Cheats_TeleportNext = m_Cheats.FindAction("TeleportNext", throwIfNotFound: true);
+        m_Cheats_TeleportPrevious = m_Cheats.FindAction("TeleportPrevious", throwIfNotFound: true);
     }
 
     ~@GameInputs()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, GameInputs.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, GameInputs.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Cheats.enabled, "This will cause a leak and performance issues, GameInputs.Cheats.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1039,6 +1113,124 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
     public UIActions @UI => new UIActions(this);
+
+    // Cheats
+    private readonly InputActionMap m_Cheats;
+    private List<ICheatsActions> m_CheatsActionsCallbackInterfaces = new List<ICheatsActions>();
+    private readonly InputAction m_Cheats_CheatModifier;
+    private readonly InputAction m_Cheats_TeleportNext;
+    private readonly InputAction m_Cheats_TeleportPrevious;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Cheats".
+    /// </summary>
+    public struct CheatsActions
+    {
+        private @GameInputs m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public CheatsActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Cheats/CheatModifier".
+        /// </summary>
+        public InputAction @CheatModifier => m_Wrapper.m_Cheats_CheatModifier;
+        /// <summary>
+        /// Provides access to the underlying input action "Cheats/TeleportNext".
+        /// </summary>
+        public InputAction @TeleportNext => m_Wrapper.m_Cheats_TeleportNext;
+        /// <summary>
+        /// Provides access to the underlying input action "Cheats/TeleportPrevious".
+        /// </summary>
+        public InputAction @TeleportPrevious => m_Wrapper.m_Cheats_TeleportPrevious;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Cheats; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="CheatsActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(CheatsActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="CheatsActions" />
+        public void AddCallbacks(ICheatsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CheatsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CheatsActionsCallbackInterfaces.Add(instance);
+            @CheatModifier.started += instance.OnCheatModifier;
+            @CheatModifier.performed += instance.OnCheatModifier;
+            @CheatModifier.canceled += instance.OnCheatModifier;
+            @TeleportNext.started += instance.OnTeleportNext;
+            @TeleportNext.performed += instance.OnTeleportNext;
+            @TeleportNext.canceled += instance.OnTeleportNext;
+            @TeleportPrevious.started += instance.OnTeleportPrevious;
+            @TeleportPrevious.performed += instance.OnTeleportPrevious;
+            @TeleportPrevious.canceled += instance.OnTeleportPrevious;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="CheatsActions" />
+        private void UnregisterCallbacks(ICheatsActions instance)
+        {
+            @CheatModifier.started -= instance.OnCheatModifier;
+            @CheatModifier.performed -= instance.OnCheatModifier;
+            @CheatModifier.canceled -= instance.OnCheatModifier;
+            @TeleportNext.started -= instance.OnTeleportNext;
+            @TeleportNext.performed -= instance.OnTeleportNext;
+            @TeleportNext.canceled -= instance.OnTeleportNext;
+            @TeleportPrevious.started -= instance.OnTeleportPrevious;
+            @TeleportPrevious.performed -= instance.OnTeleportPrevious;
+            @TeleportPrevious.canceled -= instance.OnTeleportPrevious;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="CheatsActions.UnregisterCallbacks(ICheatsActions)" />.
+        /// </summary>
+        /// <seealso cref="CheatsActions.UnregisterCallbacks(ICheatsActions)" />
+        public void RemoveCallbacks(ICheatsActions instance)
+        {
+            if (m_Wrapper.m_CheatsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="CheatsActions.AddCallbacks(ICheatsActions)" />
+        /// <seealso cref="CheatsActions.RemoveCallbacks(ICheatsActions)" />
+        /// <seealso cref="CheatsActions.UnregisterCallbacks(ICheatsActions)" />
+        public void SetCallbacks(ICheatsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CheatsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CheatsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="CheatsActions" /> instance referencing this action map.
+    /// </summary>
+    public CheatsActions @Cheats => new CheatsActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.
     /// </summary>
@@ -1138,5 +1330,34 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInventory(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Cheats" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="CheatsActions.AddCallbacks(ICheatsActions)" />
+    /// <seealso cref="CheatsActions.RemoveCallbacks(ICheatsActions)" />
+    public interface ICheatsActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "CheatModifier" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCheatModifier(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "TeleportNext" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTeleportNext(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "TeleportPrevious" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTeleportPrevious(InputAction.CallbackContext context);
     }
 }

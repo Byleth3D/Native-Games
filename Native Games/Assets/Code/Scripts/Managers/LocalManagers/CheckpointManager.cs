@@ -86,7 +86,9 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
 
     public void CheckpointTeleport(int checkpointIndex)
     {
-        if (checkpoints.Count == 0 || checkpointIndex >= checkpoints.Count)
+        if (checkpoints.Count == 0 || checkpointIndex < 0 ||
+            checkpointIndex >= checkpoints.Count ||
+            !checkpoints[checkpointIndex].isActiveAndEnabled)
         {
             return;
         }
@@ -107,6 +109,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         }
 
         CurrentCheckpointIndex = checkpointIndex;
+        currentCheckpoint = checkpoints[checkpointIndex];
         playerController.SetAsAlive();
         playerController.Teleport(checkpoints[checkpointIndex].transform.position);
         CameraManager.Instance.ResetParameters(currentCheckpoint);

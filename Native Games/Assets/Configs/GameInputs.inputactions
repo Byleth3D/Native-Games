@@ -554,6 +554,74 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Cheats",
+            "id": "4fdfae37-d32d-4fa2-a1b4-c997a30744ff",
+            "actions": [
+                {
+                    "name": "CheatModifier",
+                    "type": "Button",
+                    "id": "81a41bfe-c7bb-4ed8-b1c7-940cce330682",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TeleportNext",
+                    "type": "Button",
+                    "id": "1eb8db19-69bb-41a2-a705-4c28b30bf36b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TeleportPrevious",
+                    "type": "Button",
+                    "id": "cca8f5f9-9680-45f2-9ad6-98c547f815f4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6e3f6704-6648-4940-81fc-01c27a3e720c",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CheatModifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11194547-3f82-4321-a403-8476f6616667",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TeleportNext",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bb9d0048-2431-4edc-a9c5-71dcaaabd05d",
+                    "path": "<Keyboard>/delete",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TeleportPrevious",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
