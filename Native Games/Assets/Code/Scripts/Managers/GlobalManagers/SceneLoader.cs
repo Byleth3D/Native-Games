@@ -59,7 +59,7 @@ public class SceneLoader : Singleton<SceneLoader>
         {
             if (!SceneManagerWrapper.GetNextSceneName().Contains("Level"))
             {
-                if (SceneManagerWrapper.GetActiveSceneName().Contains("GlobalManagers"))
+                if (SceneManagerWrapper.GetActiveSceneName().Contains("Boot"))
                 {
                     ScreenFader.Instance.PresetAlphaFor(FadeType.FadeIn);
                 }
