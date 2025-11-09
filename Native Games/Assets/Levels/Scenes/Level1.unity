@@ -6692,7 +6692,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Reiniciar Checkpoint
+  m_text: Voltar Checkpoint
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1fb2bb4b36a3d754d82c14fd9b462162, type: 2}
   m_sharedMaterial: {fileID: 5886063266528798874, guid: 1fb2bb4b36a3d754d82c14fd9b462162, type: 2}
@@ -6719,12 +6719,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 43.95
+  m_fontSize: 46
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 64
+  m_fontSizeMax: 46
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
