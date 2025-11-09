@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("References", order = 0)]
+    [Header("References")]
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody body;
     [SerializeField] private CapsuleCollider collider3D;
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform model;
 
     [Header("Interaction")]
-    public float MaxInteractionDistance => collider3D.radius;
+    [field: SerializeField] public float MaxInteractionDistance { get; private set; } = 0.5f;
     public InteractionTrigger InteractionTrigger { get; set; }
     private Vector3 interactionCenter;
 
@@ -65,7 +65,6 @@ public class PlayerController : MonoBehaviour
 
     public Vector3 Forward => model.transform.forward;
 
-    #region Unity Methods
     private void Awake()
     {
         body.maxLinearVelocity = 80f;
@@ -91,9 +90,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        coyoteTimer.Tick(Time.deltaTime);
-        jumpBufferTimer.Tick(Time.deltaTime);
-
         if (IsAlive)
         {
             Jump();
@@ -114,9 +110,7 @@ public class PlayerController : MonoBehaviour
             ApplyVelocity();
         }
     }
-    #endregion
 
-    #region Core Loop Methods
     private void SetJumpSettings()
     {
         jumpGravity = -2.0f * maxJumpHeight / (jumpPeakTime * jumpPeakTime);
@@ -179,13 +173,13 @@ public class PlayerController : MonoBehaviour
                 if (coyoteTimer.IsRunning && body.linearVelocity.y < 0.0f)
                 {
                     canJump = true;
-                    coyoteTimer.Stop();
+                    coyoteTimer.StopAndQueue();
                     animator.SetTrigger("Jump");
                     animator.SetBool("IsGrounded", false);
                     return;
                 }
 
-                jumpBufferTimer.Start();
+                jumpBufferTimer.StartAndQueue();
             }
         }
         else
@@ -195,13 +189,11 @@ public class PlayerController : MonoBehaviour
                 canJump = true;
                 animator.SetTrigger("Jump");
                 animator.SetBool("IsGrounded", false);
-                jumpBufferTimer.Stop();
+                jumpBufferTimer.StopAndQueue();
             }
         }
     }
-    #endregion
 
-    #region Physics Loop Methods
     private void ProcessMove()
     {
         if (canMove)
@@ -324,9 +316,7 @@ public class PlayerController : MonoBehaviour
     {
         body.AddForce(velocity - body.linearVelocity, ForceMode.VelocityChange);
     }
-    #endregion
 
-    #region Death Response
     public void SetAsAlive()
     {
         if (!IsAlive)
@@ -343,8 +333,8 @@ public class PlayerController : MonoBehaviour
     {
         IsAlive = false;
 
-        coyoteTimer.Stop();
-        jumpBufferTimer.Stop();
+        coyoteTimer.StopAndQueue();
+        jumpBufferTimer.StopAndQueue();
 
         animator.SetTrigger("FallingDeath");
         animator.SetBool("Run", false);
@@ -352,12 +342,10 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Push", false);
         animator.SetBool("IsGrounded", false);
     }
-    #endregion
 
-    #region Ground Response Methods
     private void OnGroundEnter()
     {
-        coyoteTimer.Stop();
+        coyoteTimer.StopAndQueue();
 
         if (IsAlive)
         {
@@ -367,16 +355,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnGroundExit()
     {
-        coyoteTimer.Start();
+        coyoteTimer.StartAndQueue();
 
         if (IsAlive)
         {
             animator.SetBool("IsGrounded", false);
         }
     }
-    #endregion
 
-    #region Interaction Methods
     public void InteractionEnter(InteractionTrigger interactionTrigger)
     {
         this.InteractionTrigger = interactionTrigger;
@@ -444,5 +430,4 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Push", false);
         animator.SetBool("Pull", false);
     }
-    #endregion
 }

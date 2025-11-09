@@ -4531,12 +4531,13 @@ MonoBehaviour:
   pushingSpeed: 1.3
   airMultiplier: 0.825
   maxJumpHeight: 1.95
-  jumpPeakTime: 0.45
-  jumpFallTime: 0.35
+  jumpPeakTime: 0.415
+  jumpFallTime: 0.3
   coyoteDuration: 0.125
   jumpBufferDuration: 0.2
   angularSpeed: 2160
   model: {fileID: 461035930}
+  <MaxInteractionDistance>k__BackingField: 0.5
 --- !u!114 &276946595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4600,7 +4601,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}

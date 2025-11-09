@@ -16,7 +16,7 @@ public class CountdownTimer
         this.initialTime = initialTime;
     }
 
-    public virtual void Start()
+    public void Start()
     {
         CurrentTime = initialTime;
 
@@ -26,6 +26,12 @@ public class CountdownTimer
         }
 
         OnTimerStart?.Invoke();
+    }
+
+    public void StartAndQueue()
+    {
+        Start();
+        Clock.QueueToAdd(this);
     }
 
     public void Stop()
@@ -42,6 +48,12 @@ public class CountdownTimer
         {
             OnTimerExpired?.Invoke();
         }
+    }
+
+    public void StopAndQueue()
+    {
+        Stop();
+        Clock.QueueToRemove(this);
     }
 
     public void Tick(float deltaTime)
