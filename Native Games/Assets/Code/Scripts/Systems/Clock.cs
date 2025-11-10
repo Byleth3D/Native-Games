@@ -66,11 +66,6 @@ public static class Clock
                         continue;
                     }
 
-                    if (!Timers[i].IsRunning && Timers[i].CurrentTime > 0.0f)
-                    {
-                        Timers[i].Start();
-                    }
-
                     Timers[i].Tick(Time.deltaTime);
                 }
 
