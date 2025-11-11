@@ -4693,7 +4693,7 @@ MonoBehaviour:
   horizontalSpeed: 5
   pushingSpeed: 1.3
   airMultiplier: 0.825
-  maxJumpHeight: 1.95
+  maxJumpHeight: 2.15
   jumpPeakTime: 0.415
   jumpFallTime: 0.3
   coyoteDuration: 0.125
