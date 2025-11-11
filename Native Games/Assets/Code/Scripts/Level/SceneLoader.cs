@@ -6,12 +6,6 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : Singleton<SceneLoader>
 {
     public AsyncOperation LoadingOperation { get; private set; }
-    public event Action<string> OnSceneLoaded;
-
-    protected override void Awake()
-    {
-        base.Awake();
-    }
 
     private async UniTask LoadSceneAsync(LoadingType loadingType, int saveIndex = -1)
     {
@@ -35,6 +29,7 @@ public class SceneLoader : Singleton<SceneLoader>
         if (save != null)
         {
             SaveManager.Instance.LoadGame(saveIndex);
+            InventoryManager.Instance.LoadInventory(save.inventoryItems, save.inventoryItemsAmount);
         }
 
         LoadingOperation.allowSceneActivation = true;
@@ -42,8 +37,6 @@ public class SceneLoader : Singleton<SceneLoader>
         await UniTask.WaitWhile(() => SceneManagerWrapper.GetActiveSceneName() != sceneName);
 
         LoadingScreen.Instance.SelfDisable().Forget();
-
-        OnSceneLoaded?.Invoke(sceneName);
     }
 
     private async UniTaskVoid LoadSceneAsync(string sceneName, bool withLoadingScreen = true)
@@ -86,6 +79,8 @@ public class SceneLoader : Singleton<SceneLoader>
             }
 
             SaveManager.Instance.LoadGame();
+            SaveData save = SaveManager.Instance.GetCurrentSave();
+            InventoryManager.Instance.LoadInventory(save.inventoryItems, save.inventoryItemsAmount);
         }
 
         LoadingOperation.allowSceneActivation = true;
@@ -100,8 +95,6 @@ public class SceneLoader : Singleton<SceneLoader>
         {
             ScreenFader.Instance.Fade("Default", FadeType.FadeIn).Forget();
         }
-
-        OnSceneLoaded?.Invoke(sceneName);
     }
 
     private void LoadScene(string sceneName)

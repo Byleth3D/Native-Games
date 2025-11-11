@@ -58,6 +58,7 @@ public class SaveManager : Singleton<SaveManager>
                     inventoryItems = PlayerPrefs.GetString($"Save_{i}_InventoryItems"),
                     inventoryItemsAmount = PlayerPrefs.GetString($"Save_{i}_InventoryItemsAmount"),
                     collectedItems = PlayerPrefs.GetString($"Save_{i}_CollectedItems"),
+                    playedDialogues = PlayerPrefs.GetString($"Save_{i}_PlayedDialogues"),
                     activeSceneName = PlayerPrefs.GetString($"Save_{i}_ActiveSceneName")
                 };
 
@@ -83,6 +84,7 @@ public class SaveManager : Singleton<SaveManager>
                 inventoryItems = "",
                 inventoryItemsAmount = "",
                 collectedItems = "",
+                playedDialogues = "",
                 activeSceneName = sceneName
             };
         }
@@ -95,7 +97,8 @@ public class SaveManager : Singleton<SaveManager>
                 checkpointIndex = CheckpointManager.Instance.CurrentCheckpointIndex,
                 inventoryItems = InventoryManager.Instance.SaveInventoryItems(),
                 inventoryItemsAmount = InventoryManager.Instance.SaveInventoryItemsAmount(),
-                collectedItems = InventoryManager.Instance.SaveCollectedItems(),
+                collectedItems = ObjectStateManager.Instance.SaveCollectedItems(),
+                playedDialogues = ObjectStateManager.Instance.SavePlayedDialogues(),
                 activeSceneName = sceneName
             };
         }
@@ -123,6 +126,7 @@ public class SaveManager : Singleton<SaveManager>
         PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItems", save.inventoryItems);
         PlayerPrefs.SetString($"Save_{saveIndex}_InventoryItemsAmount", save.inventoryItemsAmount);
         PlayerPrefs.SetString($"Save_{saveIndex}_CollectedItems", save.collectedItems);
+        PlayerPrefs.SetString($"Save_{saveIndex}_PlayedDialogues", save.playedDialogues);
         PlayerPrefs.SetString($"Save_{saveIndex}_ActiveSceneName", save.activeSceneName);
 
         return saveIndex;
@@ -197,6 +201,7 @@ public class SaveData
     public string inventoryItemsAmount;
 
     public string collectedItems;
+    public string playedDialogues;
 
     public string activeSceneName;
 }

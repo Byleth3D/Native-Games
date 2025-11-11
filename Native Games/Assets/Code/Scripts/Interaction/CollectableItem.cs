@@ -36,6 +36,7 @@ public class CollectableItem : MonoBehaviour, IInteractable
             GameplayUIManager.Instance.popupManager.DisablePopup("Interact");
             collectSound?.PlayCollectSound();
             OnCollect?.Invoke();
+            ObjectStateManager.Instance.SetAsCollected(gameObject);
             Invoke(nameof(SetDisable), 0.25f);
         }
         else

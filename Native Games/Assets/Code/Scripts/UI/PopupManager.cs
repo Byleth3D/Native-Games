@@ -1,3 +1,4 @@
+using EditorAttributes;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -9,6 +10,8 @@ public class PopupManager
     [SerializeField] private GameObject popupMenu;
     [SerializeField] private TextMeshProUGUI popupText;
     [SerializeField] private List<Popup> popups;
+
+    private CountdownTimer popupTimer;
 
     public Popup ActivePopup { get; private set; }
     public bool HasActivePopup { get; private set; }
@@ -27,7 +30,7 @@ public class PopupManager
     {
         foreach (Popup popup in popups)
         {
-            if (popup.popupName != popupName)
+            if (popup.name != popupName)
             {
                 continue;
             }
@@ -80,10 +83,30 @@ public class PopupManager
         }
 
         popupMenu.SetActive(true);
-        popupText.text = popup.popupMessage;
+
+        string newPopupText = "";
+
+        if (popup.isPlataformSpecific)
+        {
+            newPopupText = Application.platform == RuntimePlatform.Android ?
+            popup.mobileMessage : popup.pcMessage;
+        }
+        else
+        {
+            newPopupText = popup.defaultMessage;
+        }
+
+        popupText.text = newPopupText;
 
         HasActivePopup = true;
         ActivePopup = popup;
+
+        if (popup.isTimeBased)
+        {
+            popupTimer = new CountdownTimer(popup.duration);
+            popupTimer.StartAndQueue();
+            popupTimer.OnTimerExpired += DisableActivePopup;
+        }
     }
 
     public void DisableActivePopup()
@@ -108,12 +131,25 @@ public class PopupManager
 
         HasActivePopup = false;
         ActivePopup = null;
+
+        if (popup.isTimeBased)
+        {
+            if (popupTimer.IsRunning || popupTimer.CurrentTime > 0.0f)
+            {
+                popupTimer.StopAndQueue();
+            }
+        }
     }
 }
 
 [Serializable]
 public class Popup
 {
-    public string popupName;
-    [TextArea] public string popupMessage;
+    public string name;
+    public bool isTimeBased;
+    [EnableField(nameof(isTimeBased))] public float duration;
+    public bool isPlataformSpecific;
+    [DisableField(nameof(isPlataformSpecific)), TextArea] public string defaultMessage;
+    [EnableField(nameof(isPlataformSpecific)), TextArea] public string pcMessage;
+    [EnableField(nameof(isPlataformSpecific)), TextArea] public string mobileMessage;
 }
