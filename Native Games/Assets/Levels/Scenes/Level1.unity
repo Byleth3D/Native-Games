@@ -18631,14 +18631,38 @@ MonoBehaviour:
     popupMenu: {fileID: 1044089859}
     popupText: {fileID: 250223480}
     popups:
-    - popupName: Move
-      popupMessage: Use [W][A][S][D] para mover-se
-    - popupName: Interact
-      popupMessage: Pressione [E] para coletar ou interagir.
-    - popupName: Push
-      popupMessage: "Pressione [E] para come\xE7ar ou parar de arrastar objetos."
-    - popupName: CottonCordFail
-      popupMessage: "Voc\xEA precisa de 3 cord\xF5es e uma agulha!"
+    - name: Move
+      isTimeBased: 1
+      duration: 5
+      isPlataformSpecific: 1
+      defaultMessage: 
+      pcMessage: Use<color="green"> [W][A][S][D] </color>para se mover
+      mobileMessage: "Use o<color=\"green\"> anal\xF3gico </color>para se mover"
+    - name: Interact
+      isTimeBased: 0
+      duration: 0
+      isPlataformSpecific: 1
+      defaultMessage: 
+      pcMessage: Pressione<color="red"> [E] </color>para interagir.
+      mobileMessage: "Pressione<color=\"red\"> bot\xE3o vermelho</color> interagir."
+    - name: Push
+      isTimeBased: 0
+      duration: 0
+      isPlataformSpecific: 1
+      defaultMessage: 
+      pcMessage: Pressione<color="red"> [E] </color>para segurar ou soltar objetos.
+      mobileMessage: "Pressione<color=\"red\"> bot\xE3o vermelho </color>segurar
+        ou soltar objetos."
+    - name: CottonCordFail
+      isTimeBased: 0
+      duration: 0
+      isPlataformSpecific: 0
+      defaultMessage: "Voc\xEA precisa de<color=\"red\"> 3 cord\xF5es </color>e<color=\"red\">
+        uma agulha</color>!"
+      pcMessage: 
+      mobileMessage: 
+    showPopupOnAwake: 1
+    initialPopupName: Move
   inventoryMenuManager:
     InventorySlotName: {fileID: 33386873}
     InventorySlotDescription: {fileID: 625002228}

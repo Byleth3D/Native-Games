@@ -62,7 +62,7 @@ public class CountdownTimer
 
         if (CurrentTime <= 0.0f)
         {
-            Stop();
+            StopAndQueue();
             return;
         }
 
