@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TalkFour : MonoBehaviour
+public class DialogueTrigger : MonoBehaviour
 {
     public AudioClip soundClip;
     public float volume = 3f;
@@ -8,26 +8,11 @@ public class TalkFour : MonoBehaviour
 
     private bool soundPlayed = false;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!soundPlayed && other.CompareTag("Player"))
-        {
-            soundPlayed = true;
-            Speak();
-        }
-    }
-
-    private void PlaySound()
-    {
-        if (soundClip == null) return;
-        AudioSource.PlayClipAtPoint(soundClip, transform.position, volume);
-
-    }
-
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
+
     public void Speak()
     {
         if (audioSource != null && !audioSource.isPlaying)
@@ -36,4 +21,13 @@ public class TalkFour : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!soundPlayed && other.CompareTag("Player"))
+        {
+            soundPlayed = true;
+            ObjectStateManager.Instance.SetAsPlayed(gameObject);
+            Speak();
+        }
+    }
 }
