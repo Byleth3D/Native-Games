@@ -29,7 +29,7 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 
     private void Update()
     {
-        if (ScreenFader.Instance.IsFading)
+        if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
         }
@@ -43,7 +43,7 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
             }
             else
             {
-                inGameMenuManager.EnableInGameMenu("Pause");
+                EnableInGameMenu("Pause");
                 return;
             }
         }
@@ -57,7 +57,7 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 
             if (!inGameMenuManager.HasActiveMenu)
             {
-                inGameMenuManager.EnableInGameMenu("Inventory");
+                EnableInGameMenu("Inventory");
             }
             else if (inGameMenuManager.HasActiveMenu && inGameMenuManager.ActiveMenu.inGameMenuName == "Inventory")
             {
@@ -71,6 +71,11 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
         if (ScreenFader.Instance.IsFading || LoadingScreen.Instance.IsVisible)
         {
             return;
+        }
+
+        if (inGameMenu == "Inventory")
+        {
+            inventoryMenuManager.Notification.SetActive(false);
         }
 
         inGameMenuManager.EnableInGameMenu(inGameMenu);

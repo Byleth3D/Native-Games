@@ -11,6 +11,7 @@ public class InventoryMenuManager
     [SerializeField] private TextMeshProUGUI InventorySlotDescription;
     [SerializeField] private Image InventorySlotUsageImage;
     [SerializeField] private List<InventoryItemSlot> inventorySlots;
+    [field: SerializeField] public GameObject Notification { get; private set; }
 
     public void AddInventoryItemToSlot(InventoryItem inventoryItem, int inventoryItemAmount)
     {
@@ -58,6 +59,8 @@ public class InventoryMenuManager
         {
             this.inventorySlots[existingItemIndex].UpdateAmount(inventoryItemAmount);
         }
+
+        Notification.SetActive(true);
     }
 
     public void RemoveInventoryItemFromSlot(InventoryItem inventoryItem, int inventoryItemAmount)
