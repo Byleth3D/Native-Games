@@ -2,32 +2,18 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public AudioClip soundClip;
-    public float volume = 3f;
-    private AudioSource audioSource;
-
-    private bool soundPlayed = false;
-
-    void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
-
-    public void Speak()
-    {
-        if (audioSource != null && !audioSource.isPlaying)
-        {
-            audioSource.Play();
-        }
-    }
+    [SerializeField] private AudioClip dialogue;
+    [SerializeField, Range(0.01f, 1f)] private float volume = 0.5f;
+    [SerializeField] private Subtitle subtitle;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!soundPlayed && other.CompareTag("Player"))
-        {
-            soundPlayed = true;
-            ObjectStateManager.Instance.SetAsPlayed(gameObject);
-            Speak();
-        }
+        DialogueAudioManager.Instance.PlayDialogue(dialogue, volume);
+        AudioSource audioSource = DialogueAudioManager.Instance.AudioSource;
+
+        SubtitleManager.Instance.TurnOnSubtitle(subtitle, audioSource);
+
+        ObjectStateManager.Instance.SetAsPlayed(gameObject);
+        gameObject.SetActive(false);
     }
 }

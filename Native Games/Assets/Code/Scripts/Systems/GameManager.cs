@@ -23,7 +23,14 @@ public class GameManager : Singleton<GameManager>
 #if UNITY_EDITOR
                 EditorApplication.isPlaying = false;
 #else
-                Application.Quit();
+                if (Application.platform != RuntimePlatform.WebGLPlayer)
+                {
+                    Application.Quit();
+                }
+                else
+                {
+                    goto case GameState.Running;
+                }
 #endif
                 break;
 
