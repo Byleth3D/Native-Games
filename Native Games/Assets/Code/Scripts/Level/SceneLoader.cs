@@ -75,7 +75,8 @@ public class SceneLoader : Singleton<SceneLoader>
         {
             if (SaveManager.Instance.Saves.Count == 0)
             {
-                SaveManager.Instance.CreateSaveGame(fromCheckpoint: false, onActiveScene: true);
+                SaveManager.Instance
+                .CreateSaveGame(fromCheckpoint: false, onActiveScene: false, sceneName);
             }
 
             SaveManager.Instance.LoadGame();

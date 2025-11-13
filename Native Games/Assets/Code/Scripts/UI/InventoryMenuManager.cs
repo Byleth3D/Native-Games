@@ -53,6 +53,7 @@ public class InventoryMenuManager
             if (listHasEmptySlot)
             {
                 this.inventorySlots[firstEmptyIndex].Add(inventoryItem, inventoryItemAmount);
+                this.inventorySlots[firstEmptyIndex].Notification.SetActive(true);
             }
         }
         else

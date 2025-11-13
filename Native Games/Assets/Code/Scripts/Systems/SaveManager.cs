@@ -67,10 +67,19 @@ public class SaveManager : Singleton<SaveManager>
         }
     }
 
-    public void CreateSaveGame(bool fromCheckpoint, bool onActiveScene)
+    public void CreateSaveGame(bool fromCheckpoint, bool onActiveScene, string sceneToLoad = "")
     {
-        string sceneName = onActiveScene ?
-        SceneManagerWrapper.GetActiveSceneName() : SceneManagerWrapper.GetNextSceneName();
+        string sceneName = "";
+
+        if (string.IsNullOrEmpty(sceneToLoad))
+        {
+            sceneName = onActiveScene ?
+            SceneManagerWrapper.GetActiveSceneName() : SceneManagerWrapper.GetNextSceneName();
+        }
+        else if (!onActiveScene)
+        {
+            sceneName = sceneToLoad;
+        }
 
         SaveData save = null;
 
