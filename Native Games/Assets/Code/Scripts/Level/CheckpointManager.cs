@@ -55,6 +55,7 @@ public class CheckpointManager : LocalSingleton<CheckpointManager>
         }
 
         SaveManager.Instance.CreateSaveGame(fromCheckpoint: true, onActiveScene: true);
+        GameplayUIManager.Instance.EnableSavingText();
     }
 
     public void CheckpointTeleport()
