@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - startTimeInMinutes: 00:00
-    endTimeInMinutes: 00:03
-    text: Feito com madeira de jaqueira.
-  - startTimeInMinutes: 00:04
     endTimeInMinutes: 00:08
-    text: "Dura muito mais que o pl\xE1stico e cheira a inf\xE2ncia!"
+    text: "Aaah\u2026 O bom e velho cavalo de madeira, o brinquedo com o qual todas
+      as crian\xE7as se divertiam fazendo e brincando."
+  - startTimeInMinutes: 00:09
+    endTimeInMinutes: 00:12
+    text: "Dura mais que pl\xE1stico e \xE9 a cara da inf\xE2ncia."

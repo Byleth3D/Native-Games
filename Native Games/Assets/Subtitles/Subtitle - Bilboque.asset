@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - startTimeInMinutes: 00:00
-    endTimeInMinutes: 00:03
-    text: Quantas horas tentando acertar a bolinha!
-  - startTimeInMinutes: 00:04
-    endTimeInMinutes: 00:07
-    text: "Treino de paci\xEAncia e risada garantida!"
+    endTimeInMinutes: 00:05
+    text: "O bom e velho bilboqu\xEA\u2026Tantas horas tentando acertar a bolinha."
+  - startTimeInMinutes: 00:06
+    endTimeInMinutes: 00:09
+    text: "Um peda\xE7o de carinho e inf\xE2ncia, com muitas risadas."

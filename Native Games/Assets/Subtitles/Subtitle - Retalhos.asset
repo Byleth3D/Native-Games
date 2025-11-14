@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - startTimeInMinutes: 00:00
-    endTimeInMinutes: 00:03
-    text: "Onde eu deixei aquela pecinha de renda renascen\xE7a?"
-  - startTimeInMinutes: 00:04
-    endTimeInMinutes: 00:06
-    text: "A encomenda da Martha n\xE3o pode atrasar."
+    endTimeInMinutes: 00:04
+    text: "Onde est\xE1 aquela florzinha de renda renascen\xE7a?"
+  - startTimeInMinutes: 00:05
+    endTimeInMinutes: 00:09
+    text: "Essa \xE9 a pe\xE7a essencial para a encomenda da Martha, n\xE3o pode
+      haver atrasos."

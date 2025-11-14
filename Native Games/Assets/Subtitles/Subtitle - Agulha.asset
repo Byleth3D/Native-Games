@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - startTimeInMinutes: 00:00
-    endTimeInMinutes: 00:07
-    text: "Essa pe\xE7a de tecido fil\xE9, est\xE1 esperando a muito tempo que eu
-      a finalize."
+    endTimeInMinutes: 00:06
+    text: " Preciso tirar um dia para completar a minha renda fil\xE9.\n"
+  - startTimeInMinutes: 00:07
+    endTimeInMinutes: 00:09
+    text: "Vai ficar \xF3tima na mesa da sala, mas onde eu deixei aqueles cord\xF5es?"
