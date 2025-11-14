@@ -3,6 +3,10 @@ using UnityEngine;
 public class GameplayUIManager : LocalSingleton<GameplayUIManager>
 {
     [SerializeField] private GameObject mobileHUD;
+
+    [SerializeField] private GameObject savingText;
+    [SerializeField] private float savingDuration = 1.5f;
+
     public InGameMenuManager inGameMenuManager;
     public PopupManager popupManager;
     public InventoryMenuManager inventoryMenuManager;
@@ -106,5 +110,16 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
     public void ExitGame()
     {
         GameManager.Instance.SwitchState(GameState.Exiting);
+    }
+
+    public void EnableSavingText()
+    {
+        savingText.SetActive(true);
+        Invoke(nameof(DisableSavingText), savingDuration);
+    }
+
+    public void DisableSavingText()
+    {
+        savingText.SetActive(false);
     }
 }

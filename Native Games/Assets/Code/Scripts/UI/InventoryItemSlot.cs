@@ -7,6 +7,7 @@ public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private TextMeshProUGUI itemAmountText;
     [SerializeField] private Image itemIcon;
+    [field: SerializeField] public GameObject Notification { get; private set; }
     public InventoryItem InventoryItem { get; private set; }
     public int InventoryItemAmount { get; private set; }
 
@@ -18,6 +19,11 @@ public class InventoryItemSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
         }
 
         GameplayUIManager.Instance.inventoryMenuManager.ShowInventorySlotInfo(InventoryItem);
+
+        if (Notification.activeInHierarchy)
+        {
+            Notification.SetActive(false);
+        }
     }
 
     public void OnDeselect(BaseEventData eventData)

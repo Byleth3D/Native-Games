@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0263a03e1f050cd44a25df986aa33a1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySlots: 9
+  inventorySlots: 3
 --- !u!1 &1552541893
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class InventoryMenuManager
     [SerializeField] private List<InventoryItemSlot> inventorySlots;
     [field: SerializeField] public GameObject Notification { get; private set; }
 
-    public void AddInventoryItemToSlot(InventoryItem inventoryItem, int inventoryItemAmount)
+    public void AddInventoryItemToSlot(InventoryItem inventoryItem, int inventoryItemAmount, bool onSetup = false)
     {
         int inventorySlots = this.inventorySlots.Count;
 
@@ -53,6 +53,11 @@ public class InventoryMenuManager
             if (listHasEmptySlot)
             {
                 this.inventorySlots[firstEmptyIndex].Add(inventoryItem, inventoryItemAmount);
+                
+                if (!onSetup)
+                {
+                    this.inventorySlots[firstEmptyIndex].Notification.SetActive(true);
+                }
             }
         }
         else
@@ -60,7 +65,10 @@ public class InventoryMenuManager
             this.inventorySlots[existingItemIndex].UpdateAmount(inventoryItemAmount);
         }
 
-        Notification.SetActive(true);
+        if (!onSetup)
+        {
+            Notification.SetActive(true);
+        }
     }
 
     public void RemoveInventoryItemFromSlot(InventoryItem inventoryItem, int inventoryItemAmount)
@@ -181,7 +189,7 @@ public class InventoryMenuManager
 
         foreach (InventoryItem item in storeItems.Keys)
         {
-            AddInventoryItemToSlot(item, storeItems[item]);
+            AddInventoryItemToSlot(item, storeItems[item], onSetup: true);
         }
     }
 }
