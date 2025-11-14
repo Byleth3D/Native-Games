@@ -20,9 +20,9 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.77582246, g: 0.77582246, b: 0.77582246, a: 1}
-  m_AmbientEquatorColor: {r: 0.47353154, g: 0.44520125, b: 0.42326775, a: 1}
-  m_AmbientGroundColor: {r: 0.3967553, g: 0.35640025, b: 0.27889434, a: 1}
+  m_AmbientSkyColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
+  m_AmbientEquatorColor: {r: 0.5849056, g: 0.55370784, b: 0.52696687, a: 1}
+  m_AmbientGroundColor: {r: 0.13207549, g: 0.074229576, b: 0.040494844, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.9725491, g: 0.89019614, b: 0.6627451, a: 1}
@@ -5921,6 +5921,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2163230713524682475, guid: adb4a7d80c03cb64ea2b107b54bbfcf7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: bc5ecdef3cf1d9d4899a4a60332ca112, type: 2}
     - target: {fileID: 2640609521149998156, guid: adb4a7d80c03cb64ea2b107b54bbfcf7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -37685,6 +37689,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2013265040}
     m_Modifications:
+    - target: {fileID: 1299693644660289416, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 05741bcfe455f214b92a77fe8e5e5b31, type: 2}
+    - target: {fileID: 2223214513080129252, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3756d59cf959af44d84f2c0b15108dc4, type: 2}
     - target: {fileID: 2520891945554052256, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
       propertyPath: collectSound
       value: 
@@ -37729,6 +37741,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4347450590838452847, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f85abcf820194434f88c134327bf30d5, type: 2}
     - target: {fileID: 4779999822243068959, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
       propertyPath: OnCollect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -37737,6 +37753,10 @@ PrefabInstance:
       propertyPath: OnCollect.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 990778152}
+    - target: {fileID: 4990659294768261360, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: cda148f4b6af61a439ed00d42e92581b, type: 2}
     - target: {fileID: 5805544535509826546, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
       propertyPath: OnCollect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -37745,6 +37765,10 @@ PrefabInstance:
       propertyPath: OnCollect.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 1724012212}
+    - target: {fileID: 6234042053338927018, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 55a6a06d060df8e418f0f098c2f1f0be, type: 2}
     - target: {fileID: 6628926713912731056, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
       propertyPath: m_Size.x
       value: 1.3190929
@@ -37768,6 +37792,10 @@ PrefabInstance:
     - target: {fileID: 6628926713912731056, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
       propertyPath: m_Center.z
       value: 3.652331
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773376913597538572, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.242
       objectReference: {fileID: 0}
     - target: {fileID: 9143432680568463433, guid: 5d8287acfc2a3924084129d9e18ac92c, type: 3}
       propertyPath: m_Name
