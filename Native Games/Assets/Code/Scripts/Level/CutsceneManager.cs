@@ -8,7 +8,7 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
 {
     [SerializeField] private List<CheckpointTieCutscene> checkpointTieCutscenes;
     [SerializeField] private List<OnDemandCutscene> onDemandCutscenes;
-    private Cutscene currentCutscene;
+    public Cutscene CurrentCutscene { get; private set; }
 
 
     protected override void Awake()
@@ -104,12 +104,12 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
 
     public void PlayCurrentCutscene(Cutscene cutscene)
     {
-        currentCutscene = cutscene;
-        currentCutscene.cutscenePlayableDirector.time = 0.0;
-        currentCutscene.cutsceneObject.SetActive(true);
-        currentCutscene.cutscenePlayableDirector.Play();
+        CurrentCutscene = cutscene;
+        CurrentCutscene.cutscenePlayableDirector.time = 0.0;
+        CurrentCutscene.cutsceneObject.SetActive(true);
+        CurrentCutscene.cutscenePlayableDirector.Play();
 
-        float cutsceneDuration = currentCutscene.cutsceneDuration;
+        float cutsceneDuration = CurrentCutscene.cutsceneDuration;
 
         InputManager.Instance.DisableGameInputs();
         Invoke(nameof(SkipCutscene), cutsceneDuration);
@@ -122,7 +122,7 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
             return;
         }
 
-        if (currentCutscene == null)
+        if (CurrentCutscene == null)
         {
             return;
         }
@@ -136,8 +136,8 @@ public class CutsceneManager : LocalSingleton<CutsceneManager>
     {
         float arbitraryValue = 10000f;
 
-        Cutscene cutscene = currentCutscene;
-        currentCutscene = null;
+        Cutscene cutscene = CurrentCutscene;
+        CurrentCutscene = null;
 
         if (cutscene.GetType() == typeof(CheckpointTieCutscene))
         {

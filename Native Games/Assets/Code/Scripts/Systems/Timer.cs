@@ -76,4 +76,15 @@ public class CountdownTimer
         initialTime = newTime;
         Reset();
     }
+
+    public void RestartAndQueue()
+    {
+        if (IsRunning && CurrentTime <= 0.0f)
+        {
+            return;
+        }
+
+        IsRunning = true;
+        Clock.QueueToAdd(this);
+    }
 }

@@ -122,4 +122,14 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
     {
         savingText.SetActive(false);
     }
+
+    public void EnablePopup(string popupName)
+    {
+        popupManager.EnablePopup(popupName);
+    }
+
+    public void DisablePopup()
+    {
+        popupManager.DisableActivePopup();
+    }
 }

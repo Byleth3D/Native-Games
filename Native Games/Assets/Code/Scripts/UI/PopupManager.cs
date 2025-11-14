@@ -1,8 +1,12 @@
+using Cysharp.Threading.Tasks;
 using EditorAttributes;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class PopupManager
@@ -11,9 +15,18 @@ public class PopupManager
     [SerializeField] private TextMeshProUGUI popupText;
     [SerializeField] private List<Popup> popups;
 
+    [SerializeField] private GameObject itemPopupMenu;
+    [SerializeField] private Image itemPopupImage;
+    [SerializeField] private TextMeshProUGUI itemPopupText;
+    [SerializeField] private List<ItemPopup> itemPopups;
+
     private CountdownTimer popupTimer;
 
+    private CancellationTokenSource cancellationTokenSource;
+
     public Popup ActivePopup { get; private set; }
+    public GameObject ActivePopupMenu { get; private set; }
+    public TextMeshProUGUI ActivePopupText { get; private set; }
     public bool HasActivePopup { get; private set; }
 
     public void Setup()
@@ -29,6 +42,16 @@ public class PopupManager
     private Popup FindPopup(string popupName)
     {
         foreach (Popup popup in popups)
+        {
+            if (popup.name != popupName)
+            {
+                continue;
+            }
+
+            return popup;
+        }
+
+        foreach (ItemPopup popup in itemPopups)
         {
             if (popup.name != popupName)
             {
@@ -82,7 +105,19 @@ public class PopupManager
             return;
         }
 
-        popupMenu.SetActive(true);
+        if (popup.GetType() == typeof(ItemPopup))
+        {
+            ActivePopupMenu = itemPopupMenu;
+            ActivePopupText = itemPopupText;
+            itemPopupImage.sprite = (popup as ItemPopup).icon;
+        }
+        else
+        {
+            ActivePopupMenu = popupMenu;
+            ActivePopupText = popupText;
+        }
+
+        ActivePopupMenu.SetActive(true);
 
         string newPopupText = "";
 
@@ -96,7 +131,7 @@ public class PopupManager
             newPopupText = popup.defaultMessage;
         }
 
-        popupText.text = newPopupText;
+        ActivePopupText.text = newPopupText;
 
         HasActivePopup = true;
         ActivePopup = popup;
@@ -106,6 +141,9 @@ public class PopupManager
             popupTimer = new CountdownTimer(popup.duration);
             popupTimer.StartAndQueue();
             popupTimer.OnTimerExpired += DisableActivePopup;
+
+            cancellationTokenSource = new CancellationTokenSource();
+            WaitForTimer(cancellationTokenSource.Token).Forget();
         }
     }
 
@@ -126,18 +164,37 @@ public class PopupManager
             return;
         }
 
-        popupMenu.SetActive(false);
-        popupText.text = "";
+        ActivePopupMenu.SetActive(false);
+        ActivePopupText.text = "";
+        itemPopupImage.sprite = null;
 
         HasActivePopup = false;
         ActivePopup = null;
+        ActivePopupMenu = null;
+        ActivePopupText = null;
 
         if (popup.isTimeBased)
         {
             if (popupTimer.IsRunning || popupTimer.CurrentTime > 0.0f)
             {
                 popupTimer.StopAndQueue();
+                cancellationTokenSource?.Cancel();
             }
+        }
+    }
+
+    public async UniTaskVoid WaitForTimer(CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (CutsceneManager.Instance.CurrentCutscene != null)
+        {
+            popupTimer.StopAndQueue();
+
+            await UniTask.WaitUntil(() => CutsceneManager.Instance.CurrentCutscene == null,
+                cancellationToken: cancellationToken);
+
+            popupTimer.RestartAndQueue();
         }
     }
 }
@@ -152,4 +209,10 @@ public class Popup
     [DisableField(nameof(isPlataformSpecific)), TextArea] public string defaultMessage;
     [EnableField(nameof(isPlataformSpecific)), TextArea] public string pcMessage;
     [EnableField(nameof(isPlataformSpecific)), TextArea] public string mobileMessage;
+}
+
+[Serializable]
+public class ItemPopup : Popup
+{
+    public Sprite icon;
 }
