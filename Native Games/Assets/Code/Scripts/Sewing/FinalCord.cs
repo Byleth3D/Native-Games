@@ -1,7 +1,11 @@
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class FinalCord : Cord, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] public RectTransform snapPoint;
+    public RectTransform SnapPoint { get => snapPoint;}
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (sewing.DraggedCord == null)

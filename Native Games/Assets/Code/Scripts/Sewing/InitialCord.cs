@@ -4,28 +4,16 @@ using UnityEngine.UI.Extensions;
 
 public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    [SerializeField] private GameObject indicator;
     private RectTransform cordRectTransform;
-    private RectTransform canvasRectTransform;
-
-    private UILineRenderer lineRenderer;
+    //private RectTransform canvasRectTransform;
 
     protected override void Awake()
     {
         base.Awake();
 
         cordRectTransform = transform as RectTransform;
-        canvasRectTransform = cordRectTransform.GetParentCanvas().transform as RectTransform;
-        lineRenderer = GetComponentInChildren<UILineRenderer>();
-
-        if (lineRenderer != null)
-        {
-            lineRenderer.color = color;
-
-            Color transparentImageColor = color;
-            transparentImageColor.a = 0.0f;
-
-            image.color = transparentImageColor;
-        }
+        //canvasRectTransform = cordRectTransform.GetParentCanvas().transform as RectTransform;
     }
 
     private void HideCord()
@@ -78,6 +66,7 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
         }
 
         ShowCord();
+        indicator.SetActive(false);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -96,12 +85,35 @@ public class InitialCord : Cord, IBeginDragHandler, IEndDragHandler, IDragHandle
             IsConnected = true;
             sewing.HoveredCord.IsConnected = true;
             sewing.CheckCompletition();
+
+            indicator.SetActive(false);
+
+            SnapCord();
         }
         else
         {
             HideCord();
+            indicator.SetActive(true);
         }
 
         sewing.DraggedCord = null;
+    }
+
+    private void SnapCord()
+    {
+        RectTransform rectTransform = sewing.HoveredCord.SnapPoint;
+        Vector3 snapWorldPosition = rectTransform.position;
+
+        Vector2 snapScreenPoint = RectTransformUtility.WorldToScreenPoint(null, snapWorldPosition);
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            lineRenderer.rectTransform,
+            snapScreenPoint,
+            null,
+            out Vector2 snapLocalPoint
+        );
+
+        lineRenderer.Points[2] = snapLocalPoint;
+        lineRenderer.SetAllDirty();
     }
 }
