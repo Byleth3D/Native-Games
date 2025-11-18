@@ -4331,7 +4331,7 @@ Transform:
   m_GameObject: {fileID: 276946591}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4, y: 9.7409, z: 12.55}
+  m_LocalPosition: {x: -1.4, y: 9.73, z: 12.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14661,7 +14661,7 @@ Transform:
   m_GameObject: {fileID: 782770709}
   serializedVersion: 2
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: -2.4, y: 18.615902, z: 1.5081768}
+  m_LocalPosition: {x: -2.4, y: 18.605001, z: 1.5081768}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17755,6 +17755,8 @@ PlayableDirector:
     value: {fileID: 1154933573}
   - key: {fileID: -4776903221060629690, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
     value: {fileID: 2138866642}
+  - key: {fileID: 3119517747096351480, guid: 1aef874fc6883e843b17f469aef3c12b, type: 2}
+    value: {fileID: 2003783233}
   m_ExposedReferences:
     m_References:
     - c4d86a59415b5624baf663bd5807c7d9: {fileID: 833902809}
@@ -21728,7 +21730,7 @@ MonoBehaviour:
     popups:
     - name: Move
       isTimeBased: 1
-      duration: 5
+      duration: 7.5
       isPlataformSpecific: 1
       defaultMessage: 
       pcMessage: Use<color="green"> [W][A][S][D] </color>para se mover
@@ -42517,7 +42519,7 @@ Transform:
   m_GameObject: {fileID: 1941460350}
   serializedVersion: 2
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: -2.4, y: 18.615902, z: 1.5081768}
+  m_LocalPosition: {x: -2.4, y: 18.605001, z: 1.5081768}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43197,6 +43199,72 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1724012214}
   m_LocalEulerAnglesHint: {x: 18.51, y: 368.957, z: 0}
+--- !u!1 &2003783233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2003783235}
+  - component: {fileID: 2003783234}
+  - component: {fileID: 2003783236}
+  m_Layer: 0
+  m_Name: MoveTutorialTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!65 &2003783234
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003783233}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 5, z: 5}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!4 &2003783235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003783233}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.61, y: 10.288, z: 12.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2003783236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003783233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10450d8c5bddac4fbcf88852946a296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2013265039
 GameObject:
   m_ObjectHideFlags: 0
@@ -47500,3 +47568,4 @@ SceneRoots:
   - {fileID: 1531657417}
   - {fileID: 236803827}
   - {fileID: 1859339507}
+  - {fileID: 2003783235}
