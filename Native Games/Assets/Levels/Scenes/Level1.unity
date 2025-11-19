@@ -3963,7 +3963,7 @@ GameObject:
   - component: {fileID: 236803827}
   - component: {fileID: 236803826}
   m_Layer: 0
-  m_Name: Musica Place Holder
+  m_Name: MusicManagerLevel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
