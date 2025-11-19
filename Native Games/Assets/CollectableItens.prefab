@@ -978,7 +978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 48101d046ee734c448c7e1a3c25df25a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.2140007
+      value: -0.12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 48101d046ee734c448c7e1a3c25df25a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1016,6 +1016,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: -7094549249817701636, guid: 66ae3b6cf90c2f4439e4194736dddbad, type: 3}
+    - target: {fileID: -5754084199372789682, guid: 48101d046ee734c448c7e1a3c25df25a, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -8341813409856118040, guid: fd2f2388e0342194ebf52cccb3a20342, type: 3}
     - target: {fileID: 919132149155446097, guid: 48101d046ee734c448c7e1a3c25df25a, type: 3}
       propertyPath: m_Name
       value: Cordao
