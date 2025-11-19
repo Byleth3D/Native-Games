@@ -20,8 +20,8 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
-  m_AmbientEquatorColor: {r: 0.5849056, g: 0.55370784, b: 0.52696687, a: 1}
+  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
+  m_AmbientEquatorColor: {r: 0.58431375, g: 0.5343327, b: 0.5254902, a: 1}
   m_AmbientGroundColor: {r: 0.13207549, g: 0.074229576, b: 0.040494844, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 1
@@ -47174,31 +47174,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -35.86
+      value: -36.05935
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.46
+      value: 10.879287
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -40.79
+      value: -40.48023
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5199798
+      value: -0.32931888
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.03362255
+      value: 0.7866007
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7867145
+      value: 0.03618578
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.3310149
+      value: 0.52105564
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -47210,7 +47210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4491626687234375726, guid: 500c870bbd9273343a6c0df1d04578a0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 20.515
+      value: 200.142
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
