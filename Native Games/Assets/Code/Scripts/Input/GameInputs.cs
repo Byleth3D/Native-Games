@@ -671,6 +671,33 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FreePoint"",
+                    ""type"": ""Value"",
+                    ""id"": ""3dd51bae-2689-4e3b-ae61-0f95e2701e25"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""FreeMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""90d31f6e-fe9a-4d4d-ab2a-78bb81397557"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""FreeMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""dfa153c9-c704-4f83-b00e-3010d56099bf"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -706,6 +733,83 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""action"": ""TeleportPrevious"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6cc28891-061a-49b5-8ef4-4f8c588ef4bf"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreePoint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""f90e947e-2225-4052-95fa-d56679715bd6"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""4979c3af-f7a7-46c2-aa59-44bd053e5471"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""e25f914b-ede6-40b2-894d-e4d7a315effc"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""1459a6b3-9a2c-4fff-802e-cdfe01ec334b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""e89a1db8-86cb-4462-8e3e-602eb3963569"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5fe46c86-34aa-452f-82e4-c2c936103718"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -733,6 +837,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_Cheats_CheatModifier = m_Cheats.FindAction("CheatModifier", throwIfNotFound: true);
         m_Cheats_TeleportNext = m_Cheats.FindAction("TeleportNext", throwIfNotFound: true);
         m_Cheats_TeleportPrevious = m_Cheats.FindAction("TeleportPrevious", throwIfNotFound: true);
+        m_Cheats_FreePoint = m_Cheats.FindAction("FreePoint", throwIfNotFound: true);
+        m_Cheats_FreeMove = m_Cheats.FindAction("FreeMove", throwIfNotFound: true);
+        m_Cheats_FreeMode = m_Cheats.FindAction("FreeMode", throwIfNotFound: true);
     }
 
     ~@GameInputs()
@@ -1120,6 +1227,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Cheats_CheatModifier;
     private readonly InputAction m_Cheats_TeleportNext;
     private readonly InputAction m_Cheats_TeleportPrevious;
+    private readonly InputAction m_Cheats_FreePoint;
+    private readonly InputAction m_Cheats_FreeMove;
+    private readonly InputAction m_Cheats_FreeMode;
     /// <summary>
     /// Provides access to input actions defined in input action map "Cheats".
     /// </summary>
@@ -1143,6 +1253,18 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Cheats/TeleportPrevious".
         /// </summary>
         public InputAction @TeleportPrevious => m_Wrapper.m_Cheats_TeleportPrevious;
+        /// <summary>
+        /// Provides access to the underlying input action "Cheats/FreePoint".
+        /// </summary>
+        public InputAction @FreePoint => m_Wrapper.m_Cheats_FreePoint;
+        /// <summary>
+        /// Provides access to the underlying input action "Cheats/FreeMove".
+        /// </summary>
+        public InputAction @FreeMove => m_Wrapper.m_Cheats_FreeMove;
+        /// <summary>
+        /// Provides access to the underlying input action "Cheats/FreeMode".
+        /// </summary>
+        public InputAction @FreeMode => m_Wrapper.m_Cheats_FreeMode;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1178,6 +1300,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @TeleportPrevious.started += instance.OnTeleportPrevious;
             @TeleportPrevious.performed += instance.OnTeleportPrevious;
             @TeleportPrevious.canceled += instance.OnTeleportPrevious;
+            @FreePoint.started += instance.OnFreePoint;
+            @FreePoint.performed += instance.OnFreePoint;
+            @FreePoint.canceled += instance.OnFreePoint;
+            @FreeMove.started += instance.OnFreeMove;
+            @FreeMove.performed += instance.OnFreeMove;
+            @FreeMove.canceled += instance.OnFreeMove;
+            @FreeMode.started += instance.OnFreeMode;
+            @FreeMode.performed += instance.OnFreeMode;
+            @FreeMode.canceled += instance.OnFreeMode;
         }
 
         /// <summary>
@@ -1198,6 +1329,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @TeleportPrevious.started -= instance.OnTeleportPrevious;
             @TeleportPrevious.performed -= instance.OnTeleportPrevious;
             @TeleportPrevious.canceled -= instance.OnTeleportPrevious;
+            @FreePoint.started -= instance.OnFreePoint;
+            @FreePoint.performed -= instance.OnFreePoint;
+            @FreePoint.canceled -= instance.OnFreePoint;
+            @FreeMove.started -= instance.OnFreeMove;
+            @FreeMove.performed -= instance.OnFreeMove;
+            @FreeMove.canceled -= instance.OnFreeMove;
+            @FreeMode.started -= instance.OnFreeMode;
+            @FreeMode.performed -= instance.OnFreeMode;
+            @FreeMode.canceled -= instance.OnFreeMode;
         }
 
         /// <summary>
@@ -1359,5 +1499,26 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTeleportPrevious(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FreePoint" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFreePoint(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FreeMove" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFreeMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FreeMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFreeMode(InputAction.CallbackContext context);
     }
 }

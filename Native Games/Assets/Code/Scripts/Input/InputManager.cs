@@ -69,11 +69,16 @@ public class InputManager : Singleton<InputManager>
         Clock.QueueToAdd(timer);
     }
 
-    public void DisableGameInputs()
+    public void DisableGameInputs(bool includeCheats = true)
     {
         gameInputs.Player.Disable();
         gameInputs.UI.Disable();
-        gameInputs.Cheats.Disable();
+
+        if (includeCheats)
+        {
+            gameInputs.Cheats.Disable();
+        }
+
         Enabled = false;
     }
 
