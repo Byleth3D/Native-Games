@@ -514,6 +514,7 @@ GameObject:
   - component: {fileID: 7003152625309765542}
   - component: {fileID: 2471124978102270235}
   - component: {fileID: 6974928948701023562}
+  - component: {fileID: 7003152625309765543}
   m_Layer: 5
   m_Name: LoadingText
   m_TagString: Untagged
@@ -929,6 +930,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -61.695007}
   m_SizeDelta: {x: 580.9849, y: 123.39}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7003152625309765543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367575221535040978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61990db0befd694c84ad8cb9123b483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onAwake: 1
+  sizePercentage: 75
+  textMeshPro: {fileID: 6974928948701023562}
 --- !u!114 &7519586084834215469
 MonoBehaviour:
   m_ObjectHideFlags: 0

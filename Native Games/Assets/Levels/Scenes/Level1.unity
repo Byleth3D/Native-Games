@@ -333,6 +333,7 @@ GameObject:
   - component: {fileID: 33386871}
   - component: {fileID: 33386872}
   - component: {fileID: 33386873}
+  - component: {fileID: 33386874}
   m_Layer: 5
   m_Name: InventorySlotName
   m_TagString: Untagged
@@ -458,6 +459,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &33386874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33386870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61990db0befd694c84ad8cb9123b483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onAwake: 0
+  sizePercentage: 75
+  textMeshPro: {fileID: 33386873}
 --- !u!1 &35884345 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6471496338278676438, guid: 9967bdcf0b800ab4f82274ae54acc30b, type: 3}
@@ -3683,7 +3699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMin.x
@@ -3691,7 +3707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3731,11 +3747,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 385
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -380
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -34905,6 +34921,7 @@ GameObject:
   - component: {fileID: 1537168572}
   - component: {fileID: 1537168574}
   - component: {fileID: 1537168573}
+  - component: {fileID: 1537168575}
   m_Layer: 5
   m_Name: PauseText
   m_TagString: Untagged
@@ -35030,6 +35047,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1537168571}
   m_CullTransparentMesh: 1
+--- !u!114 &1537168575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537168571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61990db0befd694c84ad8cb9123b483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onAwake: 1
+  sizePercentage: 75
+  textMeshPro: {fileID: 1537168573}
 --- !u!1 &1542333797
 GameObject:
   m_ObjectHideFlags: 0
@@ -44171,7 +44203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMin.x
@@ -44179,7 +44211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_SizeDelta.x
@@ -44219,11 +44251,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 210
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -380
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -46801,7 +46833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMin.x
@@ -46809,7 +46841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_SizeDelta.x
@@ -46849,11 +46881,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 560
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -380
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908991056040191621, guid: 4a530b3ff3317144f8ee708b1465ed5f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

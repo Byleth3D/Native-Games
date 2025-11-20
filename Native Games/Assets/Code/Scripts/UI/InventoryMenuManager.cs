@@ -53,7 +53,7 @@ public class InventoryMenuManager
             if (listHasEmptySlot)
             {
                 this.inventorySlots[firstEmptyIndex].Add(inventoryItem, inventoryItemAmount);
-                
+
                 if (!onSetup)
                 {
                     this.inventorySlots[firstEmptyIndex].Notification.SetActive(true);
@@ -160,6 +160,9 @@ public class InventoryMenuManager
         InventorySlotDescription.text = inventoryItem.itemDescription;
         InventorySlotUsageImage.sprite = inventoryItem.itemUsageImage;
 
+        InventorySlotName.gameObject.TryGetComponent(out TextSizeModifier textSizeModifier);
+        textSizeModifier?.Modify();
+
         InventorySlotName.gameObject.SetActive(true);
         InventorySlotDescription.gameObject.SetActive(true);
         InventorySlotUsageImage.gameObject.SetActive(true);
@@ -174,6 +177,9 @@ public class InventoryMenuManager
         InventorySlotName.gameObject.SetActive(false);
         InventorySlotDescription.gameObject.SetActive(false);
         InventorySlotUsageImage.gameObject.SetActive(false);
+
+        InventorySlotName.gameObject.TryGetComponent(out TextSizeModifier textSizeModifier);
+        textSizeModifier?.Unmodify();
     }
 
     public void Setup()
