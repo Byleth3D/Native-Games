@@ -355,10 +355,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1378243960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -52}
-  m_SizeDelta: {x: 435, y: 40}
+  m_AnchorMin: {x: 0.20608106, y: 0.90697676}
+  m_AnchorMax: {x: 0.79391897, y: 0.9586563}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &33386872
 CanvasRenderer:
@@ -11765,10 +11765,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1378243960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 224.3233}
-  m_SizeDelta: {x: 628, y: 350}
+  m_AnchorMin: {x: 0.075675644, y: 0.063725196}
+  m_AnchorMax: {x: 0.92432433, y: 0.5159216}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &625002228
 MonoBehaviour:
@@ -23071,10 +23071,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1378243960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -230}
-  m_SizeDelta: {x: 514, y: 289.62}
+  m_AnchorMin: {x: 0.15270267, y: 0.51574934}
+  m_AnchorMax: {x: 0.8472973, y: 0.8899354}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &934169961
 MonoBehaviour:
@@ -31332,6 +31332,7 @@ PrefabInstance:
     - {fileID: 6277655961523131728, guid: 90b40b222875c944ba8d485809293427, type: 3}
     - {fileID: 6333992801322039320, guid: 90b40b222875c944ba8d485809293427, type: 3}
     - {fileID: 8601428158277105621, guid: 90b40b222875c944ba8d485809293427, type: 3}
+    - {fileID: 4642049109852541013, guid: 90b40b222875c944ba8d485809293427, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5853392279519985014, guid: 90b40b222875c944ba8d485809293427, type: 3}
