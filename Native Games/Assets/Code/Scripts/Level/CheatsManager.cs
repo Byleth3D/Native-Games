@@ -35,7 +35,7 @@ public class CheatsManager : LocalSingleton<CheatsManager>
             {
                 freeCamera.gameObject.SetActive(false);
                 freeController.gameObject.SetActive(false);
-                freeController.SetParent(toNull: true);
+                freeController.SetParent(toNull: false);
 
                 InputManager.Instance.EnableGameInputs();
                 return;

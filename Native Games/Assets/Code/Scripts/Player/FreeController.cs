@@ -4,6 +4,7 @@ public class FreeController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private GameObject freeCamera;
+    [SerializeField] private Vector3 positionOffset;
     private Transform parent;
 
     private void Awake()
@@ -14,6 +15,7 @@ public class FreeController : MonoBehaviour
     public void SetParent(bool toNull = false)
     {
         transform.parent = toNull ? null : parent;
+        transform.localPosition = toNull ? transform.position : Vector3.zero + positionOffset;
     }
 
     private void Update()

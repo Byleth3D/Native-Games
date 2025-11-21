@@ -18,7 +18,7 @@ public class ReflectionProbeUpdater : MonoBehaviour
     {
         cancellationTokenSource?.Cancel();
 
-        if (Application.isPlaying)
+        if (Application.isPlaying && reflectionProbe != null)
         {
             reflectionProbe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.EveryFrame;
         }
