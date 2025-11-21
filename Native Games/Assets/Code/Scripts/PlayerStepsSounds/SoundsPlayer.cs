@@ -2,16 +2,19 @@ using UnityEngine;
 
 public class SoundsPlayer : MonoBehaviour
 {
+    [SerializeField] private AudioClip steps;
+    [SerializeField, Range(0.1f, 1f)] public float stepsVolume;
+    public float stepsInterval = 0.5f;
+    private CountdownTimer stepTimer;
+
+    [SerializeField] public AudioClip jump;
+    [SerializeField, Range(0.1f, 1f)] public float jumpVolume;
+
     private PlayerController controller;
     private GroundChecker groundChecker;
     private AudioSource audioSource;
 
-    public AudioClip steps;
-    public AudioClip jump;
 
-    public float stepsInterval = 0.5f;
-
-    private CountdownTimer stepTimer;
 
     void Awake()
     {
@@ -41,8 +44,10 @@ public class SoundsPlayer : MonoBehaviour
                 PlayStep();
                 return;
             }
-
-            stepTimer.Tick(Time.deltaTime);
+        }
+        else
+        {
+            stepTimer.StopAndQueue();
         }
     }
 
@@ -50,8 +55,8 @@ public class SoundsPlayer : MonoBehaviour
     {
         if (controller.Velocity.WithoutY().magnitude > 0.0f && !controller.IsPushing)
         {
-            PlayClip(steps);
-            stepTimer.Start();
+            PlayClip(steps, jumpVolume);
+            stepTimer.StartAndQueue();
         }
     }
 
@@ -59,19 +64,17 @@ public class SoundsPlayer : MonoBehaviour
     {
         if (controller.Velocity.y > 0.0f)
         {
-            PlayClip(jump);
+            PlayClip(jump, jumpVolume);
         }
     }
 
-    private void PlayClip(AudioClip clip)
+    private void PlayClip(AudioClip clip, float volume)
     {
         if (clip == null)
         {
             return;
         }
 
-        audioSource.PlayOneShot(clip);
-
+        audioSource.PlayOneShot(clip, volume);
     }
-
 }

@@ -4395,8 +4395,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steps: {fileID: 8300000, guid: 53365d3279b3e9541b77fc8d47a596ff, type: 3}
-  jump: {fileID: 8300000, guid: 5bdd107dc4a827647aec46ad8bd52217, type: 3}
+  stepsVolume: 0.75
   stepsInterval: 0.42
+  jump: {fileID: 8300000, guid: 5bdd107dc4a827647aec46ad8bd52217, type: 3}
+  jumpVolume: 0.685
 --- !u!114 &276946594
 MonoBehaviour:
   m_ObjectHideFlags: 0
