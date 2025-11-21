@@ -2970,9 +2970,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1885161119}
   - component: {fileID: 1885161118}
-  - component: {fileID: 1885161120}
   m_Layer: 0
-  m_Name: MusicManager
+  m_Name: MusicManagerMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2989,7 +2988,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: fef2a6a7a7277484291b455e4c56d088, type: 3}
+  m_Resource: {fileID: 8300000, guid: c59b9fefcfdaecc4db5295fa244898d0, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
@@ -3090,18 +3089,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1885161120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1885161117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cd8af7886ae6554aa1a3194bef359f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2007310960
 GameObject:
   m_ObjectHideFlags: 0
