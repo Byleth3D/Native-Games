@@ -523,15 +523,15 @@ AnimatorStateMachine:
   - {fileID: 3614336604742145185}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -4713599462957728066}
-    second:
-    - {fileID: -2633189649829392505}
-    - {fileID: 4467288968688714150}
   - first: {fileID: -678706387097730218}
     second:
     - {fileID: 5591543788450432591}
     - {fileID: -8522615155040573980}
     - {fileID: 1196136949661310894}
+  - first: {fileID: -4713599462957728066}
+    second:
+    - {fileID: -2633189649829392505}
+    - {fileID: 4467288968688714150}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 130, y: -150, z: 0}
   m_EntryPosition: {x: -140, y: -170, z: 0}
@@ -1197,7 +1197,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Anim_Pull Heavy Stop
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1448833016066249797}
@@ -1302,7 +1302,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Anim_Picking Up
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 6393289541142249504}

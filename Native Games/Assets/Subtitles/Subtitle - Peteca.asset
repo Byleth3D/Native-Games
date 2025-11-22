@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - startTimeInMinutes: 00:00
-    endTimeInMinutes: 00:11
+    endTimeInMinutes: 00:09
     text: "Crian\xE7as correndo e pulando atr\xE1s da peteca, feita com carinho para
-      marcar a inf\xE2ncia dos pequenos, longe das telas."
+      marcar a inf\xE2ncia dos pequenos."
