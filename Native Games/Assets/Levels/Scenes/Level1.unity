@@ -24776,20 +24776,28 @@ MonoBehaviour:
       mobileMessage: "Pressione<color=\"red\"> bot\xE3o vermelho </color>segurar
         ou soltar objetos."
     - name: CottonCordFail
-      isTimeBased: 0
-      duration: 0
+      isTimeBased: 1
+      duration: 8
       isPlataformSpecific: 0
       defaultMessage: "Voc\xEA precisa de<color=\"red\"> 3 cord\xF5es </color>e<color=\"red\">
         uma agulha</color>!"
       pcMessage: 
       mobileMessage: 
+    - name: Inventory
+      isTimeBased: 1
+      duration: 10
+      isPlataformSpecific: 1
+      defaultMessage: 
+      pcMessage: "Pressione<color=\"blue\"> [TAB] </color>para abrir o invent\xE1rio."
+      mobileMessage: "Pressione o<color=\"blue\"> \xEDcone de bolsa </color>para
+        abrir o invent\xE1rio."
     itemPopupMenu: {fileID: 1614949507}
     itemPopupImage: {fileID: 1486701458}
     itemPopupText: {fileID: 430183153}
     itemPopups:
     - name: Lace
       isTimeBased: 1
-      duration: 4
+      duration: 20
       isPlataformSpecific: 0
       defaultMessage: "\"Feita \xE0 m\xE3o com fios de algod\xE3o e com n\xF3s de
         lac\xEAs\"\r\n<color=\"white\">Leve a renda para Dona Luzia completar a encomenda
@@ -24799,7 +24807,7 @@ MonoBehaviour:
       icon: {fileID: 832520698, guid: 9bc07c7e9715edb4dacb84158883d872, type: 3}
     - name: CottonCord
       isTimeBased: 1
-      duration: 4
+      duration: 20
       isPlataformSpecific: 0
       defaultMessage: "\"A arte das rendeiras alagoanas. De redes de pescas \xE0
         bordados vibrantes.\"\r\n<color=\"white\">Colete os 3 cord\xF5es para completar
@@ -24809,7 +24817,7 @@ MonoBehaviour:
       icon: {fileID: 1211438655, guid: 9ff35f735aa202a44ac61dabcaf7ff6c, type: 3}
     - name: Needle
       isTimeBased: 1
-      duration: 4
+      duration: 20
       isPlataformSpecific: 0
       defaultMessage: "\"Cada agulha, feita a m\xE3o com precis\xE3o, usado na tecelagem
         do bordado fil\xE9.\"\r\n<color=\"white\">Colete os cord\xF5es para tecer
@@ -42539,6 +42547,73 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 3128938495825075609, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
   m_PrefabInstance: {fileID: 1597966204}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1601927496
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1601927499}
+  - component: {fileID: 1601927498}
+  - component: {fileID: 1601927497}
+  m_Layer: 10
+  m_Name: InventoryTutorialTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1601927497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601927496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10450d8c5bddac4fbcf88852946a296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialPopup: Inventory
+--- !u!65 &1601927498
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601927496}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 5, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!4 &1601927499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1601927496}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.24, y: 10.288, z: 14.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1604868975
 GameObject:
   m_ObjectHideFlags: 0
@@ -48165,6 +48240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d10450d8c5bddac4fbcf88852946a296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialPopup: Move
 --- !u!1 &2013265039
 GameObject:
   m_ObjectHideFlags: 0
@@ -52737,5 +52813,6 @@ SceneRoots:
   - {fileID: 236803827}
   - {fileID: 1859339507}
   - {fileID: 2003783235}
+  - {fileID: 1601927499}
   - {fileID: 1542333798}
   - {fileID: 740120921}

@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class MoveTutorialTrigger : MonoBehaviour
+public class PopupTutorialTrigger : MonoBehaviour
 {
+    [SerializeField] private string tutorialPopup = "";
+
     private void OnTriggerEnter(Collider other)
     {
         ObjectStateManager.Instance.SetAsCollected(this.gameObject);
-        GameplayUIManager.Instance.EnablePopup("Move");
+        GameplayUIManager.Instance.EnablePopup(tutorialPopup);
         this.gameObject.SetActive(false);
     }
 }

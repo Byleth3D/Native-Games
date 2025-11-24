@@ -100,9 +100,14 @@ public class PopupManager
 
     public void EnableActivePopup(Popup popup)
     {
-        if (popup == ActivePopup || HasActivePopup)
+        if (popup == ActivePopup)
         {
             return;
+        }
+
+        if (HasActivePopup)
+        {
+            DisableActivePopup();
         }
 
         if (popup.GetType() == typeof(ItemPopup))
