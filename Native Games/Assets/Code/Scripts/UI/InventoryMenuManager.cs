@@ -105,6 +105,9 @@ public class InventoryMenuManager
             this.inventorySlots[index].UpdateAmount(inventoryItemAmount);
         }
 
+        this.inventorySlots[index].Notification.SetActive(false);
+        Notification.SetActive(false);
+
         ReorderInventorySlots();
     }
 

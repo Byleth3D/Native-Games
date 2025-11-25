@@ -26,6 +26,8 @@ public class SceneLoader : Singleton<SceneLoader>
         await UniTask.WaitWhile(() => LoadingOperation.progress < 0.9f);
         await UniTask.Delay(2500);
 
+        InputManager.Instance.EnableGameInputs();
+
         if (save != null)
         {
             SaveManager.Instance.LoadGame(saveIndex);
