@@ -49791,6 +49791,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Caixinha_1 '
       objectReference: {fileID: 0}
+    - target: {fileID: 1303104815991692130, guid: cfad390177ab2354f926b7c90a2480c3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3683088876881596367, guid: cfad390177ab2354f926b7c90a2480c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -33.3
