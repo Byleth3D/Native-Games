@@ -17877,11 +17877,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
---- !u!95 &793411164 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 3128938495825075609, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
-  m_PrefabInstance: {fileID: 793411163}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &793411165 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
@@ -35229,7 +35224,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 57.35
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -37394,9 +37389,9 @@ PlayableDirector:
   - key: {fileID: -2685956511386321986, guid: 828c84a0098e8694797085e319ee6855, type: 2}
     value: {fileID: 276946591}
   - key: {fileID: 4349665932921743950, guid: 828c84a0098e8694797085e319ee6855, type: 2}
-    value: {fileID: 793411164}
+    value: {fileID: 1597966211}
   - key: {fileID: 8112634187982844237, guid: 828c84a0098e8694797085e319ee6855, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1597966206}
   - key: {fileID: -1822521261090311451, guid: 828c84a0098e8694797085e319ee6855, type: 2}
     value: {fileID: 550580181}
   - key: {fileID: -289363108885551716, guid: 828c84a0098e8694797085e319ee6855, type: 2}
@@ -43387,6 +43382,11 @@ PrefabInstance:
 --- !u!4 &1597966205 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8911778591851801424, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
+  m_PrefabInstance: {fileID: 1597966204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1597966206 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6532578356307156119, guid: 5b17d9b2331c4294c8730136aab38cf2, type: 3}
   m_PrefabInstance: {fileID: 1597966204}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &1597966210
