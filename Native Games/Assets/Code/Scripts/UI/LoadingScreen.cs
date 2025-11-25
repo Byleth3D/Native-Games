@@ -4,7 +4,6 @@ using UnityEngine;
 public class LoadingScreen : Singleton<LoadingScreen>
 {
     [SerializeField] private GameObject loadingScreen;
-    private Canvas canvas;
     public bool IsVisible { get; private set; } = false;
 
     public async UniTask SelfEnable()
