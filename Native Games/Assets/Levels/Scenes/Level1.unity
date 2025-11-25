@@ -47857,6 +47857,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3144173562560935436, guid: 7aff0caa1c30e9a4f8ce478956e2aa22, type: 3}
+      propertyPath: m_TimeSlicingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3144173562560935436, guid: 7aff0caa1c30e9a4f8ce478956e2aa22, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 451
       objectReference: {fileID: 0}
