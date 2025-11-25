@@ -47858,7 +47858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3144173562560935436, guid: 7aff0caa1c30e9a4f8ce478956e2aa22, type: 3}
       propertyPath: m_TimeSlicingMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3144173562560935436, guid: 7aff0caa1c30e9a4f8ce478956e2aa22, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -49133,7 +49133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1989929582
 Transform:
   m_ObjectHideFlags: 0
