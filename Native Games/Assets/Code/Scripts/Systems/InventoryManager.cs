@@ -113,28 +113,23 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         if (storedItems.Count > 0)
         {
-            Debug.Log("Clear");
             storedItems.Clear();
         }
 
         if (items == "" || itemsAmount == "")
         {
-            Debug.LogWarning("No Inventory Items Were Loaded!");
             return;
         }
 
         string[] inventoryItems = items.Split("|");
         string[] inventoryItemsAmount = itemsAmount.Split("|");
-        Debug.Log("Split");
 
-        Debug.Log("Entering For");
         for (int i = 0; i < inventoryItems.Length; i++)
         {
             InventoryItem item = Resources.Load<InventoryItem>("ScriptableObjects/" + inventoryItems[i]);
             int amount = int.Parse(inventoryItemsAmount[i]);
 
             storedItems.Add(item, amount);
-            Debug.Log($"{item.name} | {storedItems[item]}");
         }
     }
 

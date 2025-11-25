@@ -26,18 +26,11 @@ public class SceneLoader : Singleton<SceneLoader>
         await UniTask.WaitWhile(() => LoadingOperation.progress < 0.9f);
         await UniTask.Delay(2500);
 
-        Debug.Log($"Save: {save != null} | Loading Type: {loadingType}");
-
         if (save != null)
         {
-            Debug.Log("Entered if save != null");
-            Debug.Log($"Save Index: {saveIndex}");
             SaveManager.Instance.LoadGame(saveIndex);
-            Debug.Log($"Items: {save.inventoryItems} | {save.inventoryItemsAmount}");
             InventoryManager.Instance.LoadInventory(save.inventoryItems, save.inventoryItemsAmount);
         }
-
-        Debug.Log("Loading continued");
 
         LoadingOperation.allowSceneActivation = true;
 
