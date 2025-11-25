@@ -103,7 +103,8 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
     public void RestartCheckpoint()
     {
         GameManager.Instance.SwitchState(GameState.Running);
-        InputManager.Instance.DisableInputActions(InputControllerType.Player);
+        //InputManager.Instance.DisableInputActions(InputControllerType.Player);
+        InputManager.Instance.DisableGameInputs();
         SceneLoader.Instance.Load(LoadingType.RestartCheckpoint);
     }
 
@@ -131,5 +132,12 @@ public class GameplayUIManager : LocalSingleton<GameplayUIManager>
     public void DisablePopup()
     {
         popupManager.DisableActivePopup();
+    }
+
+    public void BackToMenu()
+    {
+        GameManager.Instance.SwitchState(GameState.Running);
+        InputManager.Instance.DisableGameInputs();
+        SceneLoader.Instance.Load("MainMenu");
     }
 }
