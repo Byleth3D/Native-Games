@@ -160,6 +160,7 @@ public class SaveManager : Singleton<SaveManager>
         {
             case LoadingType.NewGame:
                 CreateSaveGame(fromCheckpoint: false, onActiveScene: false);
+                save = Saves[CurrentSaveIndex];
                 break;
 
             case LoadingType.ContinueGame:
