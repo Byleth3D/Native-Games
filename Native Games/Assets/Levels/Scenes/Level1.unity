@@ -24861,7 +24861,7 @@ MonoBehaviour:
       mobileMessage: 
     - name: Inventory
       isTimeBased: 1
-      duration: 10
+      duration: 9.5
       isPlataformSpecific: 1
       defaultMessage: 
       pcMessage: "Pressione<color=\"blue\"> [TAB] </color>para abrir o invent\xE1rio."
@@ -24873,7 +24873,7 @@ MonoBehaviour:
     itemPopups:
     - name: Lace
       isTimeBased: 1
-      duration: 20
+      duration: 15.5
       isPlataformSpecific: 0
       defaultMessage: "\"Feita \xE0 m\xE3o com fios de algod\xE3o e com n\xF3s de
         lac\xEAs\"\r\n<color=\"white\">Leve a renda para Dona Luzia completar a encomenda
@@ -24883,7 +24883,7 @@ MonoBehaviour:
       icon: {fileID: 832520698, guid: 9bc07c7e9715edb4dacb84158883d872, type: 3}
     - name: CottonCord
       isTimeBased: 1
-      duration: 20
+      duration: 15.5
       isPlataformSpecific: 0
       defaultMessage: "\"A arte das rendeiras alagoanas. De redes de pescas \xE0
         bordados vibrantes.\"\r\n<color=\"white\">Colete os 3 cord\xF5es para completar
@@ -24893,7 +24893,7 @@ MonoBehaviour:
       icon: {fileID: 1211438655, guid: 9ff35f735aa202a44ac61dabcaf7ff6c, type: 3}
     - name: Needle
       isTimeBased: 1
-      duration: 20
+      duration: 15.5
       isPlataformSpecific: 0
       defaultMessage: "\"Cada agulha, feita a m\xE3o com precis\xE3o, usado na tecelagem
         do bordado fil\xE9.\"\r\n<color=\"white\">Colete os cord\xF5es para tecer
